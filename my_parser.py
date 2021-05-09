@@ -305,25 +305,3 @@ if __name__ == "__main__":
 
     result = parsing().parse(a)
     print(result)
-    simbol_table = []
-
-
-    def table(tree):
-        for part in tree.parts:
-            temp = []
-            temp_t = []
-            if type(part) != str and type(part) != int:
-                if part.type == 'Var' or part.type == 'parameter_list':
-                    for i in part.parts:
-                        if i.type == 'ID':
-                            for j in i.parts:
-                                temp.append(j)
-                                temp.append(part.scope)
-                                temp_t.append(temp)
-                                temp = []
-                    simbol_table.append(temp_t)
-                    print(simbol_table)
-                table(part)
-
-
-    table(result)
