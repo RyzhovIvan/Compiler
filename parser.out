@@ -1,0 +1,2873 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    COMMENT
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> declarations optional_statements
+Rule 2     identifier_list -> ID
+Rule 3     identifier_list -> identifier_list COMA ID
+Rule 4     declarations -> declarations VAR type identifier_list COLON
+Rule 5     declarations -> empty
+Rule 6     type -> INT
+Rule 7     type -> FLOAT
+Rule 8     type -> STR
+Rule 9     optional_statements -> statement_list
+Rule 10    optional_statements -> empty
+Rule 11    statement_list -> statement
+Rule 12    statement_list -> statement_list statement
+Rule 13    statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement
+Rule 14    statement -> WHILE OPEN expression CLOSE compound_statement
+Rule 15    statement -> subprogram_declarations
+Rule 16    statement -> expression
+Rule 17    statement -> out
+Rule 18    subprogram_declarations -> subprogram_declaration
+Rule 19    subprogram_declarations -> subprogram_declarations subprogram_declaration
+Rule 20    subprogram_declaration -> subprogram_head declarations compound_statement
+Rule 21    subprogram_head -> FUNK ID arguments
+Rule 22    arguments -> OPEN parameter_list CLOSE
+Rule 23    parameter_list -> type identifier_list
+Rule 24    parameter_list -> parameter_list COLON type identifier_list
+Rule 25    compound_statement -> OPEN_CONSTR optional_statements CLOSE_CONSTR
+Rule 26    expression_list -> expression
+Rule 27    expression_list -> expression_list COMA expression
+Rule 28    expression -> NOT simple_expression
+Rule 29    expression -> RETURN simple_expression
+Rule 30    expression -> expression AND simple_expression
+Rule 31    expression -> expression OR simple_expression
+Rule 32    expression -> simple_expression RELOP simple_expression
+Rule 33    expression -> simple_expression
+Rule 34    simple_expression -> term
+Rule 35    simple_expression -> eqstate
+Rule 36    eqstate -> factor EQUAL term
+Rule 37    eqstate -> factor
+Rule 38    term -> dvml
+Rule 39    term -> term PLUSMINUS dvml
+Rule 40    dvml -> factor
+Rule 41    dvml -> dvml DIVMUL factor
+Rule 42    out -> PRINT OPEN factor CLOSE COLON
+Rule 43    in -> INPUT OPEN CLOSE COLON
+Rule 44    factor -> ID
+Rule 45    factor -> ID OPEN expression_list CLOSE
+Rule 46    factor -> NUM
+Rule 47    factor -> CONTINUE
+Rule 48    factor -> BREAK
+Rule 49    factor -> FLOAT_NUM
+Rule 50    factor -> OPEN expression CLOSE
+Rule 51    factor -> type factor
+Rule 52    factor -> NOT factor
+Rule 53    factor -> MARK STRING MARK
+Rule 54    factor -> factor COLON
+Rule 55    empty -> <empty>
+
+Terminals, with rules where they appear
+
+AND                  : 30
+BREAK                : 48
+CLOSE                : 13 14 22 42 43 45 50
+CLOSE_CONSTR         : 25
+COLON                : 4 24 42 43 54
+COMA                 : 3 27
+COMMENT              : 
+CONTINUE             : 47
+DIVMUL               : 41
+ELSE                 : 13
+EQUAL                : 36
+FLOAT                : 7
+FLOAT_NUM            : 49
+FUNK                 : 21
+ID                   : 2 3 21 44 45
+IF                   : 13
+INPUT                : 43
+INT                  : 6
+MARK                 : 53 53
+NOT                  : 28 52
+NUM                  : 46
+OPEN                 : 13 14 22 42 43 45 50
+OPEN_CONSTR          : 25
+OR                   : 31
+PLUSMINUS            : 39
+PRINT                : 42
+RELOP                : 32
+RETURN               : 29
+STR                  : 8
+STRING               : 53
+THEN                 : 13
+VAR                  : 4
+WHILE                : 14
+error                : 
+
+Nonterminals, with rules where they appear
+
+arguments            : 21
+compound_statement   : 13 13 14 20
+declarations         : 1 4 20
+dvml                 : 38 39 41
+empty                : 5 10
+eqstate              : 35
+expression           : 13 14 16 26 27 30 31 50
+expression_list      : 27 45
+factor               : 36 37 40 41 42 51 52 54
+identifier_list      : 3 4 23 24
+in                   : 
+optional_statements  : 1 25
+out                  : 17
+parameter_list       : 22 24
+program              : 0
+simple_expression    : 28 29 30 31 32 32 33
+statement            : 11 12
+statement_list       : 9 12
+subprogram_declaration : 18 19
+subprogram_declarations : 15 19
+subprogram_head      : 20
+term                 : 34 36 39
+type                 : 4 23 24 51
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . declarations optional_statements
+    (4) declarations -> . declarations VAR type identifier_list COLON
+    (5) declarations -> . empty
+    (55) empty -> .
+
+    VAR             reduce using rule 55 (empty -> .)
+    IF              reduce using rule 55 (empty -> .)
+    WHILE           reduce using rule 55 (empty -> .)
+    NOT             reduce using rule 55 (empty -> .)
+    RETURN          reduce using rule 55 (empty -> .)
+    PRINT           reduce using rule 55 (empty -> .)
+    FUNK            reduce using rule 55 (empty -> .)
+    ID              reduce using rule 55 (empty -> .)
+    NUM             reduce using rule 55 (empty -> .)
+    CONTINUE        reduce using rule 55 (empty -> .)
+    BREAK           reduce using rule 55 (empty -> .)
+    FLOAT_NUM       reduce using rule 55 (empty -> .)
+    OPEN            reduce using rule 55 (empty -> .)
+    MARK            reduce using rule 55 (empty -> .)
+    INT             reduce using rule 55 (empty -> .)
+    FLOAT           reduce using rule 55 (empty -> .)
+    STR             reduce using rule 55 (empty -> .)
+    $end            reduce using rule 55 (empty -> .)
+
+    program                        shift and go to state 1
+    declarations                   shift and go to state 2
+    empty                          shift and go to state 3
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> declarations . optional_statements
+    (4) declarations -> declarations . VAR type identifier_list COLON
+    (9) optional_statements -> . statement_list
+    (10) optional_statements -> . empty
+    (11) statement_list -> . statement
+    (12) statement_list -> . statement_list statement
+    (55) empty -> .
+    (13) statement -> . IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement
+    (14) statement -> . WHILE OPEN expression CLOSE compound_statement
+    (15) statement -> . subprogram_declarations
+    (16) statement -> . expression
+    (17) statement -> . out
+    (18) subprogram_declarations -> . subprogram_declaration
+    (19) subprogram_declarations -> . subprogram_declarations subprogram_declaration
+    (28) expression -> . NOT simple_expression
+    (29) expression -> . RETURN simple_expression
+    (30) expression -> . expression AND simple_expression
+    (31) expression -> . expression OR simple_expression
+    (32) expression -> . simple_expression RELOP simple_expression
+    (33) expression -> . simple_expression
+    (42) out -> . PRINT OPEN factor CLOSE COLON
+    (20) subprogram_declaration -> . subprogram_head declarations compound_statement
+    (34) simple_expression -> . term
+    (35) simple_expression -> . eqstate
+    (21) subprogram_head -> . FUNK ID arguments
+    (38) term -> . dvml
+    (39) term -> . term PLUSMINUS dvml
+    (36) eqstate -> . factor EQUAL term
+    (37) eqstate -> . factor
+    (40) dvml -> . factor
+    (41) dvml -> . dvml DIVMUL factor
+    (44) factor -> . ID
+    (45) factor -> . ID OPEN expression_list CLOSE
+    (46) factor -> . NUM
+    (47) factor -> . CONTINUE
+    (48) factor -> . BREAK
+    (49) factor -> . FLOAT_NUM
+    (50) factor -> . OPEN expression CLOSE
+    (51) factor -> . type factor
+    (52) factor -> . NOT factor
+    (53) factor -> . MARK STRING MARK
+    (54) factor -> . factor COLON
+    (6) type -> . INT
+    (7) type -> . FLOAT
+    (8) type -> . STR
+
+    VAR             shift and go to state 5
+    $end            reduce using rule 55 (empty -> .)
+    IF              shift and go to state 10
+    WHILE           shift and go to state 13
+    NOT             shift and go to state 17
+    RETURN          shift and go to state 19
+    PRINT           shift and go to state 20
+    FUNK            shift and go to state 25
+    ID              shift and go to state 26
+    NUM             shift and go to state 28
+    CONTINUE        shift and go to state 29
+    BREAK           shift and go to state 30
+    FLOAT_NUM       shift and go to state 31
+    OPEN            shift and go to state 11
+    MARK            shift and go to state 32
+    INT             shift and go to state 33
+    FLOAT           shift and go to state 34
+    STR             shift and go to state 35
+
+    optional_statements            shift and go to state 4
+    type                           shift and go to state 6
+    statement_list                 shift and go to state 7
+    empty                          shift and go to state 8
+    statement                      shift and go to state 9
+    expression                     shift and go to state 12
+    subprogram_declarations        shift and go to state 14
+    out                            shift and go to state 15
+    subprogram_declaration         shift and go to state 16
+    simple_expression              shift and go to state 18
+    factor                         shift and go to state 21
+    subprogram_head                shift and go to state 22
+    term                           shift and go to state 23
+    eqstate                        shift and go to state 24
+    dvml                           shift and go to state 27
+
+state 3
+
+    (5) declarations -> empty .
+
+    VAR             reduce using rule 5 (declarations -> empty .)
+    IF              reduce using rule 5 (declarations -> empty .)
+    WHILE           reduce using rule 5 (declarations -> empty .)
+    NOT             reduce using rule 5 (declarations -> empty .)
+    RETURN          reduce using rule 5 (declarations -> empty .)
+    PRINT           reduce using rule 5 (declarations -> empty .)
+    FUNK            reduce using rule 5 (declarations -> empty .)
+    ID              reduce using rule 5 (declarations -> empty .)
+    NUM             reduce using rule 5 (declarations -> empty .)
+    CONTINUE        reduce using rule 5 (declarations -> empty .)
+    BREAK           reduce using rule 5 (declarations -> empty .)
+    FLOAT_NUM       reduce using rule 5 (declarations -> empty .)
+    OPEN            reduce using rule 5 (declarations -> empty .)
+    MARK            reduce using rule 5 (declarations -> empty .)
+    INT             reduce using rule 5 (declarations -> empty .)
+    FLOAT           reduce using rule 5 (declarations -> empty .)
+    STR             reduce using rule 5 (declarations -> empty .)
+    $end            reduce using rule 5 (declarations -> empty .)
+    OPEN_CONSTR     reduce using rule 5 (declarations -> empty .)
+
+
+state 4
+
+    (1) program -> declarations optional_statements .
+
+    $end            reduce using rule 1 (program -> declarations optional_statements .)
+
+
+state 5
+
+    (4) declarations -> declarations VAR . type identifier_list COLON
+    (6) type -> . INT
+    (7) type -> . FLOAT
+    (8) type -> . STR
+
+    INT             shift and go to state 33
+    FLOAT           shift and go to state 34
+    STR             shift and go to state 35
+
+    type                           shift and go to state 36
+
+state 6
+
+    (51) factor -> type . factor
+    (44) factor -> . ID
+    (45) factor -> . ID OPEN expression_list CLOSE
+    (46) factor -> . NUM
+    (47) factor -> . CONTINUE
+    (48) factor -> . BREAK
+    (49) factor -> . FLOAT_NUM
+    (50) factor -> . OPEN expression CLOSE
+    (51) factor -> . type factor
+    (52) factor -> . NOT factor
+    (53) factor -> . MARK STRING MARK
+    (54) factor -> . factor COLON
+    (6) type -> . INT
+    (7) type -> . FLOAT
+    (8) type -> . STR
+
+    ID              shift and go to state 26
+    NUM             shift and go to state 28
+    CONTINUE        shift and go to state 29
+    BREAK           shift and go to state 30
+    FLOAT_NUM       shift and go to state 31
+    OPEN            shift and go to state 11
+    NOT             shift and go to state 38
+    MARK            shift and go to state 32
+    INT             shift and go to state 33
+    FLOAT           shift and go to state 34
+    STR             shift and go to state 35
+
+    type                           shift and go to state 6
+    factor                         shift and go to state 37
+
+state 7
+
+    (9) optional_statements -> statement_list .
+    (12) statement_list -> statement_list . statement
+    (13) statement -> . IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement
+    (14) statement -> . WHILE OPEN expression CLOSE compound_statement
+    (15) statement -> . subprogram_declarations
+    (16) statement -> . expression
+    (17) statement -> . out
+    (18) subprogram_declarations -> . subprogram_declaration
+    (19) subprogram_declarations -> . subprogram_declarations subprogram_declaration
+    (28) expression -> . NOT simple_expression
+    (29) expression -> . RETURN simple_expression
+    (30) expression -> . expression AND simple_expression
+    (31) expression -> . expression OR simple_expression
+    (32) expression -> . simple_expression RELOP simple_expression
+    (33) expression -> . simple_expression
+    (42) out -> . PRINT OPEN factor CLOSE COLON
+    (20) subprogram_declaration -> . subprogram_head declarations compound_statement
+    (34) simple_expression -> . term
+    (35) simple_expression -> . eqstate
+    (21) subprogram_head -> . FUNK ID arguments
+    (38) term -> . dvml
+    (39) term -> . term PLUSMINUS dvml
+    (36) eqstate -> . factor EQUAL term
+    (37) eqstate -> . factor
+    (40) dvml -> . factor
+    (41) dvml -> . dvml DIVMUL factor
+    (44) factor -> . ID
+    (45) factor -> . ID OPEN expression_list CLOSE
+    (46) factor -> . NUM
+    (47) factor -> . CONTINUE
+    (48) factor -> . BREAK
+    (49) factor -> . FLOAT_NUM
+    (50) factor -> . OPEN expression CLOSE
+    (51) factor -> . type factor
+    (52) factor -> . NOT factor
+    (53) factor -> . MARK STRING MARK
+    (54) factor -> . factor COLON
+    (6) type -> . INT
+    (7) type -> . FLOAT
+    (8) type -> . STR
+
+    $end            reduce using rule 9 (optional_statements -> statement_list .)
+    CLOSE_CONSTR    reduce using rule 9 (optional_statements -> statement_list .)
+    IF              shift and go to state 10
+    WHILE           shift and go to state 13
+    NOT             shift and go to state 17
+    RETURN          shift and go to state 19
+    PRINT           shift and go to state 20
+    FUNK            shift and go to state 25
+    ID              shift and go to state 26
+    NUM             shift and go to state 28
+    CONTINUE        shift and go to state 29
+    BREAK           shift and go to state 30
+    FLOAT_NUM       shift and go to state 31
+    OPEN            shift and go to state 11
+    MARK            shift and go to state 32
+    INT             shift and go to state 33
+    FLOAT           shift and go to state 34
+    STR             shift and go to state 35
+
+    statement                      shift and go to state 39
+    expression                     shift and go to state 12
+    subprogram_declarations        shift and go to state 14
+    out                            shift and go to state 15
+    subprogram_declaration         shift and go to state 16
+    simple_expression              shift and go to state 18
+    factor                         shift and go to state 21
+    subprogram_head                shift and go to state 22
+    term                           shift and go to state 23
+    eqstate                        shift and go to state 24
+    dvml                           shift and go to state 27
+    type                           shift and go to state 6
+
+state 8
+
+    (10) optional_statements -> empty .
+
+    $end            reduce using rule 10 (optional_statements -> empty .)
+    CLOSE_CONSTR    reduce using rule 10 (optional_statements -> empty .)
+
+
+state 9
+
+    (11) statement_list -> statement .
+
+    IF              reduce using rule 11 (statement_list -> statement .)
+    WHILE           reduce using rule 11 (statement_list -> statement .)
+    NOT             reduce using rule 11 (statement_list -> statement .)
+    RETURN          reduce using rule 11 (statement_list -> statement .)
+    PRINT           reduce using rule 11 (statement_list -> statement .)
+    FUNK            reduce using rule 11 (statement_list -> statement .)
+    ID              reduce using rule 11 (statement_list -> statement .)
+    NUM             reduce using rule 11 (statement_list -> statement .)
+    CONTINUE        reduce using rule 11 (statement_list -> statement .)
+    BREAK           reduce using rule 11 (statement_list -> statement .)
+    FLOAT_NUM       reduce using rule 11 (statement_list -> statement .)
+    OPEN            reduce using rule 11 (statement_list -> statement .)
+    MARK            reduce using rule 11 (statement_list -> statement .)
+    INT             reduce using rule 11 (statement_list -> statement .)
+    FLOAT           reduce using rule 11 (statement_list -> statement .)
+    STR             reduce using rule 11 (statement_list -> statement .)
+    $end            reduce using rule 11 (statement_list -> statement .)
+    CLOSE_CONSTR    reduce using rule 11 (statement_list -> statement .)
+
+
+state 10
+
+    (13) statement -> IF . OPEN expression CLOSE THEN compound_statement ELSE compound_statement
+
+    OPEN            shift and go to state 40
+
+
+state 11
+
+    (50) factor -> OPEN . expression CLOSE
+    (28) expression -> . NOT simple_expression
+    (29) expression -> . RETURN simple_expression
+    (30) expression -> . expression AND simple_expression
+    (31) expression -> . expression OR simple_expression
+    (32) expression -> . simple_expression RELOP simple_expression
+    (33) expression -> . simple_expression
+    (34) simple_expression -> . term
+    (35) simple_expression -> . eqstate
+    (38) term -> . dvml
+    (39) term -> . term PLUSMINUS dvml
+    (36) eqstate -> . factor EQUAL term
+    (37) eqstate -> . factor
+    (40) dvml -> . factor
+    (41) dvml -> . dvml DIVMUL factor
+    (44) factor -> . ID
+    (45) factor -> . ID OPEN expression_list CLOSE
+    (46) factor -> . NUM
+    (47) factor -> . CONTINUE
+    (48) factor -> . BREAK
+    (49) factor -> . FLOAT_NUM
+    (50) factor -> . OPEN expression CLOSE
+    (51) factor -> . type factor
+    (52) factor -> . NOT factor
+    (53) factor -> . MARK STRING MARK
+    (54) factor -> . factor COLON
+    (6) type -> . INT
+    (7) type -> . FLOAT
+    (8) type -> . STR
+
+    NOT             shift and go to state 17
+    RETURN          shift and go to state 19
+    ID              shift and go to state 26
+    NUM             shift and go to state 28
+    CONTINUE        shift and go to state 29
+    BREAK           shift and go to state 30
+    FLOAT_NUM       shift and go to state 31
+    OPEN            shift and go to state 11
+    MARK            shift and go to state 32
+    INT             shift and go to state 33
+    FLOAT           shift and go to state 34
+    STR             shift and go to state 35
+
+    expression                     shift and go to state 41
+    simple_expression              shift and go to state 18
+    term                           shift and go to state 23
+    eqstate                        shift and go to state 24
+    dvml                           shift and go to state 27
+    factor                         shift and go to state 21
+    type                           shift and go to state 6
+
+state 12
+
+    (16) statement -> expression .
+    (30) expression -> expression . AND simple_expression
+    (31) expression -> expression . OR simple_expression
+
+    IF              reduce using rule 16 (statement -> expression .)
+    WHILE           reduce using rule 16 (statement -> expression .)
+    NOT             reduce using rule 16 (statement -> expression .)
+    RETURN          reduce using rule 16 (statement -> expression .)
+    PRINT           reduce using rule 16 (statement -> expression .)
+    FUNK            reduce using rule 16 (statement -> expression .)
+    ID              reduce using rule 16 (statement -> expression .)
+    NUM             reduce using rule 16 (statement -> expression .)
+    CONTINUE        reduce using rule 16 (statement -> expression .)
+    BREAK           reduce using rule 16 (statement -> expression .)
+    FLOAT_NUM       reduce using rule 16 (statement -> expression .)
+    OPEN            reduce using rule 16 (statement -> expression .)
+    MARK            reduce using rule 16 (statement -> expression .)
+    INT             reduce using rule 16 (statement -> expression .)
+    FLOAT           reduce using rule 16 (statement -> expression .)
+    STR             reduce using rule 16 (statement -> expression .)
+    $end            reduce using rule 16 (statement -> expression .)
+    CLOSE_CONSTR    reduce using rule 16 (statement -> expression .)
+    AND             shift and go to state 42
+    OR              shift and go to state 43
+
+
+state 13
+
+    (14) statement -> WHILE . OPEN expression CLOSE compound_statement
+
+    OPEN            shift and go to state 44
+
+
+state 14
+
+    (15) statement -> subprogram_declarations .
+    (19) subprogram_declarations -> subprogram_declarations . subprogram_declaration
+    (20) subprogram_declaration -> . subprogram_head declarations compound_statement
+    (21) subprogram_head -> . FUNK ID arguments
+
+  ! shift/reduce conflict for FUNK resolved as shift
+    IF              reduce using rule 15 (statement -> subprogram_declarations .)
+    WHILE           reduce using rule 15 (statement -> subprogram_declarations .)
+    NOT             reduce using rule 15 (statement -> subprogram_declarations .)
+    RETURN          reduce using rule 15 (statement -> subprogram_declarations .)
+    PRINT           reduce using rule 15 (statement -> subprogram_declarations .)
+    ID              reduce using rule 15 (statement -> subprogram_declarations .)
+    NUM             reduce using rule 15 (statement -> subprogram_declarations .)
+    CONTINUE        reduce using rule 15 (statement -> subprogram_declarations .)
+    BREAK           reduce using rule 15 (statement -> subprogram_declarations .)
+    FLOAT_NUM       reduce using rule 15 (statement -> subprogram_declarations .)
+    OPEN            reduce using rule 15 (statement -> subprogram_declarations .)
+    MARK            reduce using rule 15 (statement -> subprogram_declarations .)
+    INT             reduce using rule 15 (statement -> subprogram_declarations .)
+    FLOAT           reduce using rule 15 (statement -> subprogram_declarations .)
+    STR             reduce using rule 15 (statement -> subprogram_declarations .)
+    $end            reduce using rule 15 (statement -> subprogram_declarations .)
+    CLOSE_CONSTR    reduce using rule 15 (statement -> subprogram_declarations .)
+    FUNK            shift and go to state 25
+
+  ! FUNK            [ reduce using rule 15 (statement -> subprogram_declarations .) ]
+
+    subprogram_declaration         shift and go to state 45
+    subprogram_head                shift and go to state 22
+
+state 15
+
+    (17) statement -> out .
+
+    IF              reduce using rule 17 (statement -> out .)
+    WHILE           reduce using rule 17 (statement -> out .)
+    NOT             reduce using rule 17 (statement -> out .)
+    RETURN          reduce using rule 17 (statement -> out .)
+    PRINT           reduce using rule 17 (statement -> out .)
+    FUNK            reduce using rule 17 (statement -> out .)
+    ID              reduce using rule 17 (statement -> out .)
+    NUM             reduce using rule 17 (statement -> out .)
+    CONTINUE        reduce using rule 17 (statement -> out .)
+    BREAK           reduce using rule 17 (statement -> out .)
+    FLOAT_NUM       reduce using rule 17 (statement -> out .)
+    OPEN            reduce using rule 17 (statement -> out .)
+    MARK            reduce using rule 17 (statement -> out .)
+    INT             reduce using rule 17 (statement -> out .)
+    FLOAT           reduce using rule 17 (statement -> out .)
+    STR             reduce using rule 17 (statement -> out .)
+    $end            reduce using rule 17 (statement -> out .)
+    CLOSE_CONSTR    reduce using rule 17 (statement -> out .)
+
+
+state 16
+
+    (18) subprogram_declarations -> subprogram_declaration .
+
+    FUNK            reduce using rule 18 (subprogram_declarations -> subprogram_declaration .)
+    IF              reduce using rule 18 (subprogram_declarations -> subprogram_declaration .)
+    WHILE           reduce using rule 18 (subprogram_declarations -> subprogram_declaration .)
+    NOT             reduce using rule 18 (subprogram_declarations -> subprogram_declaration .)
+    RETURN          reduce using rule 18 (subprogram_declarations -> subprogram_declaration .)
+    PRINT           reduce using rule 18 (subprogram_declarations -> subprogram_declaration .)
+    ID              reduce using rule 18 (subprogram_declarations -> subprogram_declaration .)
+    NUM             reduce using rule 18 (subprogram_declarations -> subprogram_declaration .)
+    CONTINUE        reduce using rule 18 (subprogram_declarations -> subprogram_declaration .)
+    BREAK           reduce using rule 18 (subprogram_declarations -> subprogram_declaration .)
+    FLOAT_NUM       reduce using rule 18 (subprogram_declarations -> subprogram_declaration .)
+    OPEN            reduce using rule 18 (subprogram_declarations -> subprogram_declaration .)
+    MARK            reduce using rule 18 (subprogram_declarations -> subprogram_declaration .)
+    INT             reduce using rule 18 (subprogram_declarations -> subprogram_declaration .)
+    FLOAT           reduce using rule 18 (subprogram_declarations -> subprogram_declaration .)
+    STR             reduce using rule 18 (subprogram_declarations -> subprogram_declaration .)
+    $end            reduce using rule 18 (subprogram_declarations -> subprogram_declaration .)
+    CLOSE_CONSTR    reduce using rule 18 (subprogram_declarations -> subprogram_declaration .)
+
+
+state 17
+
+    (28) expression -> NOT . simple_expression
+    (52) factor -> NOT . factor
+    (34) simple_expression -> . term
+    (35) simple_expression -> . eqstate
+    (44) factor -> . ID
+    (45) factor -> . ID OPEN expression_list CLOSE
+    (46) factor -> . NUM
+    (47) factor -> . CONTINUE
+    (48) factor -> . BREAK
+    (49) factor -> . FLOAT_NUM
+    (50) factor -> . OPEN expression CLOSE
+    (51) factor -> . type factor
+    (52) factor -> . NOT factor
+    (53) factor -> . MARK STRING MARK
+    (54) factor -> . factor COLON
+    (38) term -> . dvml
+    (39) term -> . term PLUSMINUS dvml
+    (36) eqstate -> . factor EQUAL term
+    (37) eqstate -> . factor
+    (6) type -> . INT
+    (7) type -> . FLOAT
+    (8) type -> . STR
+    (40) dvml -> . factor
+    (41) dvml -> . dvml DIVMUL factor
+
+    ID              shift and go to state 26
+    NUM             shift and go to state 28
+    CONTINUE        shift and go to state 29
+    BREAK           shift and go to state 30
+    FLOAT_NUM       shift and go to state 31
+    OPEN            shift and go to state 11
+    NOT             shift and go to state 38
+    MARK            shift and go to state 32
+    INT             shift and go to state 33
+    FLOAT           shift and go to state 34
+    STR             shift and go to state 35
+
+    simple_expression              shift and go to state 46
+    factor                         shift and go to state 47
+    term                           shift and go to state 23
+    eqstate                        shift and go to state 24
+    type                           shift and go to state 6
+    dvml                           shift and go to state 27
+
+state 18
+
+    (32) expression -> simple_expression . RELOP simple_expression
+    (33) expression -> simple_expression .
+
+    RELOP           shift and go to state 48
+    AND             reduce using rule 33 (expression -> simple_expression .)
+    OR              reduce using rule 33 (expression -> simple_expression .)
+    IF              reduce using rule 33 (expression -> simple_expression .)
+    WHILE           reduce using rule 33 (expression -> simple_expression .)
+    NOT             reduce using rule 33 (expression -> simple_expression .)
+    RETURN          reduce using rule 33 (expression -> simple_expression .)
+    PRINT           reduce using rule 33 (expression -> simple_expression .)
+    FUNK            reduce using rule 33 (expression -> simple_expression .)
+    ID              reduce using rule 33 (expression -> simple_expression .)
+    NUM             reduce using rule 33 (expression -> simple_expression .)
+    CONTINUE        reduce using rule 33 (expression -> simple_expression .)
+    BREAK           reduce using rule 33 (expression -> simple_expression .)
+    FLOAT_NUM       reduce using rule 33 (expression -> simple_expression .)
+    OPEN            reduce using rule 33 (expression -> simple_expression .)
+    MARK            reduce using rule 33 (expression -> simple_expression .)
+    INT             reduce using rule 33 (expression -> simple_expression .)
+    FLOAT           reduce using rule 33 (expression -> simple_expression .)
+    STR             reduce using rule 33 (expression -> simple_expression .)
+    $end            reduce using rule 33 (expression -> simple_expression .)
+    CLOSE_CONSTR    reduce using rule 33 (expression -> simple_expression .)
+    CLOSE           reduce using rule 33 (expression -> simple_expression .)
+    COMA            reduce using rule 33 (expression -> simple_expression .)
+
+
+state 19
+
+    (29) expression -> RETURN . simple_expression
+    (34) simple_expression -> . term
+    (35) simple_expression -> . eqstate
+    (38) term -> . dvml
+    (39) term -> . term PLUSMINUS dvml
+    (36) eqstate -> . factor EQUAL term
+    (37) eqstate -> . factor
+    (40) dvml -> . factor
+    (41) dvml -> . dvml DIVMUL factor
+    (44) factor -> . ID
+    (45) factor -> . ID OPEN expression_list CLOSE
+    (46) factor -> . NUM
+    (47) factor -> . CONTINUE
+    (48) factor -> . BREAK
+    (49) factor -> . FLOAT_NUM
+    (50) factor -> . OPEN expression CLOSE
+    (51) factor -> . type factor
+    (52) factor -> . NOT factor
+    (53) factor -> . MARK STRING MARK
+    (54) factor -> . factor COLON
+    (6) type -> . INT
+    (7) type -> . FLOAT
+    (8) type -> . STR
+
+    ID              shift and go to state 26
+    NUM             shift and go to state 28
+    CONTINUE        shift and go to state 29
+    BREAK           shift and go to state 30
+    FLOAT_NUM       shift and go to state 31
+    OPEN            shift and go to state 11
+    NOT             shift and go to state 38
+    MARK            shift and go to state 32
+    INT             shift and go to state 33
+    FLOAT           shift and go to state 34
+    STR             shift and go to state 35
+
+    simple_expression              shift and go to state 49
+    term                           shift and go to state 23
+    eqstate                        shift and go to state 24
+    dvml                           shift and go to state 27
+    factor                         shift and go to state 21
+    type                           shift and go to state 6
+
+state 20
+
+    (42) out -> PRINT . OPEN factor CLOSE COLON
+
+    OPEN            shift and go to state 50
+
+
+state 21
+
+    (36) eqstate -> factor . EQUAL term
+    (37) eqstate -> factor .
+    (40) dvml -> factor .
+    (54) factor -> factor . COLON
+
+  ! reduce/reduce conflict for RELOP resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for AND resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for OR resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for IF resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for WHILE resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for NOT resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for RETURN resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for PRINT resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for FUNK resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for ID resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for NUM resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for CONTINUE resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for BREAK resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for FLOAT_NUM resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for OPEN resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for MARK resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for INT resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for FLOAT resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for STR resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for $end resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for CLOSE_CONSTR resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for CLOSE resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for COMA resolved using rule 37 (eqstate -> factor .)
+    EQUAL           shift and go to state 51
+    RELOP           reduce using rule 37 (eqstate -> factor .)
+    AND             reduce using rule 37 (eqstate -> factor .)
+    OR              reduce using rule 37 (eqstate -> factor .)
+    IF              reduce using rule 37 (eqstate -> factor .)
+    WHILE           reduce using rule 37 (eqstate -> factor .)
+    NOT             reduce using rule 37 (eqstate -> factor .)
+    RETURN          reduce using rule 37 (eqstate -> factor .)
+    PRINT           reduce using rule 37 (eqstate -> factor .)
+    FUNK            reduce using rule 37 (eqstate -> factor .)
+    ID              reduce using rule 37 (eqstate -> factor .)
+    NUM             reduce using rule 37 (eqstate -> factor .)
+    CONTINUE        reduce using rule 37 (eqstate -> factor .)
+    BREAK           reduce using rule 37 (eqstate -> factor .)
+    FLOAT_NUM       reduce using rule 37 (eqstate -> factor .)
+    OPEN            reduce using rule 37 (eqstate -> factor .)
+    MARK            reduce using rule 37 (eqstate -> factor .)
+    INT             reduce using rule 37 (eqstate -> factor .)
+    FLOAT           reduce using rule 37 (eqstate -> factor .)
+    STR             reduce using rule 37 (eqstate -> factor .)
+    $end            reduce using rule 37 (eqstate -> factor .)
+    CLOSE_CONSTR    reduce using rule 37 (eqstate -> factor .)
+    CLOSE           reduce using rule 37 (eqstate -> factor .)
+    COMA            reduce using rule 37 (eqstate -> factor .)
+    DIVMUL          reduce using rule 40 (dvml -> factor .)
+    PLUSMINUS       reduce using rule 40 (dvml -> factor .)
+    COLON           shift and go to state 52
+
+  ! RELOP           [ reduce using rule 40 (dvml -> factor .) ]
+  ! AND             [ reduce using rule 40 (dvml -> factor .) ]
+  ! OR              [ reduce using rule 40 (dvml -> factor .) ]
+  ! IF              [ reduce using rule 40 (dvml -> factor .) ]
+  ! WHILE           [ reduce using rule 40 (dvml -> factor .) ]
+  ! NOT             [ reduce using rule 40 (dvml -> factor .) ]
+  ! RETURN          [ reduce using rule 40 (dvml -> factor .) ]
+  ! PRINT           [ reduce using rule 40 (dvml -> factor .) ]
+  ! FUNK            [ reduce using rule 40 (dvml -> factor .) ]
+  ! ID              [ reduce using rule 40 (dvml -> factor .) ]
+  ! NUM             [ reduce using rule 40 (dvml -> factor .) ]
+  ! CONTINUE        [ reduce using rule 40 (dvml -> factor .) ]
+  ! BREAK           [ reduce using rule 40 (dvml -> factor .) ]
+  ! FLOAT_NUM       [ reduce using rule 40 (dvml -> factor .) ]
+  ! OPEN            [ reduce using rule 40 (dvml -> factor .) ]
+  ! MARK            [ reduce using rule 40 (dvml -> factor .) ]
+  ! INT             [ reduce using rule 40 (dvml -> factor .) ]
+  ! FLOAT           [ reduce using rule 40 (dvml -> factor .) ]
+  ! STR             [ reduce using rule 40 (dvml -> factor .) ]
+  ! $end            [ reduce using rule 40 (dvml -> factor .) ]
+  ! CLOSE_CONSTR    [ reduce using rule 40 (dvml -> factor .) ]
+  ! CLOSE           [ reduce using rule 40 (dvml -> factor .) ]
+  ! COMA            [ reduce using rule 40 (dvml -> factor .) ]
+
+
+state 22
+
+    (20) subprogram_declaration -> subprogram_head . declarations compound_statement
+    (4) declarations -> . declarations VAR type identifier_list COLON
+    (5) declarations -> . empty
+    (55) empty -> .
+
+    VAR             reduce using rule 55 (empty -> .)
+    OPEN_CONSTR     reduce using rule 55 (empty -> .)
+
+    declarations                   shift and go to state 53
+    empty                          shift and go to state 3
+
+state 23
+
+    (34) simple_expression -> term .
+    (39) term -> term . PLUSMINUS dvml
+
+    RELOP           reduce using rule 34 (simple_expression -> term .)
+    AND             reduce using rule 34 (simple_expression -> term .)
+    OR              reduce using rule 34 (simple_expression -> term .)
+    IF              reduce using rule 34 (simple_expression -> term .)
+    WHILE           reduce using rule 34 (simple_expression -> term .)
+    NOT             reduce using rule 34 (simple_expression -> term .)
+    RETURN          reduce using rule 34 (simple_expression -> term .)
+    PRINT           reduce using rule 34 (simple_expression -> term .)
+    FUNK            reduce using rule 34 (simple_expression -> term .)
+    ID              reduce using rule 34 (simple_expression -> term .)
+    NUM             reduce using rule 34 (simple_expression -> term .)
+    CONTINUE        reduce using rule 34 (simple_expression -> term .)
+    BREAK           reduce using rule 34 (simple_expression -> term .)
+    FLOAT_NUM       reduce using rule 34 (simple_expression -> term .)
+    OPEN            reduce using rule 34 (simple_expression -> term .)
+    MARK            reduce using rule 34 (simple_expression -> term .)
+    INT             reduce using rule 34 (simple_expression -> term .)
+    FLOAT           reduce using rule 34 (simple_expression -> term .)
+    STR             reduce using rule 34 (simple_expression -> term .)
+    $end            reduce using rule 34 (simple_expression -> term .)
+    CLOSE_CONSTR    reduce using rule 34 (simple_expression -> term .)
+    CLOSE           reduce using rule 34 (simple_expression -> term .)
+    COMA            reduce using rule 34 (simple_expression -> term .)
+    PLUSMINUS       shift and go to state 54
+
+
+state 24
+
+    (35) simple_expression -> eqstate .
+
+    RELOP           reduce using rule 35 (simple_expression -> eqstate .)
+    AND             reduce using rule 35 (simple_expression -> eqstate .)
+    OR              reduce using rule 35 (simple_expression -> eqstate .)
+    IF              reduce using rule 35 (simple_expression -> eqstate .)
+    WHILE           reduce using rule 35 (simple_expression -> eqstate .)
+    NOT             reduce using rule 35 (simple_expression -> eqstate .)
+    RETURN          reduce using rule 35 (simple_expression -> eqstate .)
+    PRINT           reduce using rule 35 (simple_expression -> eqstate .)
+    FUNK            reduce using rule 35 (simple_expression -> eqstate .)
+    ID              reduce using rule 35 (simple_expression -> eqstate .)
+    NUM             reduce using rule 35 (simple_expression -> eqstate .)
+    CONTINUE        reduce using rule 35 (simple_expression -> eqstate .)
+    BREAK           reduce using rule 35 (simple_expression -> eqstate .)
+    FLOAT_NUM       reduce using rule 35 (simple_expression -> eqstate .)
+    OPEN            reduce using rule 35 (simple_expression -> eqstate .)
+    MARK            reduce using rule 35 (simple_expression -> eqstate .)
+    INT             reduce using rule 35 (simple_expression -> eqstate .)
+    FLOAT           reduce using rule 35 (simple_expression -> eqstate .)
+    STR             reduce using rule 35 (simple_expression -> eqstate .)
+    $end            reduce using rule 35 (simple_expression -> eqstate .)
+    CLOSE_CONSTR    reduce using rule 35 (simple_expression -> eqstate .)
+    CLOSE           reduce using rule 35 (simple_expression -> eqstate .)
+    COMA            reduce using rule 35 (simple_expression -> eqstate .)
+
+
+state 25
+
+    (21) subprogram_head -> FUNK . ID arguments
+
+    ID              shift and go to state 55
+
+
+state 26
+
+    (44) factor -> ID .
+    (45) factor -> ID . OPEN expression_list CLOSE
+
+  ! shift/reduce conflict for OPEN resolved as shift
+    EQUAL           reduce using rule 44 (factor -> ID .)
+    COLON           reduce using rule 44 (factor -> ID .)
+    RELOP           reduce using rule 44 (factor -> ID .)
+    AND             reduce using rule 44 (factor -> ID .)
+    OR              reduce using rule 44 (factor -> ID .)
+    IF              reduce using rule 44 (factor -> ID .)
+    WHILE           reduce using rule 44 (factor -> ID .)
+    NOT             reduce using rule 44 (factor -> ID .)
+    RETURN          reduce using rule 44 (factor -> ID .)
+    PRINT           reduce using rule 44 (factor -> ID .)
+    FUNK            reduce using rule 44 (factor -> ID .)
+    ID              reduce using rule 44 (factor -> ID .)
+    NUM             reduce using rule 44 (factor -> ID .)
+    CONTINUE        reduce using rule 44 (factor -> ID .)
+    BREAK           reduce using rule 44 (factor -> ID .)
+    FLOAT_NUM       reduce using rule 44 (factor -> ID .)
+    MARK            reduce using rule 44 (factor -> ID .)
+    INT             reduce using rule 44 (factor -> ID .)
+    FLOAT           reduce using rule 44 (factor -> ID .)
+    STR             reduce using rule 44 (factor -> ID .)
+    $end            reduce using rule 44 (factor -> ID .)
+    DIVMUL          reduce using rule 44 (factor -> ID .)
+    PLUSMINUS       reduce using rule 44 (factor -> ID .)
+    CLOSE_CONSTR    reduce using rule 44 (factor -> ID .)
+    CLOSE           reduce using rule 44 (factor -> ID .)
+    COMA            reduce using rule 44 (factor -> ID .)
+    OPEN            shift and go to state 56
+
+  ! OPEN            [ reduce using rule 44 (factor -> ID .) ]
+
+
+state 27
+
+    (38) term -> dvml .
+    (41) dvml -> dvml . DIVMUL factor
+
+    PLUSMINUS       reduce using rule 38 (term -> dvml .)
+    RELOP           reduce using rule 38 (term -> dvml .)
+    AND             reduce using rule 38 (term -> dvml .)
+    OR              reduce using rule 38 (term -> dvml .)
+    IF              reduce using rule 38 (term -> dvml .)
+    WHILE           reduce using rule 38 (term -> dvml .)
+    NOT             reduce using rule 38 (term -> dvml .)
+    RETURN          reduce using rule 38 (term -> dvml .)
+    PRINT           reduce using rule 38 (term -> dvml .)
+    FUNK            reduce using rule 38 (term -> dvml .)
+    ID              reduce using rule 38 (term -> dvml .)
+    NUM             reduce using rule 38 (term -> dvml .)
+    CONTINUE        reduce using rule 38 (term -> dvml .)
+    BREAK           reduce using rule 38 (term -> dvml .)
+    FLOAT_NUM       reduce using rule 38 (term -> dvml .)
+    OPEN            reduce using rule 38 (term -> dvml .)
+    MARK            reduce using rule 38 (term -> dvml .)
+    INT             reduce using rule 38 (term -> dvml .)
+    FLOAT           reduce using rule 38 (term -> dvml .)
+    STR             reduce using rule 38 (term -> dvml .)
+    $end            reduce using rule 38 (term -> dvml .)
+    CLOSE_CONSTR    reduce using rule 38 (term -> dvml .)
+    CLOSE           reduce using rule 38 (term -> dvml .)
+    COMA            reduce using rule 38 (term -> dvml .)
+    DIVMUL          shift and go to state 57
+
+
+state 28
+
+    (46) factor -> NUM .
+
+    EQUAL           reduce using rule 46 (factor -> NUM .)
+    COLON           reduce using rule 46 (factor -> NUM .)
+    RELOP           reduce using rule 46 (factor -> NUM .)
+    AND             reduce using rule 46 (factor -> NUM .)
+    OR              reduce using rule 46 (factor -> NUM .)
+    IF              reduce using rule 46 (factor -> NUM .)
+    WHILE           reduce using rule 46 (factor -> NUM .)
+    NOT             reduce using rule 46 (factor -> NUM .)
+    RETURN          reduce using rule 46 (factor -> NUM .)
+    PRINT           reduce using rule 46 (factor -> NUM .)
+    FUNK            reduce using rule 46 (factor -> NUM .)
+    ID              reduce using rule 46 (factor -> NUM .)
+    NUM             reduce using rule 46 (factor -> NUM .)
+    CONTINUE        reduce using rule 46 (factor -> NUM .)
+    BREAK           reduce using rule 46 (factor -> NUM .)
+    FLOAT_NUM       reduce using rule 46 (factor -> NUM .)
+    OPEN            reduce using rule 46 (factor -> NUM .)
+    MARK            reduce using rule 46 (factor -> NUM .)
+    INT             reduce using rule 46 (factor -> NUM .)
+    FLOAT           reduce using rule 46 (factor -> NUM .)
+    STR             reduce using rule 46 (factor -> NUM .)
+    $end            reduce using rule 46 (factor -> NUM .)
+    DIVMUL          reduce using rule 46 (factor -> NUM .)
+    PLUSMINUS       reduce using rule 46 (factor -> NUM .)
+    CLOSE_CONSTR    reduce using rule 46 (factor -> NUM .)
+    CLOSE           reduce using rule 46 (factor -> NUM .)
+    COMA            reduce using rule 46 (factor -> NUM .)
+
+
+state 29
+
+    (47) factor -> CONTINUE .
+
+    EQUAL           reduce using rule 47 (factor -> CONTINUE .)
+    COLON           reduce using rule 47 (factor -> CONTINUE .)
+    RELOP           reduce using rule 47 (factor -> CONTINUE .)
+    AND             reduce using rule 47 (factor -> CONTINUE .)
+    OR              reduce using rule 47 (factor -> CONTINUE .)
+    IF              reduce using rule 47 (factor -> CONTINUE .)
+    WHILE           reduce using rule 47 (factor -> CONTINUE .)
+    NOT             reduce using rule 47 (factor -> CONTINUE .)
+    RETURN          reduce using rule 47 (factor -> CONTINUE .)
+    PRINT           reduce using rule 47 (factor -> CONTINUE .)
+    FUNK            reduce using rule 47 (factor -> CONTINUE .)
+    ID              reduce using rule 47 (factor -> CONTINUE .)
+    NUM             reduce using rule 47 (factor -> CONTINUE .)
+    CONTINUE        reduce using rule 47 (factor -> CONTINUE .)
+    BREAK           reduce using rule 47 (factor -> CONTINUE .)
+    FLOAT_NUM       reduce using rule 47 (factor -> CONTINUE .)
+    OPEN            reduce using rule 47 (factor -> CONTINUE .)
+    MARK            reduce using rule 47 (factor -> CONTINUE .)
+    INT             reduce using rule 47 (factor -> CONTINUE .)
+    FLOAT           reduce using rule 47 (factor -> CONTINUE .)
+    STR             reduce using rule 47 (factor -> CONTINUE .)
+    $end            reduce using rule 47 (factor -> CONTINUE .)
+    DIVMUL          reduce using rule 47 (factor -> CONTINUE .)
+    PLUSMINUS       reduce using rule 47 (factor -> CONTINUE .)
+    CLOSE_CONSTR    reduce using rule 47 (factor -> CONTINUE .)
+    CLOSE           reduce using rule 47 (factor -> CONTINUE .)
+    COMA            reduce using rule 47 (factor -> CONTINUE .)
+
+
+state 30
+
+    (48) factor -> BREAK .
+
+    EQUAL           reduce using rule 48 (factor -> BREAK .)
+    COLON           reduce using rule 48 (factor -> BREAK .)
+    RELOP           reduce using rule 48 (factor -> BREAK .)
+    AND             reduce using rule 48 (factor -> BREAK .)
+    OR              reduce using rule 48 (factor -> BREAK .)
+    IF              reduce using rule 48 (factor -> BREAK .)
+    WHILE           reduce using rule 48 (factor -> BREAK .)
+    NOT             reduce using rule 48 (factor -> BREAK .)
+    RETURN          reduce using rule 48 (factor -> BREAK .)
+    PRINT           reduce using rule 48 (factor -> BREAK .)
+    FUNK            reduce using rule 48 (factor -> BREAK .)
+    ID              reduce using rule 48 (factor -> BREAK .)
+    NUM             reduce using rule 48 (factor -> BREAK .)
+    CONTINUE        reduce using rule 48 (factor -> BREAK .)
+    BREAK           reduce using rule 48 (factor -> BREAK .)
+    FLOAT_NUM       reduce using rule 48 (factor -> BREAK .)
+    OPEN            reduce using rule 48 (factor -> BREAK .)
+    MARK            reduce using rule 48 (factor -> BREAK .)
+    INT             reduce using rule 48 (factor -> BREAK .)
+    FLOAT           reduce using rule 48 (factor -> BREAK .)
+    STR             reduce using rule 48 (factor -> BREAK .)
+    $end            reduce using rule 48 (factor -> BREAK .)
+    DIVMUL          reduce using rule 48 (factor -> BREAK .)
+    PLUSMINUS       reduce using rule 48 (factor -> BREAK .)
+    CLOSE_CONSTR    reduce using rule 48 (factor -> BREAK .)
+    CLOSE           reduce using rule 48 (factor -> BREAK .)
+    COMA            reduce using rule 48 (factor -> BREAK .)
+
+
+state 31
+
+    (49) factor -> FLOAT_NUM .
+
+    EQUAL           reduce using rule 49 (factor -> FLOAT_NUM .)
+    COLON           reduce using rule 49 (factor -> FLOAT_NUM .)
+    RELOP           reduce using rule 49 (factor -> FLOAT_NUM .)
+    AND             reduce using rule 49 (factor -> FLOAT_NUM .)
+    OR              reduce using rule 49 (factor -> FLOAT_NUM .)
+    IF              reduce using rule 49 (factor -> FLOAT_NUM .)
+    WHILE           reduce using rule 49 (factor -> FLOAT_NUM .)
+    NOT             reduce using rule 49 (factor -> FLOAT_NUM .)
+    RETURN          reduce using rule 49 (factor -> FLOAT_NUM .)
+    PRINT           reduce using rule 49 (factor -> FLOAT_NUM .)
+    FUNK            reduce using rule 49 (factor -> FLOAT_NUM .)
+    ID              reduce using rule 49 (factor -> FLOAT_NUM .)
+    NUM             reduce using rule 49 (factor -> FLOAT_NUM .)
+    CONTINUE        reduce using rule 49 (factor -> FLOAT_NUM .)
+    BREAK           reduce using rule 49 (factor -> FLOAT_NUM .)
+    FLOAT_NUM       reduce using rule 49 (factor -> FLOAT_NUM .)
+    OPEN            reduce using rule 49 (factor -> FLOAT_NUM .)
+    MARK            reduce using rule 49 (factor -> FLOAT_NUM .)
+    INT             reduce using rule 49 (factor -> FLOAT_NUM .)
+    FLOAT           reduce using rule 49 (factor -> FLOAT_NUM .)
+    STR             reduce using rule 49 (factor -> FLOAT_NUM .)
+    $end            reduce using rule 49 (factor -> FLOAT_NUM .)
+    DIVMUL          reduce using rule 49 (factor -> FLOAT_NUM .)
+    PLUSMINUS       reduce using rule 49 (factor -> FLOAT_NUM .)
+    CLOSE_CONSTR    reduce using rule 49 (factor -> FLOAT_NUM .)
+    CLOSE           reduce using rule 49 (factor -> FLOAT_NUM .)
+    COMA            reduce using rule 49 (factor -> FLOAT_NUM .)
+
+
+state 32
+
+    (53) factor -> MARK . STRING MARK
+
+    STRING          shift and go to state 58
+
+
+state 33
+
+    (6) type -> INT .
+
+    ID              reduce using rule 6 (type -> INT .)
+    NUM             reduce using rule 6 (type -> INT .)
+    CONTINUE        reduce using rule 6 (type -> INT .)
+    BREAK           reduce using rule 6 (type -> INT .)
+    FLOAT_NUM       reduce using rule 6 (type -> INT .)
+    OPEN            reduce using rule 6 (type -> INT .)
+    NOT             reduce using rule 6 (type -> INT .)
+    MARK            reduce using rule 6 (type -> INT .)
+    INT             reduce using rule 6 (type -> INT .)
+    FLOAT           reduce using rule 6 (type -> INT .)
+    STR             reduce using rule 6 (type -> INT .)
+
+
+state 34
+
+    (7) type -> FLOAT .
+
+    ID              reduce using rule 7 (type -> FLOAT .)
+    NUM             reduce using rule 7 (type -> FLOAT .)
+    CONTINUE        reduce using rule 7 (type -> FLOAT .)
+    BREAK           reduce using rule 7 (type -> FLOAT .)
+    FLOAT_NUM       reduce using rule 7 (type -> FLOAT .)
+    OPEN            reduce using rule 7 (type -> FLOAT .)
+    NOT             reduce using rule 7 (type -> FLOAT .)
+    MARK            reduce using rule 7 (type -> FLOAT .)
+    INT             reduce using rule 7 (type -> FLOAT .)
+    FLOAT           reduce using rule 7 (type -> FLOAT .)
+    STR             reduce using rule 7 (type -> FLOAT .)
+
+
+state 35
+
+    (8) type -> STR .
+
+    ID              reduce using rule 8 (type -> STR .)
+    NUM             reduce using rule 8 (type -> STR .)
+    CONTINUE        reduce using rule 8 (type -> STR .)
+    BREAK           reduce using rule 8 (type -> STR .)
+    FLOAT_NUM       reduce using rule 8 (type -> STR .)
+    OPEN            reduce using rule 8 (type -> STR .)
+    NOT             reduce using rule 8 (type -> STR .)
+    MARK            reduce using rule 8 (type -> STR .)
+    INT             reduce using rule 8 (type -> STR .)
+    FLOAT           reduce using rule 8 (type -> STR .)
+    STR             reduce using rule 8 (type -> STR .)
+
+
+state 36
+
+    (4) declarations -> declarations VAR type . identifier_list COLON
+    (2) identifier_list -> . ID
+    (3) identifier_list -> . identifier_list COMA ID
+
+    ID              shift and go to state 60
+
+    identifier_list                shift and go to state 59
+
+state 37
+
+    (51) factor -> type factor .
+    (54) factor -> factor . COLON
+
+  ! shift/reduce conflict for COLON resolved as shift
+    EQUAL           reduce using rule 51 (factor -> type factor .)
+    RELOP           reduce using rule 51 (factor -> type factor .)
+    AND             reduce using rule 51 (factor -> type factor .)
+    OR              reduce using rule 51 (factor -> type factor .)
+    IF              reduce using rule 51 (factor -> type factor .)
+    WHILE           reduce using rule 51 (factor -> type factor .)
+    NOT             reduce using rule 51 (factor -> type factor .)
+    RETURN          reduce using rule 51 (factor -> type factor .)
+    PRINT           reduce using rule 51 (factor -> type factor .)
+    FUNK            reduce using rule 51 (factor -> type factor .)
+    ID              reduce using rule 51 (factor -> type factor .)
+    NUM             reduce using rule 51 (factor -> type factor .)
+    CONTINUE        reduce using rule 51 (factor -> type factor .)
+    BREAK           reduce using rule 51 (factor -> type factor .)
+    FLOAT_NUM       reduce using rule 51 (factor -> type factor .)
+    OPEN            reduce using rule 51 (factor -> type factor .)
+    MARK            reduce using rule 51 (factor -> type factor .)
+    INT             reduce using rule 51 (factor -> type factor .)
+    FLOAT           reduce using rule 51 (factor -> type factor .)
+    STR             reduce using rule 51 (factor -> type factor .)
+    $end            reduce using rule 51 (factor -> type factor .)
+    DIVMUL          reduce using rule 51 (factor -> type factor .)
+    PLUSMINUS       reduce using rule 51 (factor -> type factor .)
+    CLOSE_CONSTR    reduce using rule 51 (factor -> type factor .)
+    CLOSE           reduce using rule 51 (factor -> type factor .)
+    COMA            reduce using rule 51 (factor -> type factor .)
+    COLON           shift and go to state 52
+
+  ! COLON           [ reduce using rule 51 (factor -> type factor .) ]
+
+
+state 38
+
+    (52) factor -> NOT . factor
+    (44) factor -> . ID
+    (45) factor -> . ID OPEN expression_list CLOSE
+    (46) factor -> . NUM
+    (47) factor -> . CONTINUE
+    (48) factor -> . BREAK
+    (49) factor -> . FLOAT_NUM
+    (50) factor -> . OPEN expression CLOSE
+    (51) factor -> . type factor
+    (52) factor -> . NOT factor
+    (53) factor -> . MARK STRING MARK
+    (54) factor -> . factor COLON
+    (6) type -> . INT
+    (7) type -> . FLOAT
+    (8) type -> . STR
+
+    ID              shift and go to state 26
+    NUM             shift and go to state 28
+    CONTINUE        shift and go to state 29
+    BREAK           shift and go to state 30
+    FLOAT_NUM       shift and go to state 31
+    OPEN            shift and go to state 11
+    NOT             shift and go to state 38
+    MARK            shift and go to state 32
+    INT             shift and go to state 33
+    FLOAT           shift and go to state 34
+    STR             shift and go to state 35
+
+    factor                         shift and go to state 61
+    type                           shift and go to state 6
+
+state 39
+
+    (12) statement_list -> statement_list statement .
+
+    IF              reduce using rule 12 (statement_list -> statement_list statement .)
+    WHILE           reduce using rule 12 (statement_list -> statement_list statement .)
+    NOT             reduce using rule 12 (statement_list -> statement_list statement .)
+    RETURN          reduce using rule 12 (statement_list -> statement_list statement .)
+    PRINT           reduce using rule 12 (statement_list -> statement_list statement .)
+    FUNK            reduce using rule 12 (statement_list -> statement_list statement .)
+    ID              reduce using rule 12 (statement_list -> statement_list statement .)
+    NUM             reduce using rule 12 (statement_list -> statement_list statement .)
+    CONTINUE        reduce using rule 12 (statement_list -> statement_list statement .)
+    BREAK           reduce using rule 12 (statement_list -> statement_list statement .)
+    FLOAT_NUM       reduce using rule 12 (statement_list -> statement_list statement .)
+    OPEN            reduce using rule 12 (statement_list -> statement_list statement .)
+    MARK            reduce using rule 12 (statement_list -> statement_list statement .)
+    INT             reduce using rule 12 (statement_list -> statement_list statement .)
+    FLOAT           reduce using rule 12 (statement_list -> statement_list statement .)
+    STR             reduce using rule 12 (statement_list -> statement_list statement .)
+    $end            reduce using rule 12 (statement_list -> statement_list statement .)
+    CLOSE_CONSTR    reduce using rule 12 (statement_list -> statement_list statement .)
+
+
+state 40
+
+    (13) statement -> IF OPEN . expression CLOSE THEN compound_statement ELSE compound_statement
+    (28) expression -> . NOT simple_expression
+    (29) expression -> . RETURN simple_expression
+    (30) expression -> . expression AND simple_expression
+    (31) expression -> . expression OR simple_expression
+    (32) expression -> . simple_expression RELOP simple_expression
+    (33) expression -> . simple_expression
+    (34) simple_expression -> . term
+    (35) simple_expression -> . eqstate
+    (38) term -> . dvml
+    (39) term -> . term PLUSMINUS dvml
+    (36) eqstate -> . factor EQUAL term
+    (37) eqstate -> . factor
+    (40) dvml -> . factor
+    (41) dvml -> . dvml DIVMUL factor
+    (44) factor -> . ID
+    (45) factor -> . ID OPEN expression_list CLOSE
+    (46) factor -> . NUM
+    (47) factor -> . CONTINUE
+    (48) factor -> . BREAK
+    (49) factor -> . FLOAT_NUM
+    (50) factor -> . OPEN expression CLOSE
+    (51) factor -> . type factor
+    (52) factor -> . NOT factor
+    (53) factor -> . MARK STRING MARK
+    (54) factor -> . factor COLON
+    (6) type -> . INT
+    (7) type -> . FLOAT
+    (8) type -> . STR
+
+    NOT             shift and go to state 17
+    RETURN          shift and go to state 19
+    ID              shift and go to state 26
+    NUM             shift and go to state 28
+    CONTINUE        shift and go to state 29
+    BREAK           shift and go to state 30
+    FLOAT_NUM       shift and go to state 31
+    OPEN            shift and go to state 11
+    MARK            shift and go to state 32
+    INT             shift and go to state 33
+    FLOAT           shift and go to state 34
+    STR             shift and go to state 35
+
+    expression                     shift and go to state 62
+    simple_expression              shift and go to state 18
+    term                           shift and go to state 23
+    eqstate                        shift and go to state 24
+    dvml                           shift and go to state 27
+    factor                         shift and go to state 21
+    type                           shift and go to state 6
+
+state 41
+
+    (50) factor -> OPEN expression . CLOSE
+    (30) expression -> expression . AND simple_expression
+    (31) expression -> expression . OR simple_expression
+
+    CLOSE           shift and go to state 63
+    AND             shift and go to state 42
+    OR              shift and go to state 43
+
+
+state 42
+
+    (30) expression -> expression AND . simple_expression
+    (34) simple_expression -> . term
+    (35) simple_expression -> . eqstate
+    (38) term -> . dvml
+    (39) term -> . term PLUSMINUS dvml
+    (36) eqstate -> . factor EQUAL term
+    (37) eqstate -> . factor
+    (40) dvml -> . factor
+    (41) dvml -> . dvml DIVMUL factor
+    (44) factor -> . ID
+    (45) factor -> . ID OPEN expression_list CLOSE
+    (46) factor -> . NUM
+    (47) factor -> . CONTINUE
+    (48) factor -> . BREAK
+    (49) factor -> . FLOAT_NUM
+    (50) factor -> . OPEN expression CLOSE
+    (51) factor -> . type factor
+    (52) factor -> . NOT factor
+    (53) factor -> . MARK STRING MARK
+    (54) factor -> . factor COLON
+    (6) type -> . INT
+    (7) type -> . FLOAT
+    (8) type -> . STR
+
+    ID              shift and go to state 26
+    NUM             shift and go to state 28
+    CONTINUE        shift and go to state 29
+    BREAK           shift and go to state 30
+    FLOAT_NUM       shift and go to state 31
+    OPEN            shift and go to state 11
+    NOT             shift and go to state 38
+    MARK            shift and go to state 32
+    INT             shift and go to state 33
+    FLOAT           shift and go to state 34
+    STR             shift and go to state 35
+
+    simple_expression              shift and go to state 64
+    term                           shift and go to state 23
+    eqstate                        shift and go to state 24
+    dvml                           shift and go to state 27
+    factor                         shift and go to state 21
+    type                           shift and go to state 6
+
+state 43
+
+    (31) expression -> expression OR . simple_expression
+    (34) simple_expression -> . term
+    (35) simple_expression -> . eqstate
+    (38) term -> . dvml
+    (39) term -> . term PLUSMINUS dvml
+    (36) eqstate -> . factor EQUAL term
+    (37) eqstate -> . factor
+    (40) dvml -> . factor
+    (41) dvml -> . dvml DIVMUL factor
+    (44) factor -> . ID
+    (45) factor -> . ID OPEN expression_list CLOSE
+    (46) factor -> . NUM
+    (47) factor -> . CONTINUE
+    (48) factor -> . BREAK
+    (49) factor -> . FLOAT_NUM
+    (50) factor -> . OPEN expression CLOSE
+    (51) factor -> . type factor
+    (52) factor -> . NOT factor
+    (53) factor -> . MARK STRING MARK
+    (54) factor -> . factor COLON
+    (6) type -> . INT
+    (7) type -> . FLOAT
+    (8) type -> . STR
+
+    ID              shift and go to state 26
+    NUM             shift and go to state 28
+    CONTINUE        shift and go to state 29
+    BREAK           shift and go to state 30
+    FLOAT_NUM       shift and go to state 31
+    OPEN            shift and go to state 11
+    NOT             shift and go to state 38
+    MARK            shift and go to state 32
+    INT             shift and go to state 33
+    FLOAT           shift and go to state 34
+    STR             shift and go to state 35
+
+    simple_expression              shift and go to state 65
+    term                           shift and go to state 23
+    eqstate                        shift and go to state 24
+    dvml                           shift and go to state 27
+    factor                         shift and go to state 21
+    type                           shift and go to state 6
+
+state 44
+
+    (14) statement -> WHILE OPEN . expression CLOSE compound_statement
+    (28) expression -> . NOT simple_expression
+    (29) expression -> . RETURN simple_expression
+    (30) expression -> . expression AND simple_expression
+    (31) expression -> . expression OR simple_expression
+    (32) expression -> . simple_expression RELOP simple_expression
+    (33) expression -> . simple_expression
+    (34) simple_expression -> . term
+    (35) simple_expression -> . eqstate
+    (38) term -> . dvml
+    (39) term -> . term PLUSMINUS dvml
+    (36) eqstate -> . factor EQUAL term
+    (37) eqstate -> . factor
+    (40) dvml -> . factor
+    (41) dvml -> . dvml DIVMUL factor
+    (44) factor -> . ID
+    (45) factor -> . ID OPEN expression_list CLOSE
+    (46) factor -> . NUM
+    (47) factor -> . CONTINUE
+    (48) factor -> . BREAK
+    (49) factor -> . FLOAT_NUM
+    (50) factor -> . OPEN expression CLOSE
+    (51) factor -> . type factor
+    (52) factor -> . NOT factor
+    (53) factor -> . MARK STRING MARK
+    (54) factor -> . factor COLON
+    (6) type -> . INT
+    (7) type -> . FLOAT
+    (8) type -> . STR
+
+    NOT             shift and go to state 17
+    RETURN          shift and go to state 19
+    ID              shift and go to state 26
+    NUM             shift and go to state 28
+    CONTINUE        shift and go to state 29
+    BREAK           shift and go to state 30
+    FLOAT_NUM       shift and go to state 31
+    OPEN            shift and go to state 11
+    MARK            shift and go to state 32
+    INT             shift and go to state 33
+    FLOAT           shift and go to state 34
+    STR             shift and go to state 35
+
+    expression                     shift and go to state 66
+    simple_expression              shift and go to state 18
+    term                           shift and go to state 23
+    eqstate                        shift and go to state 24
+    dvml                           shift and go to state 27
+    factor                         shift and go to state 21
+    type                           shift and go to state 6
+
+state 45
+
+    (19) subprogram_declarations -> subprogram_declarations subprogram_declaration .
+
+    FUNK            reduce using rule 19 (subprogram_declarations -> subprogram_declarations subprogram_declaration .)
+    IF              reduce using rule 19 (subprogram_declarations -> subprogram_declarations subprogram_declaration .)
+    WHILE           reduce using rule 19 (subprogram_declarations -> subprogram_declarations subprogram_declaration .)
+    NOT             reduce using rule 19 (subprogram_declarations -> subprogram_declarations subprogram_declaration .)
+    RETURN          reduce using rule 19 (subprogram_declarations -> subprogram_declarations subprogram_declaration .)
+    PRINT           reduce using rule 19 (subprogram_declarations -> subprogram_declarations subprogram_declaration .)
+    ID              reduce using rule 19 (subprogram_declarations -> subprogram_declarations subprogram_declaration .)
+    NUM             reduce using rule 19 (subprogram_declarations -> subprogram_declarations subprogram_declaration .)
+    CONTINUE        reduce using rule 19 (subprogram_declarations -> subprogram_declarations subprogram_declaration .)
+    BREAK           reduce using rule 19 (subprogram_declarations -> subprogram_declarations subprogram_declaration .)
+    FLOAT_NUM       reduce using rule 19 (subprogram_declarations -> subprogram_declarations subprogram_declaration .)
+    OPEN            reduce using rule 19 (subprogram_declarations -> subprogram_declarations subprogram_declaration .)
+    MARK            reduce using rule 19 (subprogram_declarations -> subprogram_declarations subprogram_declaration .)
+    INT             reduce using rule 19 (subprogram_declarations -> subprogram_declarations subprogram_declaration .)
+    FLOAT           reduce using rule 19 (subprogram_declarations -> subprogram_declarations subprogram_declaration .)
+    STR             reduce using rule 19 (subprogram_declarations -> subprogram_declarations subprogram_declaration .)
+    $end            reduce using rule 19 (subprogram_declarations -> subprogram_declarations subprogram_declaration .)
+    CLOSE_CONSTR    reduce using rule 19 (subprogram_declarations -> subprogram_declarations subprogram_declaration .)
+
+
+state 46
+
+    (28) expression -> NOT simple_expression .
+
+    AND             reduce using rule 28 (expression -> NOT simple_expression .)
+    OR              reduce using rule 28 (expression -> NOT simple_expression .)
+    IF              reduce using rule 28 (expression -> NOT simple_expression .)
+    WHILE           reduce using rule 28 (expression -> NOT simple_expression .)
+    NOT             reduce using rule 28 (expression -> NOT simple_expression .)
+    RETURN          reduce using rule 28 (expression -> NOT simple_expression .)
+    PRINT           reduce using rule 28 (expression -> NOT simple_expression .)
+    FUNK            reduce using rule 28 (expression -> NOT simple_expression .)
+    ID              reduce using rule 28 (expression -> NOT simple_expression .)
+    NUM             reduce using rule 28 (expression -> NOT simple_expression .)
+    CONTINUE        reduce using rule 28 (expression -> NOT simple_expression .)
+    BREAK           reduce using rule 28 (expression -> NOT simple_expression .)
+    FLOAT_NUM       reduce using rule 28 (expression -> NOT simple_expression .)
+    OPEN            reduce using rule 28 (expression -> NOT simple_expression .)
+    MARK            reduce using rule 28 (expression -> NOT simple_expression .)
+    INT             reduce using rule 28 (expression -> NOT simple_expression .)
+    FLOAT           reduce using rule 28 (expression -> NOT simple_expression .)
+    STR             reduce using rule 28 (expression -> NOT simple_expression .)
+    $end            reduce using rule 28 (expression -> NOT simple_expression .)
+    CLOSE_CONSTR    reduce using rule 28 (expression -> NOT simple_expression .)
+    CLOSE           reduce using rule 28 (expression -> NOT simple_expression .)
+    COMA            reduce using rule 28 (expression -> NOT simple_expression .)
+
+
+state 47
+
+    (52) factor -> NOT factor .
+    (54) factor -> factor . COLON
+    (36) eqstate -> factor . EQUAL term
+    (37) eqstate -> factor .
+    (40) dvml -> factor .
+
+  ! reduce/reduce conflict for AND resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for OR resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for IF resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for WHILE resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for NOT resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for RETURN resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for PRINT resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for FUNK resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for ID resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for NUM resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for CONTINUE resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for BREAK resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for FLOAT_NUM resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for OPEN resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for MARK resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for INT resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for FLOAT resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for STR resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for $end resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for CLOSE_CONSTR resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for CLOSE resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for COMA resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for DIVMUL resolved using rule 40 (dvml -> factor .)
+  ! reduce/reduce conflict for PLUSMINUS resolved using rule 40 (dvml -> factor .)
+  ! reduce/reduce conflict for AND resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for OR resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for IF resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for WHILE resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for NOT resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for RETURN resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for PRINT resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for FUNK resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for ID resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for NUM resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for CONTINUE resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for BREAK resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for FLOAT_NUM resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for OPEN resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for MARK resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for INT resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for FLOAT resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for STR resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for $end resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for CLOSE_CONSTR resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for CLOSE resolved using rule 37 (eqstate -> factor .)
+  ! reduce/reduce conflict for COMA resolved using rule 37 (eqstate -> factor .)
+    EQUAL           reduce using rule 52 (factor -> NOT factor .)
+    COLON           reduce using rule 52 (factor -> NOT factor .)
+    RELOP           reduce using rule 52 (factor -> NOT factor .)
+    AND             reduce using rule 37 (eqstate -> factor .)
+    OR              reduce using rule 37 (eqstate -> factor .)
+    IF              reduce using rule 37 (eqstate -> factor .)
+    WHILE           reduce using rule 37 (eqstate -> factor .)
+    NOT             reduce using rule 37 (eqstate -> factor .)
+    RETURN          reduce using rule 37 (eqstate -> factor .)
+    PRINT           reduce using rule 37 (eqstate -> factor .)
+    FUNK            reduce using rule 37 (eqstate -> factor .)
+    ID              reduce using rule 37 (eqstate -> factor .)
+    NUM             reduce using rule 37 (eqstate -> factor .)
+    CONTINUE        reduce using rule 37 (eqstate -> factor .)
+    BREAK           reduce using rule 37 (eqstate -> factor .)
+    FLOAT_NUM       reduce using rule 37 (eqstate -> factor .)
+    OPEN            reduce using rule 37 (eqstate -> factor .)
+    MARK            reduce using rule 37 (eqstate -> factor .)
+    INT             reduce using rule 37 (eqstate -> factor .)
+    FLOAT           reduce using rule 37 (eqstate -> factor .)
+    STR             reduce using rule 37 (eqstate -> factor .)
+    $end            reduce using rule 37 (eqstate -> factor .)
+    CLOSE_CONSTR    reduce using rule 37 (eqstate -> factor .)
+    CLOSE           reduce using rule 37 (eqstate -> factor .)
+    COMA            reduce using rule 37 (eqstate -> factor .)
+    DIVMUL          reduce using rule 40 (dvml -> factor .)
+    PLUSMINUS       reduce using rule 40 (dvml -> factor .)
+
+  ! AND             [ reduce using rule 52 (factor -> NOT factor .) ]
+  ! OR              [ reduce using rule 52 (factor -> NOT factor .) ]
+  ! IF              [ reduce using rule 52 (factor -> NOT factor .) ]
+  ! WHILE           [ reduce using rule 52 (factor -> NOT factor .) ]
+  ! NOT             [ reduce using rule 52 (factor -> NOT factor .) ]
+  ! RETURN          [ reduce using rule 52 (factor -> NOT factor .) ]
+  ! PRINT           [ reduce using rule 52 (factor -> NOT factor .) ]
+  ! FUNK            [ reduce using rule 52 (factor -> NOT factor .) ]
+  ! ID              [ reduce using rule 52 (factor -> NOT factor .) ]
+  ! NUM             [ reduce using rule 52 (factor -> NOT factor .) ]
+  ! CONTINUE        [ reduce using rule 52 (factor -> NOT factor .) ]
+  ! BREAK           [ reduce using rule 52 (factor -> NOT factor .) ]
+  ! FLOAT_NUM       [ reduce using rule 52 (factor -> NOT factor .) ]
+  ! OPEN            [ reduce using rule 52 (factor -> NOT factor .) ]
+  ! MARK            [ reduce using rule 52 (factor -> NOT factor .) ]
+  ! INT             [ reduce using rule 52 (factor -> NOT factor .) ]
+  ! FLOAT           [ reduce using rule 52 (factor -> NOT factor .) ]
+  ! STR             [ reduce using rule 52 (factor -> NOT factor .) ]
+  ! $end            [ reduce using rule 52 (factor -> NOT factor .) ]
+  ! DIVMUL          [ reduce using rule 52 (factor -> NOT factor .) ]
+  ! PLUSMINUS       [ reduce using rule 52 (factor -> NOT factor .) ]
+  ! CLOSE_CONSTR    [ reduce using rule 52 (factor -> NOT factor .) ]
+  ! CLOSE           [ reduce using rule 52 (factor -> NOT factor .) ]
+  ! COMA            [ reduce using rule 52 (factor -> NOT factor .) ]
+  ! COLON           [ shift and go to state 52 ]
+  ! EQUAL           [ shift and go to state 51 ]
+  ! AND             [ reduce using rule 40 (dvml -> factor .) ]
+  ! OR              [ reduce using rule 40 (dvml -> factor .) ]
+  ! IF              [ reduce using rule 40 (dvml -> factor .) ]
+  ! WHILE           [ reduce using rule 40 (dvml -> factor .) ]
+  ! NOT             [ reduce using rule 40 (dvml -> factor .) ]
+  ! RETURN          [ reduce using rule 40 (dvml -> factor .) ]
+  ! PRINT           [ reduce using rule 40 (dvml -> factor .) ]
+  ! FUNK            [ reduce using rule 40 (dvml -> factor .) ]
+  ! ID              [ reduce using rule 40 (dvml -> factor .) ]
+  ! NUM             [ reduce using rule 40 (dvml -> factor .) ]
+  ! CONTINUE        [ reduce using rule 40 (dvml -> factor .) ]
+  ! BREAK           [ reduce using rule 40 (dvml -> factor .) ]
+  ! FLOAT_NUM       [ reduce using rule 40 (dvml -> factor .) ]
+  ! OPEN            [ reduce using rule 40 (dvml -> factor .) ]
+  ! MARK            [ reduce using rule 40 (dvml -> factor .) ]
+  ! INT             [ reduce using rule 40 (dvml -> factor .) ]
+  ! FLOAT           [ reduce using rule 40 (dvml -> factor .) ]
+  ! STR             [ reduce using rule 40 (dvml -> factor .) ]
+  ! $end            [ reduce using rule 40 (dvml -> factor .) ]
+  ! CLOSE_CONSTR    [ reduce using rule 40 (dvml -> factor .) ]
+  ! CLOSE           [ reduce using rule 40 (dvml -> factor .) ]
+  ! COMA            [ reduce using rule 40 (dvml -> factor .) ]
+
+
+state 48
+
+    (32) expression -> simple_expression RELOP . simple_expression
+    (34) simple_expression -> . term
+    (35) simple_expression -> . eqstate
+    (38) term -> . dvml
+    (39) term -> . term PLUSMINUS dvml
+    (36) eqstate -> . factor EQUAL term
+    (37) eqstate -> . factor
+    (40) dvml -> . factor
+    (41) dvml -> . dvml DIVMUL factor
+    (44) factor -> . ID
+    (45) factor -> . ID OPEN expression_list CLOSE
+    (46) factor -> . NUM
+    (47) factor -> . CONTINUE
+    (48) factor -> . BREAK
+    (49) factor -> . FLOAT_NUM
+    (50) factor -> . OPEN expression CLOSE
+    (51) factor -> . type factor
+    (52) factor -> . NOT factor
+    (53) factor -> . MARK STRING MARK
+    (54) factor -> . factor COLON
+    (6) type -> . INT
+    (7) type -> . FLOAT
+    (8) type -> . STR
+
+    ID              shift and go to state 26
+    NUM             shift and go to state 28
+    CONTINUE        shift and go to state 29
+    BREAK           shift and go to state 30
+    FLOAT_NUM       shift and go to state 31
+    OPEN            shift and go to state 11
+    NOT             shift and go to state 38
+    MARK            shift and go to state 32
+    INT             shift and go to state 33
+    FLOAT           shift and go to state 34
+    STR             shift and go to state 35
+
+    simple_expression              shift and go to state 67
+    term                           shift and go to state 23
+    eqstate                        shift and go to state 24
+    dvml                           shift and go to state 27
+    factor                         shift and go to state 21
+    type                           shift and go to state 6
+
+state 49
+
+    (29) expression -> RETURN simple_expression .
+
+    AND             reduce using rule 29 (expression -> RETURN simple_expression .)
+    OR              reduce using rule 29 (expression -> RETURN simple_expression .)
+    IF              reduce using rule 29 (expression -> RETURN simple_expression .)
+    WHILE           reduce using rule 29 (expression -> RETURN simple_expression .)
+    NOT             reduce using rule 29 (expression -> RETURN simple_expression .)
+    RETURN          reduce using rule 29 (expression -> RETURN simple_expression .)
+    PRINT           reduce using rule 29 (expression -> RETURN simple_expression .)
+    FUNK            reduce using rule 29 (expression -> RETURN simple_expression .)
+    ID              reduce using rule 29 (expression -> RETURN simple_expression .)
+    NUM             reduce using rule 29 (expression -> RETURN simple_expression .)
+    CONTINUE        reduce using rule 29 (expression -> RETURN simple_expression .)
+    BREAK           reduce using rule 29 (expression -> RETURN simple_expression .)
+    FLOAT_NUM       reduce using rule 29 (expression -> RETURN simple_expression .)
+    OPEN            reduce using rule 29 (expression -> RETURN simple_expression .)
+    MARK            reduce using rule 29 (expression -> RETURN simple_expression .)
+    INT             reduce using rule 29 (expression -> RETURN simple_expression .)
+    FLOAT           reduce using rule 29 (expression -> RETURN simple_expression .)
+    STR             reduce using rule 29 (expression -> RETURN simple_expression .)
+    $end            reduce using rule 29 (expression -> RETURN simple_expression .)
+    CLOSE_CONSTR    reduce using rule 29 (expression -> RETURN simple_expression .)
+    CLOSE           reduce using rule 29 (expression -> RETURN simple_expression .)
+    COMA            reduce using rule 29 (expression -> RETURN simple_expression .)
+
+
+state 50
+
+    (42) out -> PRINT OPEN . factor CLOSE COLON
+    (44) factor -> . ID
+    (45) factor -> . ID OPEN expression_list CLOSE
+    (46) factor -> . NUM
+    (47) factor -> . CONTINUE
+    (48) factor -> . BREAK
+    (49) factor -> . FLOAT_NUM
+    (50) factor -> . OPEN expression CLOSE
+    (51) factor -> . type factor
+    (52) factor -> . NOT factor
+    (53) factor -> . MARK STRING MARK
+    (54) factor -> . factor COLON
+    (6) type -> . INT
+    (7) type -> . FLOAT
+    (8) type -> . STR
+
+    ID              shift and go to state 26
+    NUM             shift and go to state 28
+    CONTINUE        shift and go to state 29
+    BREAK           shift and go to state 30
+    FLOAT_NUM       shift and go to state 31
+    OPEN            shift and go to state 11
+    NOT             shift and go to state 38
+    MARK            shift and go to state 32
+    INT             shift and go to state 33
+    FLOAT           shift and go to state 34
+    STR             shift and go to state 35
+
+    factor                         shift and go to state 68
+    type                           shift and go to state 6
+
+state 51
+
+    (36) eqstate -> factor EQUAL . term
+    (38) term -> . dvml
+    (39) term -> . term PLUSMINUS dvml
+    (40) dvml -> . factor
+    (41) dvml -> . dvml DIVMUL factor
+    (44) factor -> . ID
+    (45) factor -> . ID OPEN expression_list CLOSE
+    (46) factor -> . NUM
+    (47) factor -> . CONTINUE
+    (48) factor -> . BREAK
+    (49) factor -> . FLOAT_NUM
+    (50) factor -> . OPEN expression CLOSE
+    (51) factor -> . type factor
+    (52) factor -> . NOT factor
+    (53) factor -> . MARK STRING MARK
+    (54) factor -> . factor COLON
+    (6) type -> . INT
+    (7) type -> . FLOAT
+    (8) type -> . STR
+
+    ID              shift and go to state 26
+    NUM             shift and go to state 28
+    CONTINUE        shift and go to state 29
+    BREAK           shift and go to state 30
+    FLOAT_NUM       shift and go to state 31
+    OPEN            shift and go to state 11
+    NOT             shift and go to state 38
+    MARK            shift and go to state 32
+    INT             shift and go to state 33
+    FLOAT           shift and go to state 34
+    STR             shift and go to state 35
+
+    factor                         shift and go to state 69
+    term                           shift and go to state 70
+    dvml                           shift and go to state 27
+    type                           shift and go to state 6
+
+state 52
+
+    (54) factor -> factor COLON .
+
+    EQUAL           reduce using rule 54 (factor -> factor COLON .)
+    COLON           reduce using rule 54 (factor -> factor COLON .)
+    RELOP           reduce using rule 54 (factor -> factor COLON .)
+    AND             reduce using rule 54 (factor -> factor COLON .)
+    OR              reduce using rule 54 (factor -> factor COLON .)
+    IF              reduce using rule 54 (factor -> factor COLON .)
+    WHILE           reduce using rule 54 (factor -> factor COLON .)
+    NOT             reduce using rule 54 (factor -> factor COLON .)
+    RETURN          reduce using rule 54 (factor -> factor COLON .)
+    PRINT           reduce using rule 54 (factor -> factor COLON .)
+    FUNK            reduce using rule 54 (factor -> factor COLON .)
+    ID              reduce using rule 54 (factor -> factor COLON .)
+    NUM             reduce using rule 54 (factor -> factor COLON .)
+    CONTINUE        reduce using rule 54 (factor -> factor COLON .)
+    BREAK           reduce using rule 54 (factor -> factor COLON .)
+    FLOAT_NUM       reduce using rule 54 (factor -> factor COLON .)
+    OPEN            reduce using rule 54 (factor -> factor COLON .)
+    MARK            reduce using rule 54 (factor -> factor COLON .)
+    INT             reduce using rule 54 (factor -> factor COLON .)
+    FLOAT           reduce using rule 54 (factor -> factor COLON .)
+    STR             reduce using rule 54 (factor -> factor COLON .)
+    $end            reduce using rule 54 (factor -> factor COLON .)
+    DIVMUL          reduce using rule 54 (factor -> factor COLON .)
+    PLUSMINUS       reduce using rule 54 (factor -> factor COLON .)
+    CLOSE_CONSTR    reduce using rule 54 (factor -> factor COLON .)
+    CLOSE           reduce using rule 54 (factor -> factor COLON .)
+    COMA            reduce using rule 54 (factor -> factor COLON .)
+
+
+state 53
+
+    (20) subprogram_declaration -> subprogram_head declarations . compound_statement
+    (4) declarations -> declarations . VAR type identifier_list COLON
+    (25) compound_statement -> . OPEN_CONSTR optional_statements CLOSE_CONSTR
+
+    VAR             shift and go to state 5
+    OPEN_CONSTR     shift and go to state 72
+
+    compound_statement             shift and go to state 71
+
+state 54
+
+    (39) term -> term PLUSMINUS . dvml
+    (40) dvml -> . factor
+    (41) dvml -> . dvml DIVMUL factor
+    (44) factor -> . ID
+    (45) factor -> . ID OPEN expression_list CLOSE
+    (46) factor -> . NUM
+    (47) factor -> . CONTINUE
+    (48) factor -> . BREAK
+    (49) factor -> . FLOAT_NUM
+    (50) factor -> . OPEN expression CLOSE
+    (51) factor -> . type factor
+    (52) factor -> . NOT factor
+    (53) factor -> . MARK STRING MARK
+    (54) factor -> . factor COLON
+    (6) type -> . INT
+    (7) type -> . FLOAT
+    (8) type -> . STR
+
+    ID              shift and go to state 26
+    NUM             shift and go to state 28
+    CONTINUE        shift and go to state 29
+    BREAK           shift and go to state 30
+    FLOAT_NUM       shift and go to state 31
+    OPEN            shift and go to state 11
+    NOT             shift and go to state 38
+    MARK            shift and go to state 32
+    INT             shift and go to state 33
+    FLOAT           shift and go to state 34
+    STR             shift and go to state 35
+
+    dvml                           shift and go to state 73
+    factor                         shift and go to state 69
+    type                           shift and go to state 6
+
+state 55
+
+    (21) subprogram_head -> FUNK ID . arguments
+    (22) arguments -> . OPEN parameter_list CLOSE
+
+    OPEN            shift and go to state 75
+
+    arguments                      shift and go to state 74
+
+state 56
+
+    (45) factor -> ID OPEN . expression_list CLOSE
+    (26) expression_list -> . expression
+    (27) expression_list -> . expression_list COMA expression
+    (28) expression -> . NOT simple_expression
+    (29) expression -> . RETURN simple_expression
+    (30) expression -> . expression AND simple_expression
+    (31) expression -> . expression OR simple_expression
+    (32) expression -> . simple_expression RELOP simple_expression
+    (33) expression -> . simple_expression
+    (34) simple_expression -> . term
+    (35) simple_expression -> . eqstate
+    (38) term -> . dvml
+    (39) term -> . term PLUSMINUS dvml
+    (36) eqstate -> . factor EQUAL term
+    (37) eqstate -> . factor
+    (40) dvml -> . factor
+    (41) dvml -> . dvml DIVMUL factor
+    (44) factor -> . ID
+    (45) factor -> . ID OPEN expression_list CLOSE
+    (46) factor -> . NUM
+    (47) factor -> . CONTINUE
+    (48) factor -> . BREAK
+    (49) factor -> . FLOAT_NUM
+    (50) factor -> . OPEN expression CLOSE
+    (51) factor -> . type factor
+    (52) factor -> . NOT factor
+    (53) factor -> . MARK STRING MARK
+    (54) factor -> . factor COLON
+    (6) type -> . INT
+    (7) type -> . FLOAT
+    (8) type -> . STR
+
+    NOT             shift and go to state 17
+    RETURN          shift and go to state 19
+    ID              shift and go to state 26
+    NUM             shift and go to state 28
+    CONTINUE        shift and go to state 29
+    BREAK           shift and go to state 30
+    FLOAT_NUM       shift and go to state 31
+    OPEN            shift and go to state 11
+    MARK            shift and go to state 32
+    INT             shift and go to state 33
+    FLOAT           shift and go to state 34
+    STR             shift and go to state 35
+
+    expression_list                shift and go to state 76
+    expression                     shift and go to state 77
+    simple_expression              shift and go to state 18
+    term                           shift and go to state 23
+    eqstate                        shift and go to state 24
+    dvml                           shift and go to state 27
+    factor                         shift and go to state 21
+    type                           shift and go to state 6
+
+state 57
+
+    (41) dvml -> dvml DIVMUL . factor
+    (44) factor -> . ID
+    (45) factor -> . ID OPEN expression_list CLOSE
+    (46) factor -> . NUM
+    (47) factor -> . CONTINUE
+    (48) factor -> . BREAK
+    (49) factor -> . FLOAT_NUM
+    (50) factor -> . OPEN expression CLOSE
+    (51) factor -> . type factor
+    (52) factor -> . NOT factor
+    (53) factor -> . MARK STRING MARK
+    (54) factor -> . factor COLON
+    (6) type -> . INT
+    (7) type -> . FLOAT
+    (8) type -> . STR
+
+    ID              shift and go to state 26
+    NUM             shift and go to state 28
+    CONTINUE        shift and go to state 29
+    BREAK           shift and go to state 30
+    FLOAT_NUM       shift and go to state 31
+    OPEN            shift and go to state 11
+    NOT             shift and go to state 38
+    MARK            shift and go to state 32
+    INT             shift and go to state 33
+    FLOAT           shift and go to state 34
+    STR             shift and go to state 35
+
+    factor                         shift and go to state 78
+    type                           shift and go to state 6
+
+state 58
+
+    (53) factor -> MARK STRING . MARK
+
+    MARK            shift and go to state 79
+
+
+state 59
+
+    (4) declarations -> declarations VAR type identifier_list . COLON
+    (3) identifier_list -> identifier_list . COMA ID
+
+    COLON           shift and go to state 80
+    COMA            shift and go to state 81
+
+
+state 60
+
+    (2) identifier_list -> ID .
+
+    COLON           reduce using rule 2 (identifier_list -> ID .)
+    COMA            reduce using rule 2 (identifier_list -> ID .)
+    CLOSE           reduce using rule 2 (identifier_list -> ID .)
+
+
+state 61
+
+    (52) factor -> NOT factor .
+    (54) factor -> factor . COLON
+
+    COLON           reduce using rule 52 (factor -> NOT factor .)
+    EQUAL           reduce using rule 52 (factor -> NOT factor .)
+    RELOP           reduce using rule 52 (factor -> NOT factor .)
+    AND             reduce using rule 52 (factor -> NOT factor .)
+    OR              reduce using rule 52 (factor -> NOT factor .)
+    IF              reduce using rule 52 (factor -> NOT factor .)
+    WHILE           reduce using rule 52 (factor -> NOT factor .)
+    NOT             reduce using rule 52 (factor -> NOT factor .)
+    RETURN          reduce using rule 52 (factor -> NOT factor .)
+    PRINT           reduce using rule 52 (factor -> NOT factor .)
+    FUNK            reduce using rule 52 (factor -> NOT factor .)
+    ID              reduce using rule 52 (factor -> NOT factor .)
+    NUM             reduce using rule 52 (factor -> NOT factor .)
+    CONTINUE        reduce using rule 52 (factor -> NOT factor .)
+    BREAK           reduce using rule 52 (factor -> NOT factor .)
+    FLOAT_NUM       reduce using rule 52 (factor -> NOT factor .)
+    OPEN            reduce using rule 52 (factor -> NOT factor .)
+    MARK            reduce using rule 52 (factor -> NOT factor .)
+    INT             reduce using rule 52 (factor -> NOT factor .)
+    FLOAT           reduce using rule 52 (factor -> NOT factor .)
+    STR             reduce using rule 52 (factor -> NOT factor .)
+    $end            reduce using rule 52 (factor -> NOT factor .)
+    DIVMUL          reduce using rule 52 (factor -> NOT factor .)
+    PLUSMINUS       reduce using rule 52 (factor -> NOT factor .)
+    CLOSE_CONSTR    reduce using rule 52 (factor -> NOT factor .)
+    CLOSE           reduce using rule 52 (factor -> NOT factor .)
+    COMA            reduce using rule 52 (factor -> NOT factor .)
+
+  ! COLON           [ shift and go to state 52 ]
+
+
+state 62
+
+    (13) statement -> IF OPEN expression . CLOSE THEN compound_statement ELSE compound_statement
+    (30) expression -> expression . AND simple_expression
+    (31) expression -> expression . OR simple_expression
+
+    CLOSE           shift and go to state 82
+    AND             shift and go to state 42
+    OR              shift and go to state 43
+
+
+state 63
+
+    (50) factor -> OPEN expression CLOSE .
+
+    EQUAL           reduce using rule 50 (factor -> OPEN expression CLOSE .)
+    COLON           reduce using rule 50 (factor -> OPEN expression CLOSE .)
+    RELOP           reduce using rule 50 (factor -> OPEN expression CLOSE .)
+    AND             reduce using rule 50 (factor -> OPEN expression CLOSE .)
+    OR              reduce using rule 50 (factor -> OPEN expression CLOSE .)
+    IF              reduce using rule 50 (factor -> OPEN expression CLOSE .)
+    WHILE           reduce using rule 50 (factor -> OPEN expression CLOSE .)
+    NOT             reduce using rule 50 (factor -> OPEN expression CLOSE .)
+    RETURN          reduce using rule 50 (factor -> OPEN expression CLOSE .)
+    PRINT           reduce using rule 50 (factor -> OPEN expression CLOSE .)
+    FUNK            reduce using rule 50 (factor -> OPEN expression CLOSE .)
+    ID              reduce using rule 50 (factor -> OPEN expression CLOSE .)
+    NUM             reduce using rule 50 (factor -> OPEN expression CLOSE .)
+    CONTINUE        reduce using rule 50 (factor -> OPEN expression CLOSE .)
+    BREAK           reduce using rule 50 (factor -> OPEN expression CLOSE .)
+    FLOAT_NUM       reduce using rule 50 (factor -> OPEN expression CLOSE .)
+    OPEN            reduce using rule 50 (factor -> OPEN expression CLOSE .)
+    MARK            reduce using rule 50 (factor -> OPEN expression CLOSE .)
+    INT             reduce using rule 50 (factor -> OPEN expression CLOSE .)
+    FLOAT           reduce using rule 50 (factor -> OPEN expression CLOSE .)
+    STR             reduce using rule 50 (factor -> OPEN expression CLOSE .)
+    $end            reduce using rule 50 (factor -> OPEN expression CLOSE .)
+    DIVMUL          reduce using rule 50 (factor -> OPEN expression CLOSE .)
+    PLUSMINUS       reduce using rule 50 (factor -> OPEN expression CLOSE .)
+    CLOSE_CONSTR    reduce using rule 50 (factor -> OPEN expression CLOSE .)
+    CLOSE           reduce using rule 50 (factor -> OPEN expression CLOSE .)
+    COMA            reduce using rule 50 (factor -> OPEN expression CLOSE .)
+
+
+state 64
+
+    (30) expression -> expression AND simple_expression .
+
+    AND             reduce using rule 30 (expression -> expression AND simple_expression .)
+    OR              reduce using rule 30 (expression -> expression AND simple_expression .)
+    IF              reduce using rule 30 (expression -> expression AND simple_expression .)
+    WHILE           reduce using rule 30 (expression -> expression AND simple_expression .)
+    NOT             reduce using rule 30 (expression -> expression AND simple_expression .)
+    RETURN          reduce using rule 30 (expression -> expression AND simple_expression .)
+    PRINT           reduce using rule 30 (expression -> expression AND simple_expression .)
+    FUNK            reduce using rule 30 (expression -> expression AND simple_expression .)
+    ID              reduce using rule 30 (expression -> expression AND simple_expression .)
+    NUM             reduce using rule 30 (expression -> expression AND simple_expression .)
+    CONTINUE        reduce using rule 30 (expression -> expression AND simple_expression .)
+    BREAK           reduce using rule 30 (expression -> expression AND simple_expression .)
+    FLOAT_NUM       reduce using rule 30 (expression -> expression AND simple_expression .)
+    OPEN            reduce using rule 30 (expression -> expression AND simple_expression .)
+    MARK            reduce using rule 30 (expression -> expression AND simple_expression .)
+    INT             reduce using rule 30 (expression -> expression AND simple_expression .)
+    FLOAT           reduce using rule 30 (expression -> expression AND simple_expression .)
+    STR             reduce using rule 30 (expression -> expression AND simple_expression .)
+    $end            reduce using rule 30 (expression -> expression AND simple_expression .)
+    CLOSE_CONSTR    reduce using rule 30 (expression -> expression AND simple_expression .)
+    CLOSE           reduce using rule 30 (expression -> expression AND simple_expression .)
+    COMA            reduce using rule 30 (expression -> expression AND simple_expression .)
+
+
+state 65
+
+    (31) expression -> expression OR simple_expression .
+
+    AND             reduce using rule 31 (expression -> expression OR simple_expression .)
+    OR              reduce using rule 31 (expression -> expression OR simple_expression .)
+    IF              reduce using rule 31 (expression -> expression OR simple_expression .)
+    WHILE           reduce using rule 31 (expression -> expression OR simple_expression .)
+    NOT             reduce using rule 31 (expression -> expression OR simple_expression .)
+    RETURN          reduce using rule 31 (expression -> expression OR simple_expression .)
+    PRINT           reduce using rule 31 (expression -> expression OR simple_expression .)
+    FUNK            reduce using rule 31 (expression -> expression OR simple_expression .)
+    ID              reduce using rule 31 (expression -> expression OR simple_expression .)
+    NUM             reduce using rule 31 (expression -> expression OR simple_expression .)
+    CONTINUE        reduce using rule 31 (expression -> expression OR simple_expression .)
+    BREAK           reduce using rule 31 (expression -> expression OR simple_expression .)
+    FLOAT_NUM       reduce using rule 31 (expression -> expression OR simple_expression .)
+    OPEN            reduce using rule 31 (expression -> expression OR simple_expression .)
+    MARK            reduce using rule 31 (expression -> expression OR simple_expression .)
+    INT             reduce using rule 31 (expression -> expression OR simple_expression .)
+    FLOAT           reduce using rule 31 (expression -> expression OR simple_expression .)
+    STR             reduce using rule 31 (expression -> expression OR simple_expression .)
+    $end            reduce using rule 31 (expression -> expression OR simple_expression .)
+    CLOSE_CONSTR    reduce using rule 31 (expression -> expression OR simple_expression .)
+    CLOSE           reduce using rule 31 (expression -> expression OR simple_expression .)
+    COMA            reduce using rule 31 (expression -> expression OR simple_expression .)
+
+
+state 66
+
+    (14) statement -> WHILE OPEN expression . CLOSE compound_statement
+    (30) expression -> expression . AND simple_expression
+    (31) expression -> expression . OR simple_expression
+
+    CLOSE           shift and go to state 83
+    AND             shift and go to state 42
+    OR              shift and go to state 43
+
+
+state 67
+
+    (32) expression -> simple_expression RELOP simple_expression .
+
+    AND             reduce using rule 32 (expression -> simple_expression RELOP simple_expression .)
+    OR              reduce using rule 32 (expression -> simple_expression RELOP simple_expression .)
+    IF              reduce using rule 32 (expression -> simple_expression RELOP simple_expression .)
+    WHILE           reduce using rule 32 (expression -> simple_expression RELOP simple_expression .)
+    NOT             reduce using rule 32 (expression -> simple_expression RELOP simple_expression .)
+    RETURN          reduce using rule 32 (expression -> simple_expression RELOP simple_expression .)
+    PRINT           reduce using rule 32 (expression -> simple_expression RELOP simple_expression .)
+    FUNK            reduce using rule 32 (expression -> simple_expression RELOP simple_expression .)
+    ID              reduce using rule 32 (expression -> simple_expression RELOP simple_expression .)
+    NUM             reduce using rule 32 (expression -> simple_expression RELOP simple_expression .)
+    CONTINUE        reduce using rule 32 (expression -> simple_expression RELOP simple_expression .)
+    BREAK           reduce using rule 32 (expression -> simple_expression RELOP simple_expression .)
+    FLOAT_NUM       reduce using rule 32 (expression -> simple_expression RELOP simple_expression .)
+    OPEN            reduce using rule 32 (expression -> simple_expression RELOP simple_expression .)
+    MARK            reduce using rule 32 (expression -> simple_expression RELOP simple_expression .)
+    INT             reduce using rule 32 (expression -> simple_expression RELOP simple_expression .)
+    FLOAT           reduce using rule 32 (expression -> simple_expression RELOP simple_expression .)
+    STR             reduce using rule 32 (expression -> simple_expression RELOP simple_expression .)
+    $end            reduce using rule 32 (expression -> simple_expression RELOP simple_expression .)
+    CLOSE_CONSTR    reduce using rule 32 (expression -> simple_expression RELOP simple_expression .)
+    CLOSE           reduce using rule 32 (expression -> simple_expression RELOP simple_expression .)
+    COMA            reduce using rule 32 (expression -> simple_expression RELOP simple_expression .)
+
+
+state 68
+
+    (42) out -> PRINT OPEN factor . CLOSE COLON
+    (54) factor -> factor . COLON
+
+    CLOSE           shift and go to state 84
+    COLON           shift and go to state 52
+
+
+state 69
+
+    (40) dvml -> factor .
+    (54) factor -> factor . COLON
+
+    DIVMUL          reduce using rule 40 (dvml -> factor .)
+    PLUSMINUS       reduce using rule 40 (dvml -> factor .)
+    RELOP           reduce using rule 40 (dvml -> factor .)
+    AND             reduce using rule 40 (dvml -> factor .)
+    OR              reduce using rule 40 (dvml -> factor .)
+    IF              reduce using rule 40 (dvml -> factor .)
+    WHILE           reduce using rule 40 (dvml -> factor .)
+    NOT             reduce using rule 40 (dvml -> factor .)
+    RETURN          reduce using rule 40 (dvml -> factor .)
+    PRINT           reduce using rule 40 (dvml -> factor .)
+    FUNK            reduce using rule 40 (dvml -> factor .)
+    ID              reduce using rule 40 (dvml -> factor .)
+    NUM             reduce using rule 40 (dvml -> factor .)
+    CONTINUE        reduce using rule 40 (dvml -> factor .)
+    BREAK           reduce using rule 40 (dvml -> factor .)
+    FLOAT_NUM       reduce using rule 40 (dvml -> factor .)
+    OPEN            reduce using rule 40 (dvml -> factor .)
+    MARK            reduce using rule 40 (dvml -> factor .)
+    INT             reduce using rule 40 (dvml -> factor .)
+    FLOAT           reduce using rule 40 (dvml -> factor .)
+    STR             reduce using rule 40 (dvml -> factor .)
+    $end            reduce using rule 40 (dvml -> factor .)
+    CLOSE_CONSTR    reduce using rule 40 (dvml -> factor .)
+    CLOSE           reduce using rule 40 (dvml -> factor .)
+    COMA            reduce using rule 40 (dvml -> factor .)
+    COLON           shift and go to state 52
+
+
+state 70
+
+    (36) eqstate -> factor EQUAL term .
+    (39) term -> term . PLUSMINUS dvml
+
+    RELOP           reduce using rule 36 (eqstate -> factor EQUAL term .)
+    AND             reduce using rule 36 (eqstate -> factor EQUAL term .)
+    OR              reduce using rule 36 (eqstate -> factor EQUAL term .)
+    IF              reduce using rule 36 (eqstate -> factor EQUAL term .)
+    WHILE           reduce using rule 36 (eqstate -> factor EQUAL term .)
+    NOT             reduce using rule 36 (eqstate -> factor EQUAL term .)
+    RETURN          reduce using rule 36 (eqstate -> factor EQUAL term .)
+    PRINT           reduce using rule 36 (eqstate -> factor EQUAL term .)
+    FUNK            reduce using rule 36 (eqstate -> factor EQUAL term .)
+    ID              reduce using rule 36 (eqstate -> factor EQUAL term .)
+    NUM             reduce using rule 36 (eqstate -> factor EQUAL term .)
+    CONTINUE        reduce using rule 36 (eqstate -> factor EQUAL term .)
+    BREAK           reduce using rule 36 (eqstate -> factor EQUAL term .)
+    FLOAT_NUM       reduce using rule 36 (eqstate -> factor EQUAL term .)
+    OPEN            reduce using rule 36 (eqstate -> factor EQUAL term .)
+    MARK            reduce using rule 36 (eqstate -> factor EQUAL term .)
+    INT             reduce using rule 36 (eqstate -> factor EQUAL term .)
+    FLOAT           reduce using rule 36 (eqstate -> factor EQUAL term .)
+    STR             reduce using rule 36 (eqstate -> factor EQUAL term .)
+    $end            reduce using rule 36 (eqstate -> factor EQUAL term .)
+    CLOSE_CONSTR    reduce using rule 36 (eqstate -> factor EQUAL term .)
+    CLOSE           reduce using rule 36 (eqstate -> factor EQUAL term .)
+    COMA            reduce using rule 36 (eqstate -> factor EQUAL term .)
+    PLUSMINUS       shift and go to state 54
+
+
+state 71
+
+    (20) subprogram_declaration -> subprogram_head declarations compound_statement .
+
+    FUNK            reduce using rule 20 (subprogram_declaration -> subprogram_head declarations compound_statement .)
+    IF              reduce using rule 20 (subprogram_declaration -> subprogram_head declarations compound_statement .)
+    WHILE           reduce using rule 20 (subprogram_declaration -> subprogram_head declarations compound_statement .)
+    NOT             reduce using rule 20 (subprogram_declaration -> subprogram_head declarations compound_statement .)
+    RETURN          reduce using rule 20 (subprogram_declaration -> subprogram_head declarations compound_statement .)
+    PRINT           reduce using rule 20 (subprogram_declaration -> subprogram_head declarations compound_statement .)
+    ID              reduce using rule 20 (subprogram_declaration -> subprogram_head declarations compound_statement .)
+    NUM             reduce using rule 20 (subprogram_declaration -> subprogram_head declarations compound_statement .)
+    CONTINUE        reduce using rule 20 (subprogram_declaration -> subprogram_head declarations compound_statement .)
+    BREAK           reduce using rule 20 (subprogram_declaration -> subprogram_head declarations compound_statement .)
+    FLOAT_NUM       reduce using rule 20 (subprogram_declaration -> subprogram_head declarations compound_statement .)
+    OPEN            reduce using rule 20 (subprogram_declaration -> subprogram_head declarations compound_statement .)
+    MARK            reduce using rule 20 (subprogram_declaration -> subprogram_head declarations compound_statement .)
+    INT             reduce using rule 20 (subprogram_declaration -> subprogram_head declarations compound_statement .)
+    FLOAT           reduce using rule 20 (subprogram_declaration -> subprogram_head declarations compound_statement .)
+    STR             reduce using rule 20 (subprogram_declaration -> subprogram_head declarations compound_statement .)
+    $end            reduce using rule 20 (subprogram_declaration -> subprogram_head declarations compound_statement .)
+    CLOSE_CONSTR    reduce using rule 20 (subprogram_declaration -> subprogram_head declarations compound_statement .)
+
+
+state 72
+
+    (25) compound_statement -> OPEN_CONSTR . optional_statements CLOSE_CONSTR
+    (9) optional_statements -> . statement_list
+    (10) optional_statements -> . empty
+    (11) statement_list -> . statement
+    (12) statement_list -> . statement_list statement
+    (55) empty -> .
+    (13) statement -> . IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement
+    (14) statement -> . WHILE OPEN expression CLOSE compound_statement
+    (15) statement -> . subprogram_declarations
+    (16) statement -> . expression
+    (17) statement -> . out
+    (18) subprogram_declarations -> . subprogram_declaration
+    (19) subprogram_declarations -> . subprogram_declarations subprogram_declaration
+    (28) expression -> . NOT simple_expression
+    (29) expression -> . RETURN simple_expression
+    (30) expression -> . expression AND simple_expression
+    (31) expression -> . expression OR simple_expression
+    (32) expression -> . simple_expression RELOP simple_expression
+    (33) expression -> . simple_expression
+    (42) out -> . PRINT OPEN factor CLOSE COLON
+    (20) subprogram_declaration -> . subprogram_head declarations compound_statement
+    (34) simple_expression -> . term
+    (35) simple_expression -> . eqstate
+    (21) subprogram_head -> . FUNK ID arguments
+    (38) term -> . dvml
+    (39) term -> . term PLUSMINUS dvml
+    (36) eqstate -> . factor EQUAL term
+    (37) eqstate -> . factor
+    (40) dvml -> . factor
+    (41) dvml -> . dvml DIVMUL factor
+    (44) factor -> . ID
+    (45) factor -> . ID OPEN expression_list CLOSE
+    (46) factor -> . NUM
+    (47) factor -> . CONTINUE
+    (48) factor -> . BREAK
+    (49) factor -> . FLOAT_NUM
+    (50) factor -> . OPEN expression CLOSE
+    (51) factor -> . type factor
+    (52) factor -> . NOT factor
+    (53) factor -> . MARK STRING MARK
+    (54) factor -> . factor COLON
+    (6) type -> . INT
+    (7) type -> . FLOAT
+    (8) type -> . STR
+
+    CLOSE_CONSTR    reduce using rule 55 (empty -> .)
+    IF              shift and go to state 10
+    WHILE           shift and go to state 13
+    NOT             shift and go to state 17
+    RETURN          shift and go to state 19
+    PRINT           shift and go to state 20
+    FUNK            shift and go to state 25
+    ID              shift and go to state 26
+    NUM             shift and go to state 28
+    CONTINUE        shift and go to state 29
+    BREAK           shift and go to state 30
+    FLOAT_NUM       shift and go to state 31
+    OPEN            shift and go to state 11
+    MARK            shift and go to state 32
+    INT             shift and go to state 33
+    FLOAT           shift and go to state 34
+    STR             shift and go to state 35
+
+    optional_statements            shift and go to state 85
+    statement_list                 shift and go to state 7
+    empty                          shift and go to state 8
+    statement                      shift and go to state 9
+    expression                     shift and go to state 12
+    subprogram_declarations        shift and go to state 14
+    out                            shift and go to state 15
+    subprogram_declaration         shift and go to state 16
+    simple_expression              shift and go to state 18
+    factor                         shift and go to state 21
+    subprogram_head                shift and go to state 22
+    term                           shift and go to state 23
+    eqstate                        shift and go to state 24
+    dvml                           shift and go to state 27
+    type                           shift and go to state 6
+
+state 73
+
+    (39) term -> term PLUSMINUS dvml .
+    (41) dvml -> dvml . DIVMUL factor
+
+    PLUSMINUS       reduce using rule 39 (term -> term PLUSMINUS dvml .)
+    RELOP           reduce using rule 39 (term -> term PLUSMINUS dvml .)
+    AND             reduce using rule 39 (term -> term PLUSMINUS dvml .)
+    OR              reduce using rule 39 (term -> term PLUSMINUS dvml .)
+    IF              reduce using rule 39 (term -> term PLUSMINUS dvml .)
+    WHILE           reduce using rule 39 (term -> term PLUSMINUS dvml .)
+    NOT             reduce using rule 39 (term -> term PLUSMINUS dvml .)
+    RETURN          reduce using rule 39 (term -> term PLUSMINUS dvml .)
+    PRINT           reduce using rule 39 (term -> term PLUSMINUS dvml .)
+    FUNK            reduce using rule 39 (term -> term PLUSMINUS dvml .)
+    ID              reduce using rule 39 (term -> term PLUSMINUS dvml .)
+    NUM             reduce using rule 39 (term -> term PLUSMINUS dvml .)
+    CONTINUE        reduce using rule 39 (term -> term PLUSMINUS dvml .)
+    BREAK           reduce using rule 39 (term -> term PLUSMINUS dvml .)
+    FLOAT_NUM       reduce using rule 39 (term -> term PLUSMINUS dvml .)
+    OPEN            reduce using rule 39 (term -> term PLUSMINUS dvml .)
+    MARK            reduce using rule 39 (term -> term PLUSMINUS dvml .)
+    INT             reduce using rule 39 (term -> term PLUSMINUS dvml .)
+    FLOAT           reduce using rule 39 (term -> term PLUSMINUS dvml .)
+    STR             reduce using rule 39 (term -> term PLUSMINUS dvml .)
+    $end            reduce using rule 39 (term -> term PLUSMINUS dvml .)
+    CLOSE_CONSTR    reduce using rule 39 (term -> term PLUSMINUS dvml .)
+    CLOSE           reduce using rule 39 (term -> term PLUSMINUS dvml .)
+    COMA            reduce using rule 39 (term -> term PLUSMINUS dvml .)
+    DIVMUL          shift and go to state 57
+
+
+state 74
+
+    (21) subprogram_head -> FUNK ID arguments .
+
+    VAR             reduce using rule 21 (subprogram_head -> FUNK ID arguments .)
+    OPEN_CONSTR     reduce using rule 21 (subprogram_head -> FUNK ID arguments .)
+
+
+state 75
+
+    (22) arguments -> OPEN . parameter_list CLOSE
+    (23) parameter_list -> . type identifier_list
+    (24) parameter_list -> . parameter_list COLON type identifier_list
+    (6) type -> . INT
+    (7) type -> . FLOAT
+    (8) type -> . STR
+
+    INT             shift and go to state 33
+    FLOAT           shift and go to state 34
+    STR             shift and go to state 35
+
+    parameter_list                 shift and go to state 86
+    type                           shift and go to state 87
+
+state 76
+
+    (45) factor -> ID OPEN expression_list . CLOSE
+    (27) expression_list -> expression_list . COMA expression
+
+    CLOSE           shift and go to state 88
+    COMA            shift and go to state 89
+
+
+state 77
+
+    (26) expression_list -> expression .
+    (30) expression -> expression . AND simple_expression
+    (31) expression -> expression . OR simple_expression
+
+    CLOSE           reduce using rule 26 (expression_list -> expression .)
+    COMA            reduce using rule 26 (expression_list -> expression .)
+    AND             shift and go to state 42
+    OR              shift and go to state 43
+
+
+state 78
+
+    (41) dvml -> dvml DIVMUL factor .
+    (54) factor -> factor . COLON
+
+    DIVMUL          reduce using rule 41 (dvml -> dvml DIVMUL factor .)
+    PLUSMINUS       reduce using rule 41 (dvml -> dvml DIVMUL factor .)
+    RELOP           reduce using rule 41 (dvml -> dvml DIVMUL factor .)
+    AND             reduce using rule 41 (dvml -> dvml DIVMUL factor .)
+    OR              reduce using rule 41 (dvml -> dvml DIVMUL factor .)
+    IF              reduce using rule 41 (dvml -> dvml DIVMUL factor .)
+    WHILE           reduce using rule 41 (dvml -> dvml DIVMUL factor .)
+    NOT             reduce using rule 41 (dvml -> dvml DIVMUL factor .)
+    RETURN          reduce using rule 41 (dvml -> dvml DIVMUL factor .)
+    PRINT           reduce using rule 41 (dvml -> dvml DIVMUL factor .)
+    FUNK            reduce using rule 41 (dvml -> dvml DIVMUL factor .)
+    ID              reduce using rule 41 (dvml -> dvml DIVMUL factor .)
+    NUM             reduce using rule 41 (dvml -> dvml DIVMUL factor .)
+    CONTINUE        reduce using rule 41 (dvml -> dvml DIVMUL factor .)
+    BREAK           reduce using rule 41 (dvml -> dvml DIVMUL factor .)
+    FLOAT_NUM       reduce using rule 41 (dvml -> dvml DIVMUL factor .)
+    OPEN            reduce using rule 41 (dvml -> dvml DIVMUL factor .)
+    MARK            reduce using rule 41 (dvml -> dvml DIVMUL factor .)
+    INT             reduce using rule 41 (dvml -> dvml DIVMUL factor .)
+    FLOAT           reduce using rule 41 (dvml -> dvml DIVMUL factor .)
+    STR             reduce using rule 41 (dvml -> dvml DIVMUL factor .)
+    $end            reduce using rule 41 (dvml -> dvml DIVMUL factor .)
+    CLOSE_CONSTR    reduce using rule 41 (dvml -> dvml DIVMUL factor .)
+    CLOSE           reduce using rule 41 (dvml -> dvml DIVMUL factor .)
+    COMA            reduce using rule 41 (dvml -> dvml DIVMUL factor .)
+    COLON           shift and go to state 52
+
+
+state 79
+
+    (53) factor -> MARK STRING MARK .
+
+    EQUAL           reduce using rule 53 (factor -> MARK STRING MARK .)
+    COLON           reduce using rule 53 (factor -> MARK STRING MARK .)
+    RELOP           reduce using rule 53 (factor -> MARK STRING MARK .)
+    AND             reduce using rule 53 (factor -> MARK STRING MARK .)
+    OR              reduce using rule 53 (factor -> MARK STRING MARK .)
+    IF              reduce using rule 53 (factor -> MARK STRING MARK .)
+    WHILE           reduce using rule 53 (factor -> MARK STRING MARK .)
+    NOT             reduce using rule 53 (factor -> MARK STRING MARK .)
+    RETURN          reduce using rule 53 (factor -> MARK STRING MARK .)
+    PRINT           reduce using rule 53 (factor -> MARK STRING MARK .)
+    FUNK            reduce using rule 53 (factor -> MARK STRING MARK .)
+    ID              reduce using rule 53 (factor -> MARK STRING MARK .)
+    NUM             reduce using rule 53 (factor -> MARK STRING MARK .)
+    CONTINUE        reduce using rule 53 (factor -> MARK STRING MARK .)
+    BREAK           reduce using rule 53 (factor -> MARK STRING MARK .)
+    FLOAT_NUM       reduce using rule 53 (factor -> MARK STRING MARK .)
+    OPEN            reduce using rule 53 (factor -> MARK STRING MARK .)
+    MARK            reduce using rule 53 (factor -> MARK STRING MARK .)
+    INT             reduce using rule 53 (factor -> MARK STRING MARK .)
+    FLOAT           reduce using rule 53 (factor -> MARK STRING MARK .)
+    STR             reduce using rule 53 (factor -> MARK STRING MARK .)
+    $end            reduce using rule 53 (factor -> MARK STRING MARK .)
+    DIVMUL          reduce using rule 53 (factor -> MARK STRING MARK .)
+    PLUSMINUS       reduce using rule 53 (factor -> MARK STRING MARK .)
+    CLOSE_CONSTR    reduce using rule 53 (factor -> MARK STRING MARK .)
+    CLOSE           reduce using rule 53 (factor -> MARK STRING MARK .)
+    COMA            reduce using rule 53 (factor -> MARK STRING MARK .)
+
+
+state 80
+
+    (4) declarations -> declarations VAR type identifier_list COLON .
+
+    VAR             reduce using rule 4 (declarations -> declarations VAR type identifier_list COLON .)
+    IF              reduce using rule 4 (declarations -> declarations VAR type identifier_list COLON .)
+    WHILE           reduce using rule 4 (declarations -> declarations VAR type identifier_list COLON .)
+    NOT             reduce using rule 4 (declarations -> declarations VAR type identifier_list COLON .)
+    RETURN          reduce using rule 4 (declarations -> declarations VAR type identifier_list COLON .)
+    PRINT           reduce using rule 4 (declarations -> declarations VAR type identifier_list COLON .)
+    FUNK            reduce using rule 4 (declarations -> declarations VAR type identifier_list COLON .)
+    ID              reduce using rule 4 (declarations -> declarations VAR type identifier_list COLON .)
+    NUM             reduce using rule 4 (declarations -> declarations VAR type identifier_list COLON .)
+    CONTINUE        reduce using rule 4 (declarations -> declarations VAR type identifier_list COLON .)
+    BREAK           reduce using rule 4 (declarations -> declarations VAR type identifier_list COLON .)
+    FLOAT_NUM       reduce using rule 4 (declarations -> declarations VAR type identifier_list COLON .)
+    OPEN            reduce using rule 4 (declarations -> declarations VAR type identifier_list COLON .)
+    MARK            reduce using rule 4 (declarations -> declarations VAR type identifier_list COLON .)
+    INT             reduce using rule 4 (declarations -> declarations VAR type identifier_list COLON .)
+    FLOAT           reduce using rule 4 (declarations -> declarations VAR type identifier_list COLON .)
+    STR             reduce using rule 4 (declarations -> declarations VAR type identifier_list COLON .)
+    $end            reduce using rule 4 (declarations -> declarations VAR type identifier_list COLON .)
+    OPEN_CONSTR     reduce using rule 4 (declarations -> declarations VAR type identifier_list COLON .)
+
+
+state 81
+
+    (3) identifier_list -> identifier_list COMA . ID
+
+    ID              shift and go to state 90
+
+
+state 82
+
+    (13) statement -> IF OPEN expression CLOSE . THEN compound_statement ELSE compound_statement
+
+    THEN            shift and go to state 91
+
+
+state 83
+
+    (14) statement -> WHILE OPEN expression CLOSE . compound_statement
+    (25) compound_statement -> . OPEN_CONSTR optional_statements CLOSE_CONSTR
+
+    OPEN_CONSTR     shift and go to state 72
+
+    compound_statement             shift and go to state 92
+
+state 84
+
+    (42) out -> PRINT OPEN factor CLOSE . COLON
+
+    COLON           shift and go to state 93
+
+
+state 85
+
+    (25) compound_statement -> OPEN_CONSTR optional_statements . CLOSE_CONSTR
+
+    CLOSE_CONSTR    shift and go to state 94
+
+
+state 86
+
+    (22) arguments -> OPEN parameter_list . CLOSE
+    (24) parameter_list -> parameter_list . COLON type identifier_list
+
+    CLOSE           shift and go to state 95
+    COLON           shift and go to state 96
+
+
+state 87
+
+    (23) parameter_list -> type . identifier_list
+    (2) identifier_list -> . ID
+    (3) identifier_list -> . identifier_list COMA ID
+
+    ID              shift and go to state 60
+
+    identifier_list                shift and go to state 97
+
+state 88
+
+    (45) factor -> ID OPEN expression_list CLOSE .
+
+    EQUAL           reduce using rule 45 (factor -> ID OPEN expression_list CLOSE .)
+    COLON           reduce using rule 45 (factor -> ID OPEN expression_list CLOSE .)
+    RELOP           reduce using rule 45 (factor -> ID OPEN expression_list CLOSE .)
+    AND             reduce using rule 45 (factor -> ID OPEN expression_list CLOSE .)
+    OR              reduce using rule 45 (factor -> ID OPEN expression_list CLOSE .)
+    IF              reduce using rule 45 (factor -> ID OPEN expression_list CLOSE .)
+    WHILE           reduce using rule 45 (factor -> ID OPEN expression_list CLOSE .)
+    NOT             reduce using rule 45 (factor -> ID OPEN expression_list CLOSE .)
+    RETURN          reduce using rule 45 (factor -> ID OPEN expression_list CLOSE .)
+    PRINT           reduce using rule 45 (factor -> ID OPEN expression_list CLOSE .)
+    FUNK            reduce using rule 45 (factor -> ID OPEN expression_list CLOSE .)
+    ID              reduce using rule 45 (factor -> ID OPEN expression_list CLOSE .)
+    NUM             reduce using rule 45 (factor -> ID OPEN expression_list CLOSE .)
+    CONTINUE        reduce using rule 45 (factor -> ID OPEN expression_list CLOSE .)
+    BREAK           reduce using rule 45 (factor -> ID OPEN expression_list CLOSE .)
+    FLOAT_NUM       reduce using rule 45 (factor -> ID OPEN expression_list CLOSE .)
+    OPEN            reduce using rule 45 (factor -> ID OPEN expression_list CLOSE .)
+    MARK            reduce using rule 45 (factor -> ID OPEN expression_list CLOSE .)
+    INT             reduce using rule 45 (factor -> ID OPEN expression_list CLOSE .)
+    FLOAT           reduce using rule 45 (factor -> ID OPEN expression_list CLOSE .)
+    STR             reduce using rule 45 (factor -> ID OPEN expression_list CLOSE .)
+    $end            reduce using rule 45 (factor -> ID OPEN expression_list CLOSE .)
+    DIVMUL          reduce using rule 45 (factor -> ID OPEN expression_list CLOSE .)
+    PLUSMINUS       reduce using rule 45 (factor -> ID OPEN expression_list CLOSE .)
+    CLOSE_CONSTR    reduce using rule 45 (factor -> ID OPEN expression_list CLOSE .)
+    CLOSE           reduce using rule 45 (factor -> ID OPEN expression_list CLOSE .)
+    COMA            reduce using rule 45 (factor -> ID OPEN expression_list CLOSE .)
+
+
+state 89
+
+    (27) expression_list -> expression_list COMA . expression
+    (28) expression -> . NOT simple_expression
+    (29) expression -> . RETURN simple_expression
+    (30) expression -> . expression AND simple_expression
+    (31) expression -> . expression OR simple_expression
+    (32) expression -> . simple_expression RELOP simple_expression
+    (33) expression -> . simple_expression
+    (34) simple_expression -> . term
+    (35) simple_expression -> . eqstate
+    (38) term -> . dvml
+    (39) term -> . term PLUSMINUS dvml
+    (36) eqstate -> . factor EQUAL term
+    (37) eqstate -> . factor
+    (40) dvml -> . factor
+    (41) dvml -> . dvml DIVMUL factor
+    (44) factor -> . ID
+    (45) factor -> . ID OPEN expression_list CLOSE
+    (46) factor -> . NUM
+    (47) factor -> . CONTINUE
+    (48) factor -> . BREAK
+    (49) factor -> . FLOAT_NUM
+    (50) factor -> . OPEN expression CLOSE
+    (51) factor -> . type factor
+    (52) factor -> . NOT factor
+    (53) factor -> . MARK STRING MARK
+    (54) factor -> . factor COLON
+    (6) type -> . INT
+    (7) type -> . FLOAT
+    (8) type -> . STR
+
+    NOT             shift and go to state 17
+    RETURN          shift and go to state 19
+    ID              shift and go to state 26
+    NUM             shift and go to state 28
+    CONTINUE        shift and go to state 29
+    BREAK           shift and go to state 30
+    FLOAT_NUM       shift and go to state 31
+    OPEN            shift and go to state 11
+    MARK            shift and go to state 32
+    INT             shift and go to state 33
+    FLOAT           shift and go to state 34
+    STR             shift and go to state 35
+
+    expression                     shift and go to state 98
+    simple_expression              shift and go to state 18
+    term                           shift and go to state 23
+    eqstate                        shift and go to state 24
+    dvml                           shift and go to state 27
+    factor                         shift and go to state 21
+    type                           shift and go to state 6
+
+state 90
+
+    (3) identifier_list -> identifier_list COMA ID .
+
+    COLON           reduce using rule 3 (identifier_list -> identifier_list COMA ID .)
+    COMA            reduce using rule 3 (identifier_list -> identifier_list COMA ID .)
+    CLOSE           reduce using rule 3 (identifier_list -> identifier_list COMA ID .)
+
+
+state 91
+
+    (13) statement -> IF OPEN expression CLOSE THEN . compound_statement ELSE compound_statement
+    (25) compound_statement -> . OPEN_CONSTR optional_statements CLOSE_CONSTR
+
+    OPEN_CONSTR     shift and go to state 72
+
+    compound_statement             shift and go to state 99
+
+state 92
+
+    (14) statement -> WHILE OPEN expression CLOSE compound_statement .
+
+    IF              reduce using rule 14 (statement -> WHILE OPEN expression CLOSE compound_statement .)
+    WHILE           reduce using rule 14 (statement -> WHILE OPEN expression CLOSE compound_statement .)
+    NOT             reduce using rule 14 (statement -> WHILE OPEN expression CLOSE compound_statement .)
+    RETURN          reduce using rule 14 (statement -> WHILE OPEN expression CLOSE compound_statement .)
+    PRINT           reduce using rule 14 (statement -> WHILE OPEN expression CLOSE compound_statement .)
+    FUNK            reduce using rule 14 (statement -> WHILE OPEN expression CLOSE compound_statement .)
+    ID              reduce using rule 14 (statement -> WHILE OPEN expression CLOSE compound_statement .)
+    NUM             reduce using rule 14 (statement -> WHILE OPEN expression CLOSE compound_statement .)
+    CONTINUE        reduce using rule 14 (statement -> WHILE OPEN expression CLOSE compound_statement .)
+    BREAK           reduce using rule 14 (statement -> WHILE OPEN expression CLOSE compound_statement .)
+    FLOAT_NUM       reduce using rule 14 (statement -> WHILE OPEN expression CLOSE compound_statement .)
+    OPEN            reduce using rule 14 (statement -> WHILE OPEN expression CLOSE compound_statement .)
+    MARK            reduce using rule 14 (statement -> WHILE OPEN expression CLOSE compound_statement .)
+    INT             reduce using rule 14 (statement -> WHILE OPEN expression CLOSE compound_statement .)
+    FLOAT           reduce using rule 14 (statement -> WHILE OPEN expression CLOSE compound_statement .)
+    STR             reduce using rule 14 (statement -> WHILE OPEN expression CLOSE compound_statement .)
+    $end            reduce using rule 14 (statement -> WHILE OPEN expression CLOSE compound_statement .)
+    CLOSE_CONSTR    reduce using rule 14 (statement -> WHILE OPEN expression CLOSE compound_statement .)
+
+
+state 93
+
+    (42) out -> PRINT OPEN factor CLOSE COLON .
+
+    IF              reduce using rule 42 (out -> PRINT OPEN factor CLOSE COLON .)
+    WHILE           reduce using rule 42 (out -> PRINT OPEN factor CLOSE COLON .)
+    NOT             reduce using rule 42 (out -> PRINT OPEN factor CLOSE COLON .)
+    RETURN          reduce using rule 42 (out -> PRINT OPEN factor CLOSE COLON .)
+    PRINT           reduce using rule 42 (out -> PRINT OPEN factor CLOSE COLON .)
+    FUNK            reduce using rule 42 (out -> PRINT OPEN factor CLOSE COLON .)
+    ID              reduce using rule 42 (out -> PRINT OPEN factor CLOSE COLON .)
+    NUM             reduce using rule 42 (out -> PRINT OPEN factor CLOSE COLON .)
+    CONTINUE        reduce using rule 42 (out -> PRINT OPEN factor CLOSE COLON .)
+    BREAK           reduce using rule 42 (out -> PRINT OPEN factor CLOSE COLON .)
+    FLOAT_NUM       reduce using rule 42 (out -> PRINT OPEN factor CLOSE COLON .)
+    OPEN            reduce using rule 42 (out -> PRINT OPEN factor CLOSE COLON .)
+    MARK            reduce using rule 42 (out -> PRINT OPEN factor CLOSE COLON .)
+    INT             reduce using rule 42 (out -> PRINT OPEN factor CLOSE COLON .)
+    FLOAT           reduce using rule 42 (out -> PRINT OPEN factor CLOSE COLON .)
+    STR             reduce using rule 42 (out -> PRINT OPEN factor CLOSE COLON .)
+    $end            reduce using rule 42 (out -> PRINT OPEN factor CLOSE COLON .)
+    CLOSE_CONSTR    reduce using rule 42 (out -> PRINT OPEN factor CLOSE COLON .)
+
+
+state 94
+
+    (25) compound_statement -> OPEN_CONSTR optional_statements CLOSE_CONSTR .
+
+    FUNK            reduce using rule 25 (compound_statement -> OPEN_CONSTR optional_statements CLOSE_CONSTR .)
+    IF              reduce using rule 25 (compound_statement -> OPEN_CONSTR optional_statements CLOSE_CONSTR .)
+    WHILE           reduce using rule 25 (compound_statement -> OPEN_CONSTR optional_statements CLOSE_CONSTR .)
+    NOT             reduce using rule 25 (compound_statement -> OPEN_CONSTR optional_statements CLOSE_CONSTR .)
+    RETURN          reduce using rule 25 (compound_statement -> OPEN_CONSTR optional_statements CLOSE_CONSTR .)
+    PRINT           reduce using rule 25 (compound_statement -> OPEN_CONSTR optional_statements CLOSE_CONSTR .)
+    ID              reduce using rule 25 (compound_statement -> OPEN_CONSTR optional_statements CLOSE_CONSTR .)
+    NUM             reduce using rule 25 (compound_statement -> OPEN_CONSTR optional_statements CLOSE_CONSTR .)
+    CONTINUE        reduce using rule 25 (compound_statement -> OPEN_CONSTR optional_statements CLOSE_CONSTR .)
+    BREAK           reduce using rule 25 (compound_statement -> OPEN_CONSTR optional_statements CLOSE_CONSTR .)
+    FLOAT_NUM       reduce using rule 25 (compound_statement -> OPEN_CONSTR optional_statements CLOSE_CONSTR .)
+    OPEN            reduce using rule 25 (compound_statement -> OPEN_CONSTR optional_statements CLOSE_CONSTR .)
+    MARK            reduce using rule 25 (compound_statement -> OPEN_CONSTR optional_statements CLOSE_CONSTR .)
+    INT             reduce using rule 25 (compound_statement -> OPEN_CONSTR optional_statements CLOSE_CONSTR .)
+    FLOAT           reduce using rule 25 (compound_statement -> OPEN_CONSTR optional_statements CLOSE_CONSTR .)
+    STR             reduce using rule 25 (compound_statement -> OPEN_CONSTR optional_statements CLOSE_CONSTR .)
+    $end            reduce using rule 25 (compound_statement -> OPEN_CONSTR optional_statements CLOSE_CONSTR .)
+    CLOSE_CONSTR    reduce using rule 25 (compound_statement -> OPEN_CONSTR optional_statements CLOSE_CONSTR .)
+    ELSE            reduce using rule 25 (compound_statement -> OPEN_CONSTR optional_statements CLOSE_CONSTR .)
+
+
+state 95
+
+    (22) arguments -> OPEN parameter_list CLOSE .
+
+    VAR             reduce using rule 22 (arguments -> OPEN parameter_list CLOSE .)
+    OPEN_CONSTR     reduce using rule 22 (arguments -> OPEN parameter_list CLOSE .)
+
+
+state 96
+
+    (24) parameter_list -> parameter_list COLON . type identifier_list
+    (6) type -> . INT
+    (7) type -> . FLOAT
+    (8) type -> . STR
+
+    INT             shift and go to state 33
+    FLOAT           shift and go to state 34
+    STR             shift and go to state 35
+
+    type                           shift and go to state 100
+
+state 97
+
+    (23) parameter_list -> type identifier_list .
+    (3) identifier_list -> identifier_list . COMA ID
+
+    CLOSE           reduce using rule 23 (parameter_list -> type identifier_list .)
+    COLON           reduce using rule 23 (parameter_list -> type identifier_list .)
+    COMA            shift and go to state 81
+
+
+state 98
+
+    (27) expression_list -> expression_list COMA expression .
+    (30) expression -> expression . AND simple_expression
+    (31) expression -> expression . OR simple_expression
+
+    CLOSE           reduce using rule 27 (expression_list -> expression_list COMA expression .)
+    COMA            reduce using rule 27 (expression_list -> expression_list COMA expression .)
+    AND             shift and go to state 42
+    OR              shift and go to state 43
+
+
+state 99
+
+    (13) statement -> IF OPEN expression CLOSE THEN compound_statement . ELSE compound_statement
+
+    ELSE            shift and go to state 101
+
+
+state 100
+
+    (24) parameter_list -> parameter_list COLON type . identifier_list
+    (2) identifier_list -> . ID
+    (3) identifier_list -> . identifier_list COMA ID
+
+    ID              shift and go to state 60
+
+    identifier_list                shift and go to state 102
+
+state 101
+
+    (13) statement -> IF OPEN expression CLOSE THEN compound_statement ELSE . compound_statement
+    (25) compound_statement -> . OPEN_CONSTR optional_statements CLOSE_CONSTR
+
+    OPEN_CONSTR     shift and go to state 72
+
+    compound_statement             shift and go to state 103
+
+state 102
+
+    (24) parameter_list -> parameter_list COLON type identifier_list .
+    (3) identifier_list -> identifier_list . COMA ID
+
+    CLOSE           reduce using rule 24 (parameter_list -> parameter_list COLON type identifier_list .)
+    COLON           reduce using rule 24 (parameter_list -> parameter_list COLON type identifier_list .)
+    COMA            shift and go to state 81
+
+
+state 103
+
+    (13) statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .
+
+    IF              reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
+    WHILE           reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
+    NOT             reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
+    RETURN          reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
+    PRINT           reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
+    FUNK            reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
+    ID              reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
+    NUM             reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
+    CONTINUE        reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
+    BREAK           reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
+    FLOAT_NUM       reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
+    OPEN            reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
+    MARK            reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
+    INT             reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
+    FLOAT           reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
+    STR             reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
+    $end            reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
+    CLOSE_CONSTR    reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for FUNK in state 14 resolved as shift
+WARNING: shift/reduce conflict for OPEN in state 26 resolved as shift
+WARNING: shift/reduce conflict for COLON in state 37 resolved as shift
+WARNING: reduce/reduce conflict in state 21 resolved using rule (eqstate -> factor)
+WARNING: rejected rule (dvml -> factor) in state 21
+WARNING: reduce/reduce conflict in state 47 resolved using rule (eqstate -> factor)
+WARNING: rejected rule (factor -> NOT factor) in state 47
+WARNING: reduce/reduce conflict in state 47 resolved using rule (dvml -> factor)
+WARNING: rejected rule (factor -> NOT factor) in state 47
+WARNING: reduce/reduce conflict in state 47 resolved using rule (eqstate -> factor)
+WARNING: rejected rule (dvml -> factor) in state 47

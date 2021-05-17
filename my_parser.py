@@ -316,7 +316,7 @@ if __name__ == "__main__":
     }
     '''
 
-    result = parsing().parse(s)
+    result = parsing().parse(a)
     print(result)
 
 
