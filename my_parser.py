@@ -81,7 +81,9 @@ def p_statement(p):  # сами выражения которые могут б�
     '''statement : IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement
                  | WHILE OPEN expression CLOSE compound_statement
                  | subprogram_declarations
-                 | expression'''
+                 | expression
+                 | out
+                 '''
     if len(p) == 2:
         p[0] = p[1]
         p[1].scope = p[0].scope
@@ -174,6 +176,7 @@ def p_expression_list(p):  # Список выражений
 
 def p_expression(p):  # Сами выражения(здесь могут быть логические выр, оператооры сравнения и просто выражения)
     '''expression : NOT simple_expression
+                  | RETURN simple_expression
                   | expression AND simple_expression
                   | expression OR simple_expression
                   | simple_expression RELOP simple_expression
@@ -181,21 +184,22 @@ def p_expression(p):  # Сами выражения(здесь могут быт
     if len(p) == 2:
         p[0] = p[1]
     elif len(p) == 3:
-        p[0] = Node("expression", [p[1], p[2]])
+        if p[1] == "return":
+            p[0] = Node(p[1], [p[2]])
+        else:
+            p[0] = Node("expression", [p[1], p[2]])
     else:
         p[0] = Node("expression", [p[1], p[2], p[3]])
 
 
 def p_simple_expression(p):  # Обычные простые выражения,  включая принт и инпут
     '''simple_expression : term
-                         | simple_expression PLUSMINUS term
                          | eqstate
-                         | in
-                         | out'''
+                         '''
+    # | simple_expression PLUSMINUS term
     if len(p) == 2:
-        p[0] = p[1]
-    else:
-        p[0] = Node("simple_expression", [p[1], p[2], p[3]])
+        p[0] = Node("simple_expression", [p[1]])
+
 
 
 def p_eqstate(p):  # Оператор присваивания
@@ -208,12 +212,20 @@ def p_eqstate(p):  # Оператор присваивания
 
 
 def p_term(p):  # Делить умножать
-    '''term : factor
-            | term DIVMUL factor '''
+    '''term : dvml
+            | term PLUSMINUS dvml'''
     if len(p) == 2:
         p[0] = p[1]
     else:
         p[0] = Node("term", [p[1], p[2], p[3]])
+
+def p_dvml(p):
+    '''dvml : factor
+            | dvml DIVMUL factor'''
+    if len(p) == 2:
+        p[0] = p[1]
+    else:
+        p[0] = Node("dvml", [p[1], p[2], p[3]])
 
 
 def p_out(p):
@@ -237,7 +249,9 @@ def p_factor(p):
               | type factor
               | NOT factor
               | MARK STRING MARK
-              | factor COLON'''
+              | factor COLON
+              '''
+    # | RETURN expression_list
     if len(p) == 2:
         p[0] = Node("Factor", [p[1]])
     elif len(p) == 3:
@@ -247,8 +261,8 @@ def p_factor(p):
             p[0] = Node("Factor", [p[1], p[2]])
     elif len(p) == 4:
         p[0] = Node("Factor", [p[1], p[2], p[3]])
-    else:
-        p[0] = Node("Factor", [p[1], p[3]])
+    elif len(p) == 5:
+        p[0] = Node("Func_call", [p[1], p[3]])
 
 
 def p_empty(p):
@@ -262,23 +276,25 @@ def p_error(p):
 
 
 precedence = (
+    ('left', 'EQUAL'),
     ('left', 'OR'),
     ('left', 'AND'),
     ('left', 'NOT'),
-    ('left', 'EQUAL'),
     ('left', 'PLUSMINUS'),
     ('left', 'DIVMUL'),
 )
+
 
 def parsing():
     parser_data = yacc.yacc()
     return parser_data
 
+
 if __name__ == "__main__":
     a = '''
     var int x;
     while ( result < 10 ) {
-        y = 1 * ((2 + 2) +  1);
+        y = 1 + 2 + 2 * 1;
         print(sadfafs);
     }
     funk fuckc (int a, d; float b) {
@@ -296,12 +312,11 @@ if __name__ == "__main__":
         lol = lol;
         while (t == 0){
             a = (a + 1) * 2;
-            break
-            a = 2;
-            break
         }
     }
     '''
 
-    result = parsing().parse(a)
+    result = parsing().parse(s)
     print(result)
+
+
