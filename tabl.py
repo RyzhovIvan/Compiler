@@ -2,28 +2,39 @@ from my_parser import parsing as ps
 
 
 def table(tree):
+    global simbol_table
     for part in tree.parts:
-        temp = []
-        temp_t = []
         if type(part) != str and type(part) != int:
             if part.type == 'Var' or part.type == 'parameter_list':
                 for i in part.parts:
                     if i.type == 'Type':
                         type_tmp = i.parts[0]
                     if i.type == 'ID':
+                        if part.scope not in simbol_table.keys():
+                            simbol_table[part.scope] = {}
+                            simbol_table[part.scope][type_tmp] = []
+                        elif type_tmp not in simbol_table[part.scope].keys():
+                            simbol_table[part.scope][type_tmp] = []
                         for j in i.parts:
-                            temp.append(type_tmp)
-                            temp.append(j)
-                            temp.append(part.scope)
-                            temp_t.append(temp)
-                            temp = []
+                            simbol_table[part.scope][type_tmp].append(j)
 
-            if len(temp_t) > 0: simbol_table.append(temp_t)
             table(part)
 
 
+def get_table(init_prog):
+    global simbol_table
+    simbol_table = {}
+    with open(init_prog, 'r') as f:
+        s = f.read()
+
+    result = ps().parse(s)
+    table(result)
+
+    return simbol_table
+
+
 if __name__=="__main__":
-    simbol_table = []
+    simbol_table = {}
     a = '''
     var int x;
     while ( result < 10 ) {
@@ -63,5 +74,7 @@ if __name__=="__main__":
     result = ps().parse(s)
     table(result)
 
-    for line in simbol_table:
-        print(line)
+    for key in simbol_table:
+        print(key, ':')
+        for i in simbol_table[key]:
+            print('\t', i, '= ', simbol_table[key][i])

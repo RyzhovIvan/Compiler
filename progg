@@ -1,18 +1,2 @@
 var int x; var float b;
-funk lol (int a; float b) {
-    s = a + b * 4 + 23;
-    return s
-}
-
-t = lol(3, 3.14)
-if ( t < 10 ) then {
-    kek = 148;
-    print(kek);
-}
-else{
-    kek = 69;
-    while (t > 0){
-        t = (t - 1) * 2;
-        print(t);
-    }
-}
+x = 2+2;

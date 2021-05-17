@@ -137,7 +137,7 @@ def recurs(tree, key='Main'):
                 func_stmt(part, key)
                 continue
             if part.type == "out":
-                add_print_node(key, simpl_expr(part))
+                out_stmt(part, key)
                 continue
             if part.type == "return":
                 ret_stmt(part, key)
@@ -290,6 +290,27 @@ def ret_stmt(node, key):
         add_ret_func(key, simpl_expr(node.parts[0]))
     else:
         add_ret_func(key, ret_fact(node.parts[0].parts[0]))
+
+
+def out_stmt(node, key):
+    if sad(node.parts[1]):
+        add_print_node(key, simpl_expr(node.parts[1]))
+    else:
+        add_print_node(key, ret_fact(node.parts[1]))
+
+
+def gen_tac(init_prog):
+    global tac_dict
+    with open(init_prog, 'r') as f:
+        s = f.read()
+
+    tac_dict = {'Main': {}}
+
+    tree = parsing().parse(s)
+    recurs(tree)
+
+    return tac_dict
+
 
 if __name__ == '__main__':
     with open('progg', 'r') as f:
