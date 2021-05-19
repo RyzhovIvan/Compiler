@@ -1,9 +1,16 @@
 from my_parser import parsing
+import tabl as t
 
 counter_t = 0
+counter_s = 0
 counter_L = 0
+counter_else = 0
+counter_if = 0
+counter_main = 0
+
 key = "Main"
 goto_key_global = ''
+list_of_registr = []
 
 
 def sad(part, tmp=0):
@@ -15,6 +22,10 @@ def sad(part, tmp=0):
 
 def ret_fact(leaf):
     return leaf.parts[0]
+
+
+def ret_s(part):
+    return '_s'+str(list_of_registr.index(part)+1)
 
 
 def ret_func_args(part):
@@ -30,30 +41,72 @@ def init_var():
     return '_t' + str(counter_t)
 
 
-def init_func():
+def init_var_s():
+    global counter_s
+    counter_s += 1
+    return '_s' + str(counter_s)
+
+
+def init_loop():
     global counter_L
     counter_L += 1
     return '_L' + str(counter_L)
 
 
-def add_new_key():
+def init_if():
+    global counter_if
+    counter_if += 1
+    return 'If' + str(counter_if)
+
+
+def init_else():
+    global counter_else
+    counter_else += 1
+    return 'Else' + str(counter_else)
+
+
+def init_main():
+    global counter_main
+    counter_main += 1
+    return 'Main' + str(counter_main)
+
+
+def add_new_key(type):
     global tac_dict
-    temp_key_l = init_func()
-    tac_dict[temp_key_l] = {}
-    return temp_key_l
+    if type == 'Main':
+        temp_key = init_main()
+    elif type == 'If':
+        temp_key = init_if()
+    elif type == 'Else':
+        temp_key = init_else()
+    else:
+        temp_key = init_loop()
+    tac_dict[temp_key] = []
+    return temp_key
 
 
 def add_eqstate(leaf1, leaf2, key='Main'):
-    global tac_dict, goto_key_global
+    global tac_dict, goto_key_global, counter_t
+    counter_t = 0
+    if leaf1 not in list_of_registr:
+        list_of_registr.append(leaf1)
+        tmp = '_s' + str(list_of_registr.index(leaf1)+1)
+    else:
+        tmp = '_s' + str(list_of_registr.index(leaf1)+1)
+    if leaf2 in list_of_registr:
+        tac_dict[key].append([tmp, '=', '_s' + str(list_of_registr.index(leaf2)+1)])
+    else:
+        tac_dict[key].append([tmp, '=', leaf2])
     goto_key_global = leaf1
-    tac_dict[key][leaf1] = leaf2
+    tac_dict[key].append([leaf1, '=', tmp])
 
 
 def add_no_leaf(index1, oper, index2, key='Main'):
     global tac_dict, goto_key_global
     tmp = init_var()
+    tmp_list = [tmp, '=', index1, oper, index2]
     goto_key_global = tmp
-    tac_dict[key][tmp] = [index1, oper, index2]
+    tac_dict[key].append(tmp_list)
     return tmp
 
 
@@ -61,7 +114,9 @@ def add_right_leaf(index, oper, leaf, key='Main'):
     global tac_dict, goto_key_global
     tmp = init_var()
     goto_key_global = tmp
-    tac_dict[key][tmp] = [index, oper, leaf]
+    tmp_list = [tmp, '=', index, oper, leaf]
+    tac_dict[key].append(tmp_list)
+    # tac_dict[key][tmp] = [index, oper, leaf]
     return tmp
 
 
@@ -69,80 +124,106 @@ def add_left_leaf(leaf, oper, index, key='Main'):
     global tac_dict, goto_key_global
     tmp = init_var()
     goto_key_global = tmp
-    tac_dict[key][tmp] = [leaf, oper, index]
+    tmp_list = [tmp, '=', leaf, oper, index]
+    tac_dict[key].append(tmp_list)
+    # tac_dict[key][tmp] = [leaf, oper, index]
     return tmp
 
 
 def add_two_leaf(node, key='Main'):
-    global tac_dict, goto_key_global
-    tmp_arr = []
+    global tac_dict, goto_key_global, list_of_registr
     tmp = init_var()
-    goto_key_global = tmp
-    for leaf in node.parts:
-        if type(leaf) != str: tmp_arr.append(leaf.parts[0])
-        else: tmp_arr.append(leaf)
-    tac_dict[key][tmp] = tmp_arr
-    return tmp
+    if node.parts[0].parts[0] in list_of_registr:
+        tmp_list = [tmp, '=', '_s'+str(list_of_registr.index(node.parts[0].parts[0])+1)]
+        tac_dict[key].append(tmp_list)
+    else:
+        tac_dict[key].append([tmp, '=', node.parts[0].parts[0] ])
+    tmp_1 = init_var()
+
+    if type(node.parts[2].parts[0]) == (int or float):
+        tac_dict[key].append([tmp_1, '=', tmp, node.parts[1], node.parts[2].parts[0]])
+        return tmp_1
+    elif node.parts[2].parts[0] in list_of_registr:
+        tac_dict[key].append([tmp_1, '=', '_s'+str(list_of_registr.index(node.parts[0].parts[0])+1)])
+        tmp_2 = init_var()
+        goto_key_global = tmp_2
+        tac_dict[key].append([tmp_2, '=', tmp, node.parts[1], tmp_1])
+        return tmp_2
+    else:
+        print("Нет таких переменных!!!!")
 
 
 def add_exp_node(key_while, part1, oper, part2):
     global tac_dict, goto_key_global
-    tmp = init_var()
-    goto_key_global = tmp
-    tac_dict[key_while][tmp] = [part1, oper, part2]
-    return tmp
+    if part1 and part2 in list_of_registr:
+        return [ret_s(part1), oper, ret_s(part2)]
+    elif part1 in list_of_registr:
+        return [ret_s(part1), oper, part2]
+    else:
+        print("Error\n Низя. Только 1 чосло. Число справа онли!")
 
 
 def add_while_or_if_goto(key_after, key_before, goto_key='global', condition=None):
-    tmp = init_var()
     if condition is not None:
-        tac_dict[key_after][tmp] = ["IfZ", condition, "Goto", key_before, goto_key]
+        if goto_key == "while":
+            tac_dict[key_after].append(["IfZ", condition[0], condition[1], condition[2], "Goto", key_before])
+        else:
+            tac_dict[key_after].append(["If", condition[0], condition[1], condition[2], "Goto", key_before])
     else:
-        tac_dict[key_before][tmp] = ["Goto", key_after, goto_key]
+        tac_dict[key_before].append(["Goto", key_after])
 
 
 def add_func_call(key_after, part):
-    tmp = init_var()
-    tac_dict[key_after][tmp] = ["LCall", "_" + part.parts[0], ret_func_args(part.parts[1])]
-    return tmp
+    tac_dict[key_after].append(["LCall", "_" + part.parts[0], ret_func_args(part.parts[1])])
+    return "LCall _" + part.parts[0]
 
 
 def add_func_node(key):
-    tac_dict[key] = {}
-    tac_dict[key]['_opt_'] = "BeginFunc"
+    tac_dict[key] = []
+    tac_dict[key].append(["BeginFunc"])
 
 
 def add_ret_func(key, part):
-    tac_dict[key]['ret_opt'] = ["return", part]
+    tac_dict[key].append(["return", part])
 
 
 def add_print_node(key, part):
-    tac_dict[key]['print'] = part
+    tac_dict[key].append(['print', part])
 
 
-def recurs(tree, key='Main'):
-    global tac_dict
+def add_break(key_rec):
+    tac_dict[key_rec].append(['Goto', key])
+
+
+def add_continue(key_rec):
+    tac_dict[key_rec].append(['Goto', key_rec])
+
+
+def recurs(tree, key_rec=key):
+    global tac_dict, key
     for part in tree.parts:
         if type(part) != str and type(part) != int:
             if part.type == "simple_expression":
-                simpl_expr(part, key)
+                simpl_expr(part, key_rec)
                 continue
             if part.type == "While":
-                while_stmt(part, key_after=key)
+                tmp_key = while_stmt(part, key_after=key_rec)
+                key_rec = tmp_key
                 continue
             if part.type == "If\Else":
-                if_else_stmt(part, key)
+                tmp_key = if_else_stmt(part, key_rec)
+                key_rec = tmp_key
                 continue
             if part.type == "Function":
-                func_stmt(part, key)
+                func_stmt(part, key_rec)
                 continue
             if part.type == "out":
-                out_stmt(part, key)
+                out_stmt(part, key_rec)
                 continue
             if part.type == "return":
-                ret_stmt(part, key)
+                ret_stmt(part, key_rec)
                 continue
-            recurs(part, key)
+            recurs(part, key_rec)
 
 
 def simpl_expr(node, key='Main'):
@@ -152,6 +233,12 @@ def simpl_expr(node, key='Main'):
             if node.type == "Factor" and node.parts[0] == '(':
                 variable = simpl_expr(node.parts[1], key)
                 return variable
+
+            elif part.type == "Factor" and part.parts[0] == "break":
+                add_break(key)
+
+            elif part.type == "Factor" and part.parts[0] == "continue":
+                add_continue(key)
 
             elif part.type == "Func_call":
                 variable = add_func_call(key, part)
@@ -202,7 +289,10 @@ def simpl_expr(node, key='Main'):
 
 
 def while_stmt(node, key_after='Main'):
-    key_while = add_new_key()
+    global key
+    key_while = add_new_key("L")
+    key_main = add_new_key("Main")
+    key = key_main
     add_while_or_if_goto(key_while, key_after)
     for part in node.parts:
         if part.type == 'expression':
@@ -228,51 +318,58 @@ def while_stmt(node, key_after='Main'):
                                          part.parts[1],
                                          ret_fact(part.parts[2].parts[0]))
 
-            add_while_or_if_goto(key_while, key_after, goto_key=goto_key, condition=condition)
+            add_while_or_if_goto(key_while, key, goto_key='while', condition=condition)
 
         elif part.type == "compound_statement":
-
-            recurs(part, key=key_while)
+            recurs(part, key_rec=key_while)
 
     add_while_or_if_goto(key_while, key_while)
+    return key_main
 
-
-def if_else_stmt(node, key='Main'):
+def if_else_stmt(node, key_into='Main'):
+    global key
     second = False
-    key_else = add_new_key()
+    key_if = add_new_key('If')
+    key_else = add_new_key('Else')
+    key_main = add_new_key('Main')
+    key = key_main
     for part in node.parts:
         if part.type == 'expression':
             if sad(part.parts[0]) and sad(part.parts[2]):
-                condition = add_exp_node(key,
-                                         simpl_expr(part.parts[0], key=key),
+                condition = add_exp_node(key_into,
+                                         simpl_expr(part.parts[0], key=key_into),
                                          part.parts[1],
-                                         simpl_expr(part.parts[2], key=key))
+                                         simpl_expr(part.parts[2], key=key_into))
             elif sad(part.parts[0]):
-                condition = add_exp_node(key,
-                                         simpl_expr(part.parts[0], key=key),
+                condition = add_exp_node(key_into,
+                                         simpl_expr(part.parts[0], key=key_into),
                                          part.parts[1],
                                          ret_fact(part.parts[2].parts[0]))
             elif sad(part.parts[2]):
-                condition = add_exp_node(key,
+                condition = add_exp_node(key_into,
                                          ret_fact(part.parts[0].parts[0]),
                                          part.parts[1],
-                                         simpl_expr(part.parts[2], key=key))
+                                         simpl_expr(part.parts[2], key=key_into))
             else:
-                condition = add_exp_node(key,
+                condition = add_exp_node(key_into,
                                          ret_fact(part.parts[0].parts[0]),
                                          part.parts[1],
                                          ret_fact(part.parts[2].parts[0]))
 
-            add_while_or_if_goto(key, key_else, condition=condition)
+            add_while_or_if_goto(key_into, key_if, condition=condition)
+            add_while_or_if_goto(key_else, key_into)
 
         elif part.type == "compound_statement" and not second:
-            recurs(part)
+            recurs(part, key_rec=key_if)
             second = True
 
         elif part.type == "compound_statement" and second:
             goto_key = goto_key_global
-            recurs(part, key=key_else)
-            add_while_or_if_goto(key, key_else, goto_key=goto_key)
+            recurs(part, key_rec=key_else)
+
+    add_while_or_if_goto(key, key_if)
+    add_while_or_if_goto(key, key_else)
+    return key
 
 
 def func_stmt(node, key):
@@ -282,7 +379,7 @@ def func_stmt(node, key):
             key_func = part.parts[1]
             add_func_node(key_func)
         elif part.type == "compound_statement":
-            recurs(part, key=key_func)
+            recurs(part, key_rec=key_func)
 
 
 def ret_stmt(node, key):
@@ -304,7 +401,7 @@ def gen_tac(init_prog):
     with open(init_prog, 'r') as f:
         s = f.read()
 
-    tac_dict = {'Main': {}}
+    tac_dict = {'Main': []}
 
     tree = parsing().parse(s)
     recurs(tree)
@@ -316,7 +413,7 @@ if __name__ == '__main__':
     with open('progg', 'r') as f:
         s = f.read()
 
-    tac_dict = {'Main': {}}
+    tac_dict = {'Main': []}
 
     tree = parsing().parse(s)
     print(tree)
@@ -326,4 +423,4 @@ if __name__ == '__main__':
     for key in tac_dict:
         print(key, ':')
         for i in tac_dict[key]:
-            print('\t', i, '= ', tac_dict[key][i])
+            print('\t', i)

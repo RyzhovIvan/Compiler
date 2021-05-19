@@ -1,2 +1,14 @@
-var int x; var float b;
-x = 2+2;
+var int x, c;
+x = 2;
+c = x + 1;
+if (x < c) then{
+    c = 20;
+}
+else{
+    while(x<10){
+        x = x + 3;
+        continue
+    }
+    c = 20;
+}
+print(x);
