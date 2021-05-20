@@ -1,16 +1,20 @@
 from my_parser import parsing
 import tabl as t
 
+counter_f = 0
 counter_t = 0
 counter_s = 0
 counter_L = 0
+counter_str = 1
 counter_else = 0
 counter_if = 0
 counter_main = 0
 
-key = "Main"
+key = "main"
 goto_key_global = ''
 list_of_registr = []
+list_of_float = []
+simbol_table = t.get_table('progg')
 
 
 def sad(part, tmp=0):
@@ -18,6 +22,24 @@ def sad(part, tmp=0):
         tmp += 1
     if tmp == 1: return False
     else: return True
+
+
+def ret_type(part):
+    for key in simbol_table:
+        for i in simbol_table[key]:
+            if ret_fact(part) in simbol_table[key][i]:
+                type_var = i
+                return type_var
+
+    print("Переменная не объявлена!!!!")
+
+
+
+def ret_class_type(type_var):
+    if type_var == 'int':
+        return int
+    elif type_var == 'float':
+        return float
 
 
 def ret_fact(leaf):
@@ -39,6 +61,16 @@ def init_var():
     global counter_t
     counter_t += 1
     return '_t' + str(counter_t)
+
+
+def init_var_f():
+    global counter_f
+    counter_f += 1
+    try:
+        a = list_of_float[counter_f]
+        init_var_f()
+    except:
+        return '_f' + str(counter_f)
 
 
 def init_var_s():
@@ -85,73 +117,114 @@ def add_new_key(type):
     return temp_key
 
 
-def add_eqstate(leaf1, leaf2, key='Main'):
-    global tac_dict, goto_key_global, counter_t
+def add_eqstate(leaf1, leaf2, type_var, key='main'):
+    global tac_dict, goto_key_global, counter_t, list_of_float
     counter_t = 0
-    if leaf1 not in list_of_registr:
-        list_of_registr.append(leaf1)
-        tmp = '_s' + str(list_of_registr.index(leaf1)+1)
-    else:
-        tmp = '_s' + str(list_of_registr.index(leaf1)+1)
-    if leaf2 in list_of_registr:
-        tac_dict[key].append([tmp, '=', '_s' + str(list_of_registr.index(leaf2)+1)])
-    else:
-        tac_dict[key].append([tmp, '=', leaf2])
-    goto_key_global = leaf1
-    tac_dict[key].append([leaf1, '=', tmp])
+    if type_var == 'int':
+        if leaf1 not in list_of_registr:
+            list_of_registr.append(leaf1)
+            tmp = '_s' + str(list_of_registr.index(leaf1)+1)
+        else:
+            tmp = '_s' + str(list_of_registr.index(leaf1)+1)
+        if leaf2 in list_of_registr:
+            tac_dict[key].append([tmp, '=', '_s' + str(list_of_registr.index(leaf2)+1)])
+        elif type(leaf2) == ret_class_type(type_var)  or leaf2[0] == '_':
+            tac_dict[key].append([tmp, '=', leaf2])
+            tac_dict[key].append([leaf1, '=', tmp])
+        else:
+            print("Неправильные типы!!!!")
+
+    elif type_var == 'float':
+        print(leaf2)
+        if leaf1 not in list_of_float:
+            list_of_float.append(leaf1)
+            tmp = '_f' + str(list_of_float.index(leaf1)+1)
+        else:
+            tmp = '_f' + str(list_of_float.index(leaf1)+1)
+        if leaf2 in list_of_float:
+            tac_dict[key].append([tmp, '=', '_f' + str(list_of_float.index(leaf2)+1)])
+        elif type(leaf2) == ret_class_type(type_var) or str(leaf2)[0] == '_':
+            tac_dict[key].append([tmp, '=', leaf2])
+            tac_dict[key].append([leaf1, '=', tmp])
+        else:
+            print("Неправильные типы!!!!")
 
 
-def add_no_leaf(index1, oper, index2, key='Main'):
+def add_no_leaf(index1, oper, index2, type_var, key='main'):
     global tac_dict, goto_key_global
-    tmp = init_var()
+    if type_var == 'int':
+        tmp = init_var()
+    else:
+        tmp = init_var_f()
     tmp_list = [tmp, '=', index1, oper, index2]
-    goto_key_global = tmp
     tac_dict[key].append(tmp_list)
     return tmp
 
 
-def add_right_leaf(index, oper, leaf, key='Main'):
+def add_right_leaf(index, oper, leaf, type_var, key='main'):
     global tac_dict, goto_key_global
-    tmp = init_var()
-    goto_key_global = tmp
-    tmp_list = [tmp, '=', index, oper, leaf]
-    tac_dict[key].append(tmp_list)
-    # tac_dict[key][tmp] = [index, oper, leaf]
-    return tmp
-
-
-def add_left_leaf(leaf, oper, index, key='Main'):
-    global tac_dict, goto_key_global
-    tmp = init_var()
-    goto_key_global = tmp
-    tmp_list = [tmp, '=', leaf, oper, index]
-    tac_dict[key].append(tmp_list)
-    # tac_dict[key][tmp] = [leaf, oper, index]
-    return tmp
-
-
-def add_two_leaf(node, key='Main'):
-    global tac_dict, goto_key_global, list_of_registr
-    tmp = init_var()
-    if node.parts[0].parts[0] in list_of_registr:
-        tmp_list = [tmp, '=', '_s'+str(list_of_registr.index(node.parts[0].parts[0])+1)]
-        tac_dict[key].append(tmp_list)
+    if type_var == "int":
+        tmp = init_var()
     else:
-        tac_dict[key].append([tmp, '=', node.parts[0].parts[0] ])
-    tmp_1 = init_var()
+        tmp = init_var_f()
 
-    if type(node.parts[2].parts[0]) == (int or float):
-        tac_dict[key].append([tmp_1, '=', tmp, node.parts[1], node.parts[2].parts[0]])
-        return tmp_1
-    elif node.parts[2].parts[0] in list_of_registr:
-        tac_dict[key].append([tmp_1, '=', '_s'+str(list_of_registr.index(node.parts[0].parts[0])+1)])
-        tmp_2 = init_var()
-        goto_key_global = tmp_2
+    tac_dict[key].append([tmp, '=', index, oper, leaf])
+    return tmp
+
+
+def add_left_leaf(leaf, oper, index, type_var, key='main'):
+    global tac_dict, goto_key_global
+    if type_var == 'int':
+        tmp = init_var()
+        tac_dict[key].append([tmp, '=', leaf, oper, index])
+        return tmp
+    elif type_var == 'float':
+        tmp = init_var_f()
+        tac_dict[key].append([tmp, '=', leaf, oper, index])
+        return tmp
+
+
+def add_two_leaf(node, type_var, key='main'):
+    global tac_dict, goto_key_global, list_of_registr
+    if type_var == "int":
+        tmp = init_var()
+        if node.parts[0].parts[0] in list_of_registr:
+            tmp_list = [tmp, '=', '_s'+str(list_of_registr.index(node.parts[0].parts[0])+1)]
+            tac_dict[key].append(tmp_list)
+        else:
+            tac_dict[key].append([tmp, '=', node.parts[0].parts[0]])
+        tmp_1 = init_var()
+
+        if type(node.parts[2].parts[0]) == int:
+            tac_dict[key].append([tmp_1, '=', tmp, node.parts[1], node.parts[2].parts[0]])
+            return tmp_1
+        elif node.parts[2].parts[0] in list_of_registr:
+            tac_dict[key].append([tmp_1, '=', '_s'+str(list_of_registr.index(node.parts[0].parts[0])+1)])
+            tmp_2 = init_var()
+            goto_key_global = tmp_2
+            tac_dict[key].append([tmp_2, '=', tmp, node.parts[1], tmp_1])
+            return tmp_2
+        else:
+            print("Нет таких переменных!!!!")
+
+    elif type_var == "float":
+        tmp = init_var_f()
+        if node.parts[0].parts[0] in list_of_float:
+            tac_dict[key].append([tmp, '=', '_f'+str(list_of_float.index(node.parts[0].parts[0])+1)])
+        else:
+            tac_dict[key].append([tmp, '=', node.parts[0].parts[0]])
+
+        tmp_1 = init_var_f()
+        if node.parts[2].parts[0] in list_of_float:
+            tac_dict[key].append([tmp_1, '=', '_f'+str(list_of_float.index(node.parts[2].parts[0])+1)])
+        elif type(node.parts[2].parts[0]) == float:
+            tac_dict[key].append([tmp_1, '=', node.parts[2].parts[0]])
+        else:
+            print("Не тот тип, или нет такой переменной")
+
+        tmp_2 = init_var_f()
         tac_dict[key].append([tmp_2, '=', tmp, node.parts[1], tmp_1])
         return tmp_2
-    else:
-        print("Нет таких переменных!!!!")
-
 
 def add_exp_node(key_while, part1, oper, part2):
     global tac_dict, goto_key_global
@@ -202,7 +275,7 @@ def add_continue(key_rec):
 def recurs(tree, key_rec=key):
     global tac_dict, key
     for part in tree.parts:
-        if type(part) != str and type(part) != int:
+        if type(part) != str and type(part) != int and type(part) != float:
             if part.type == "simple_expression":
                 simpl_expr(part, key_rec)
                 continue
@@ -226,12 +299,17 @@ def recurs(tree, key_rec=key):
             recurs(part, key_rec)
 
 
-def simpl_expr(node, key='Main'):
+def simpl_expr(node, type_var='', key='main'):
+    global counter_str
+    # type_var = "Error"
     for part in node.parts:
-        if type(part) != str and type(part) != int:
+        if node.type == "Factor" and node.parts[0] == '\"':
+            counter_str += 1
+            return node.parts[1]
+        if type(part) != str and type(part) != int and type(part) != float:
 
             if node.type == "Factor" and node.parts[0] == '(':
-                variable = simpl_expr(node.parts[1], key)
+                variable = simpl_expr(node.parts[1], type_var, key)
                 return variable
 
             elif part.type == "Factor" and part.parts[0] == "break":
@@ -244,59 +322,61 @@ def simpl_expr(node, key='Main'):
                 variable = add_func_call(key, part)
                 return variable
 
-            elif part.type == "Factor" and part.parts[0] == '\"':
-                return part.parts[1]
-
             elif part.type == "Factor" and part.parts[0] == 'return':
                 if sad(part.parts[1]):
-                    add_ret_func(key, simpl_expr(part.parts[1]))
+                    add_ret_func(key, simpl_expr(part.parts[1], ret_fact(part.parts[1])))
                 else:
                     add_ret_func(key, ret_fact(part.parts[1].parts[0]))
 
             elif part.type == "eqstate":
+
+                type_var = ret_type(part.parts[0])
+
                 if sad(part.parts[2]):
-                    add_eqstate(ret_fact(part.parts[0]), simpl_expr(part, key), key)
+                    add_eqstate(ret_fact(part.parts[0]), simpl_expr(part, type_var, key), type_var, key)
                 else:
-                    add_eqstate(ret_fact(part.parts[0]), ret_fact(part.parts[2]), key)
+                    add_eqstate(ret_fact(part.parts[0]), ret_fact(part.parts[2]), type_var, key)
 
             elif part.type == "term" or part.type == "dvml":
                 if sad(part.parts[0]) and sad(part.parts[2]):
-                    variable = add_no_leaf(simpl_expr(part.parts[0], key), part.parts[1], simpl_expr(part.parts[2], key), key)
+                    variable = add_no_leaf(simpl_expr(part.parts[0], type_var, key), part.parts[1],
+                                           simpl_expr(part.parts[2], type_var, key), type_var, key)
                     return variable
                 elif sad(part.parts[0]):
-                    variable = add_right_leaf(simpl_expr(part.parts[0], key), part.parts[1], ret_fact(part.parts[2]), key)
+                    variable = add_right_leaf(simpl_expr(part.parts[0], type_var, key), part.parts[1],
+                                              ret_fact(part.parts[2]), type_var, key)
                     return variable
                 elif sad(part.parts[2]):
-                    variable = add_left_leaf(ret_fact(part.parts[0]), part.parts[1], simpl_expr(part.parts[2], key), key)
+                    variable = add_left_leaf(ret_fact(part.parts[0]), part.parts[1], simpl_expr(part.parts[2], type_var, key), type_var, key)
                     return variable
                 else:
-                    variable = add_two_leaf(part, key)
+                    variable = add_two_leaf(part, type_var, key)
                     return variable
 
             elif node.type == "term" or node.type == "dvml":
                 if sad(node.parts[0]) and sad(node.parts[2]):
-                    variable = add_no_leaf(simpl_expr(part.parts[0], key), node.parts[1], simpl_expr(node.parts[2], key), key)
+                    variable = add_no_leaf(simpl_expr(part.parts[0], type_var, key), node.parts[1],
+                                           simpl_expr(node.parts[2], type_var, key), type_var, key)
                     return variable
                 elif sad(node.parts[0]):
-                    variable = add_right_leaf(simpl_expr(part.parts[0], key), node.parts[1], ret_fact(node.parts[2]), key)
+                    variable = add_right_leaf(simpl_expr(part.parts[0], type_var, key), node.parts[1], ret_fact(node.parts[2]), type_var, key)
                     return variable
                 elif sad(node.parts[2]):
-                    variable = add_left_leaf(ret_fact(node.parts[0]), node.parts[1], simpl_expr(node.parts[2], key), key)
+                    variable = add_left_leaf(ret_fact(node.parts[0]), node.parts[1], simpl_expr(node.parts[2], type_var, key), type_var, key)
                     return variable
                 else:
-                    variable = add_two_leaf(node, key)
+                    variable = add_two_leaf(node, type_var, key)
                     return variable
 
 
-def while_stmt(node, key_after='Main'):
+def while_stmt(node, key_after='main'):
     global key
     key_while = add_new_key("L")
-    key_main = add_new_key("Main")
+    key_main = add_new_key("main")
     key = key_main
     add_while_or_if_goto(key_while, key_after)
     for part in node.parts:
         if part.type == 'expression':
-            goto_key = goto_key_global
             if sad(part.parts[0]) and sad(part.parts[2]):
                 condition = add_exp_node(key_while,
                                          simpl_expr(part.parts[0], key=key_while),
@@ -326,7 +406,8 @@ def while_stmt(node, key_after='Main'):
     add_while_or_if_goto(key_while, key_while)
     return key_main
 
-def if_else_stmt(node, key_into='Main'):
+
+def if_else_stmt(node, key_into='main'):
     global key
     second = False
     key_if = add_new_key('If')
@@ -364,7 +445,6 @@ def if_else_stmt(node, key_into='Main'):
             second = True
 
         elif part.type == "compound_statement" and second:
-            goto_key = goto_key_global
             recurs(part, key_rec=key_else)
 
     add_while_or_if_goto(key, key_if)
@@ -401,7 +481,7 @@ def gen_tac(init_prog):
     with open(init_prog, 'r') as f:
         s = f.read()
 
-    tac_dict = {'Main': []}
+    tac_dict = {'main': []}
 
     tree = parsing().parse(s)
     recurs(tree)
@@ -413,7 +493,9 @@ if __name__ == '__main__':
     with open('progg', 'r') as f:
         s = f.read()
 
-    tac_dict = {'Main': []}
+    simbol_table = t.get_table('progg')
+
+    tac_dict = {'main': []}
 
     tree = parsing().parse(s)
     print(tree)

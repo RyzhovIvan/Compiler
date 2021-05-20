@@ -4,7 +4,7 @@ from my_parser import parsing as ps
 def table(tree):
     global simbol_table
     for part in tree.parts:
-        if type(part) != str and type(part) != int:
+        if type(part) != str and type(part) != int and type(part) != float:
             if part.type == 'Var' or part.type == 'parameter_list':
                 for i in part.parts:
                     if i.type == 'Type':
@@ -17,7 +17,6 @@ def table(tree):
                             simbol_table[part.scope][type_tmp] = []
                         for j in i.parts:
                             simbol_table[part.scope][type_tmp].append(j)
-
             table(part)
 
 
@@ -28,6 +27,7 @@ def get_table(init_prog):
         s = f.read()
 
     result = ps().parse(s)
+    # print(result)
     table(result)
 
     return simbol_table
@@ -72,6 +72,7 @@ if __name__=="__main__":
     '''
 
     result = ps().parse(s)
+    print(result)
     table(result)
 
     for key in simbol_table:

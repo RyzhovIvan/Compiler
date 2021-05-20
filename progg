@@ -1,14 +1,7 @@
-var int x, c;
-x = 2;
-c = x + 1;
-if (x < c) then{
-    c = 20;
-}
-else{
-    while(x<10){
-        x = x + 3;
-        continue
-    }
-    c = 20;
-}
+var float x, c;
+var int y, z;
+c = 1.2 + 1.3;
+x = c + 10.3;
+y = (2+2)*(3+3);
 print(x);
+print(y);

@@ -3,6 +3,13 @@ import tabl
 
 type_var = ''
 MIPS_CODE = {'.data': [], '.text': {}}
+counter_str = 1
+
+
+def count_str():
+    global counter_str
+    counter_str += 1
+    return counter_str
 
 
 def init_text_main(tac_dict):
@@ -13,13 +20,17 @@ def init_text_main(tac_dict):
             MIPS_CODE['.text'][key].append('b Main' + str(TAC.counter_main))
         for part in tac_dict[key]:
             if len(part) > 3 and part[3] == '+':
-                if type(part[2]) != (int or float) and type(part[4]) == (int or float):
+                if type(part[2]) != (int or float) and type(part[4]) == int:
                     MIPS_CODE['.text'][key].\
                         append('addi $' + str(part[0][1:]) + ', $' + str(part[2][1:]) + ', ' + str(part[4]))
 
-                elif type(part[2]) == (int or float) and type(part[4]) != (int or float):
+                elif type(part[2]) == int and type(part[4]) != (int or float):
                     MIPS_CODE['.text'][key].\
                         append('addi $' + str(part[0][1:]) + ', $' + str(part[4][1:]) + ', ' + str(part[2]))
+
+                elif part[0][0:2] == '_f' and part[2][0:2] == '_f' and part[4][0:2] == '_f':
+                    MIPS_CODE['.text'][key]. \
+                        append('add.s $' + str(part[0][1:]) + ', $' + str(part[2][1:]) + ', $' + str(part[4][1:]))
 
                 else:
                     MIPS_CODE['.text'][key]. \
@@ -34,6 +45,10 @@ def init_text_main(tac_dict):
                     MIPS_CODE['.text'][key]. \
                         append('subi $' + str(part[0][1:]) + ', $' + str(part[4][1:]) + ', ' + str(part[2]))
 
+                elif part[0][0:2] == '_f' and part[2][0:2] == '_f' and part[4][0:2] == '_f':
+                    MIPS_CODE['.text'][key]. \
+                        append('sub.s $' + str(part[0][1:]) + ', $' + str(part[2][1:]) + ', $' + str(part[4][1:]))
+
                 else:
                     MIPS_CODE['.text'][key]. \
                         append('subu $' + str(part[0][1:]) + ', $' + str(part[2][1:]) + ', $' + str(part[4][1:]))
@@ -46,6 +61,10 @@ def init_text_main(tac_dict):
                 elif type(part[2]) == (int or float) and type(part[4]) != (int or float):
                     MIPS_CODE['.text'][key]. \
                         append('mul $' + str(part[0][1:]) + ', $' + str(part[4][1:]) + ', ' + str(part[2]))
+
+                elif part[0][0:2] == '_f' and part[2][0:2] == '_f' and part[4][0:2] == '_f':
+                    MIPS_CODE['.text'][key]. \
+                        append('mul.s $' + str(part[0][1:]) + ', $' + str(part[2][1:]) + ', $' + str(part[4][1:]))
 
                 else:
                     MIPS_CODE['.text'][key]. \
@@ -60,21 +79,24 @@ def init_text_main(tac_dict):
                     MIPS_CODE['.text'][key]. \
                         append('div $' + str(part[0][1:]) + ', $' + str(part[4][1:]) + ', ' + str(part[2]))
 
+                elif part[0][0:2] == '_f' and part[2][0:2] == '_f' and part[4][0:2] == '_f':
+                    MIPS_CODE['.text'][key]. \
+                        append('div.s $' + str(part[0][1:]) + ', $' + str(part[2][1:]) + ', $' + str(part[4][1:]))
+
                 else:
                     MIPS_CODE['.text'][key]. \
                         append('div $' + str(part[0][1:]) + ', $' + str(part[2][1:]) + ', $' + str(part[4][1:]))
 
             elif part[0] == 'print':
                 _t = ""
+                type_var = "str"
                 for i in simbol_table['global']:
                     if part[1] in simbol_table['global'][i]:
                         type_var = i
                         break
-                    else:
-                        print("Нет такой переменной")
 
-                for i in tac_dict['Main']:
-                    if part[1] in i:
+                for i in tac_dict['main']:
+                    if part[1] in i and type_var!='str':
                         _t = i[2][1:]
                         break
 
@@ -85,10 +107,17 @@ def init_text_main(tac_dict):
                     MIPS_CODE['.text'][key]. \
                         append('la $a0, string1\n\tli $v0 4\n\tsyscall\n')
 
-                else:
+                elif type_var == 'float' and _t != "":
                     MIPS_CODE['.text'][key].\
-                        append('move $f12, $' + _t + '\n\tli $v0 2\n\tsyscall\n')
+                        append('mov.s $f12, $' + _t + '\n\tli $v0 2\n\tsyscall\n')
+                    MIPS_CODE['.text'][key]. \
+                        append('la $a0, string1\n\tli $v0 4\n\tsyscall\n')
 
+                elif type_var == 'str':
+                    MIPS_CODE['.data']. \
+                        append('\tstring' + str(count_str()) + ': .asciiz \"' + str(part[1]) + '\"')
+                    MIPS_CODE['.text'][key]. \
+                        append('la $a0, string'+str(counter_str)+'\n\tli $v0 4\n\tsyscall\n')
                     MIPS_CODE['.text'][key]. \
                         append('la $a0, string1\n\tli $v0 4\n\tsyscall\n')
 
@@ -132,6 +161,14 @@ def init_text_main(tac_dict):
                     elif part[2] == '!=':
                         MIPS_CODE['.text'][key]. \
                             append('bne $' + str(part[1][1:]) + ', $' + str(part[3][1:]) + ', ' + str(part[5]))
+                    elif part[2] == 'and':
+                        MIPS_CODE['.text'][key]. \
+                            append('and $t' + str(TAC.counter_t) + ', $' + str(part[1][1:]) + ', $' + str(part[3][1:]) +
+                                   '\n\tbeq $' + str(TAC.counter_t) + ', 1, ' + str(part[5]))
+                    elif part[2] == 'or':
+                        MIPS_CODE['.text'][key]. \
+                            append('or $t' + str(TAC.counter_t) + ', $' + str(part[1][1:]) + ', $' + str(part[3][1:]) +
+                                   '\n\tbeq $' + str(TAC.counter_t) + ', 1, ' + str(part[5]))
 
             elif part[0] == 'IfZ':
                 if type(part[1]) != (int or float) and type(part[3]) == (int or float):
@@ -173,17 +210,36 @@ def init_text_main(tac_dict):
                     elif part[2] == '!=':
                         MIPS_CODE['.text'][key]. \
                             append('beq $' + str(part[1][1:]) + ', $' + str(part[3][1:]) + ', ' + str(part[5]))
+                    elif part[2] == 'and':
+                        MIPS_CODE['.text'][key]. \
+                            append('and $t' + str(TAC.counter_t) + ', $' + str(part[1][1:]) + ', $' + str(part[3][1:]) +
+                                   '\n\tbeq $' + str(TAC.counter_t) + ', 1, ' + str(part[5]))
+                    elif part[2] == 'or':
+                        MIPS_CODE['.text'][key]. \
+                            append('or $t' + str(TAC.counter_t) + ', $' + str(part[1][1:]) + ', $' + str(part[3][1:]) +
+                                   '\n\tbeq $' + str(TAC.counter_t) + ', 1, ' + str(part[5]))
 
             elif part[0] == 'Goto':
                 MIPS_CODE['.text'][key].append('b ' + str(part[1]))
 
             elif len(part) == 3:
-                if part[0][0] == "_" and type(part[2]) == (int or float):
+                if part[0][0:2] == "_t" and type(part[2]) == int :
                     MIPS_CODE['.text'][key].\
                         append('li $' + str(part[0][1:]) + ', ' + str(part[2]))
-                elif part[0][0] == "_":
+                elif part[0][0] == "_" and type(part[2]) == float:
+                    MIPS_CODE['.text'][key].\
+                        append('li.s $' + str(part[0][1:]) + ', ' + str(part[2]))
+                elif part[0][0:2] == "_t":
                     MIPS_CODE['.text'][key]. \
                         append('move $' + str(part[0][1:]) + ', $' + str(part[2][1:]))
+                elif part[0][0:2] == "_f":
+                    MIPS_CODE['.text'][key]. \
+                        append('mov.s $' + str(part[0][1:]) + ', $' + str(part[2][1:]))
+                elif part[0][0:2] == "_s":
+                    MIPS_CODE['.text'][key]. \
+                        append('move $' + str(part[0][1:]) + ', $' + str(part[2][1:]))
+
+
 
 
 if __name__ == '__main__':
@@ -197,10 +253,12 @@ if __name__ == '__main__':
     with open('out.a', 'w') as f:
         for key in MIPS_CODE:
             if key == ".data":
-                f.write(key+':\n')
+                f.write(key+'\n')
                 f.write('\tstring1: .asciiz \"\\n\"\n')
+                for part in MIPS_CODE[key]:
+                    f.write(part + '\n')
             elif key == ".text":
-                f.write(key + ':' + '\n')
+                f.write(key + '\n')
                 for part in MIPS_CODE[key]:
                     f.write(part+':\n')
                     for i in MIPS_CODE[key][part]:
@@ -222,3 +280,4 @@ if __name__ == '__main__':
                 print(j, end=' ')
             print('')
 
+    # print(TAC.list_of_float)
