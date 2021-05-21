@@ -4,12 +4,20 @@ import tabl
 type_var = ''
 MIPS_CODE = {'.data': [], '.text': {}}
 counter_str = 1
+counter_a = -1
+list_of_a = []
 
 
 def count_str():
     global counter_str
     counter_str += 1
     return counter_str
+
+
+def count_a():
+    global counter_a
+    counter_a += 1
+    return counter_a
 
 
 def init_text_main(tac_dict):
@@ -19,6 +27,7 @@ def init_text_main(tac_dict):
         if len(tac_dict[key]) == 0:
             MIPS_CODE['.text'][key].append('b Main' + str(TAC.counter_main))
         for part in tac_dict[key]:
+            # print(part[0])
             if len(part) > 3 and part[3] == '+':
                 if type(part[2]) != (int or float) and type(part[4]) == int:
                     MIPS_CODE['.text'][key].\
@@ -95,7 +104,7 @@ def init_text_main(tac_dict):
                         type_var = i
                         break
 
-                for i in tac_dict['main']:
+                for i in tac_dict[key]:
                     if part[1] in i and type_var!='str':
                         _t = i[2][1:]
                         break
@@ -219,28 +228,70 @@ def init_text_main(tac_dict):
                             append('or $t' + str(TAC.counter_t) + ', $' + str(part[1][1:]) + ', $' + str(part[3][1:]) +
                                    '\n\tbeq $' + str(TAC.counter_t) + ', 1, ' + str(part[5]))
 
+            elif part[0] == 'LCall':
+                for i in simbol_table[part[1][1:]]:
+                    for j in simbol_table[part[1][1:]][i]:
+                        list_of_a.append(j)
+
+                for i in part[2]:
+                    if type(i) != (int or float):
+                        if i in (TAC.list_of_registr or TAC.list_of_float):
+                            MIPS_CODE['.text'][key].\
+                                append('move $a' + str(count_a()) + ', $s' + str(TAC.list_of_registr.index(i)+1))
+                    else:
+                        MIPS_CODE['.text'][key]. \
+                            append('li $a' + str(count_a()) + ', ' + str(i))
+                MIPS_CODE['.text'][key]. \
+                    append('jal ' + str(part[1][1:]))
+
+            elif part[0] == 'return':
+                # print(list_of_a)
+                MIPS_CODE['.text'][key]\
+                    .append('move $a'+str(list_of_a.index(part[1]))+', $s'+str(TAC.list_of_registr.index(part[1])+1))
+                MIPS_CODE['.text'][key]. \
+                        append('jr $ra')
+
+
             elif part[0] == 'Goto':
                 MIPS_CODE['.text'][key].append('b ' + str(part[1]))
 
             elif len(part) == 3:
-                if part[0][0:2] == "_t" and type(part[2]) == int :
+                if part[0][0:2] == "_t" and type(part[2]) == int:
                     MIPS_CODE['.text'][key].\
                         append('li $' + str(part[0][1:]) + ', ' + str(part[2]))
-                elif part[0][0] == "_" and type(part[2]) == float:
+                elif part[0][0:2] == "_f" and type(part[2]) == float:
                     MIPS_CODE['.text'][key].\
                         append('li.s $' + str(part[0][1:]) + ', ' + str(part[2]))
-                elif part[0][0:2] == "_t":
+                elif part[0][0:2] == "_t" and type(part[2]) != int:
                     MIPS_CODE['.text'][key]. \
                         append('move $' + str(part[0][1:]) + ', $' + str(part[2][1:]))
-                elif part[0][0:2] == "_f":
+                elif part[0][0:2] == "_f" and type(part[2]) != float:
                     MIPS_CODE['.text'][key]. \
                         append('mov.s $' + str(part[0][1:]) + ', $' + str(part[2][1:]))
                 elif part[0][0:2] == "_s":
-                    MIPS_CODE['.text'][key]. \
-                        append('move $' + str(part[0][1:]) + ', $' + str(part[2][1:]))
+                    if type(part[2]) == int:
+                        MIPS_CODE['.text'][key]. \
+                            append('li $' + str(part[0][1:]) + ', ' + str(part[2]))
 
+                    elif type(part[2]) == float:
+                        MIPS_CODE['.text'][key]. \
+                            append('li.s $' + str(part[0][1:]) + ', ' + str(part[2]))
 
+                    elif part[2][0] == "L":
+                        MIPS_CODE['.text'][key]. \
+                            append('move $' + str(part[0][1:]) + ', $a' + str(counter_a))
+                    else:
+                        MIPS_CODE['.text'][key]. \
+                            append('move $' + str(part[0][1:]) + ', $' + str(part[2][1:]))
 
+    if TAC.counter_main == 0:
+        MIPS_CODE['.text']['main']. \
+            append('j END')
+    else:
+        MIPS_CODE['.text']["Main"+str(TAC.counter_main)]. \
+            append('j END')
+
+    MIPS_CODE['.text']["END"] = []
 
 if __name__ == '__main__':
     init_prog = 'progg'

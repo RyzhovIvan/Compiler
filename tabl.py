@@ -1,6 +1,14 @@
 from my_parser import parsing as ps
 
 
+def check_same_names(var):
+    for key in simbol_table:
+        for type in simbol_table[key]:
+            if var in simbol_table[key][type]:
+                return False
+    return True
+
+
 def table(tree):
     global simbol_table
     for part in tree.parts:
@@ -16,7 +24,10 @@ def table(tree):
                         elif type_tmp not in simbol_table[part.scope].keys():
                             simbol_table[part.scope][type_tmp] = []
                         for j in i.parts:
-                            simbol_table[part.scope][type_tmp].append(j)
+                            if check_same_names(j):
+                                simbol_table[part.scope][type_tmp].append(j)
+                            else:
+                                print("Названия переменных должны быть разными!!!")
             table(part)
 
 
@@ -62,13 +73,18 @@ if __name__=="__main__":
     }
     '''
     s = '''
-    var int x; var float b;
-    funk assasin (int a, d; float c) var float xyz; {
-        s = s + 1; 
+    var float x, c;
+    var int y, z;
+
+
+    funk lol (int v){
+        v = 2;
+        return v
     }
-    funk duck (int a, d; float b) {
-        s = s + 1; 
-    }
+    
+    x = lol(c)
+
+
     '''
 
     result = ps().parse(s)

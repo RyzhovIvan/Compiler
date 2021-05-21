@@ -43,7 +43,10 @@ def ret_class_type(type_var):
 
 
 def ret_fact(leaf):
-    return leaf.parts[0]
+    if type(leaf) != (str or int or float):
+        return leaf.parts[0]
+    else:
+        return leaf
 
 
 def ret_s(part):
@@ -52,6 +55,7 @@ def ret_s(part):
 
 def ret_func_args(part):
     tmp_arr = []
+
     for fcts in part.parts:
         tmp_arr.append(ret_fact(fcts.parts[0]))
     return tmp_arr
@@ -128,14 +132,13 @@ def add_eqstate(leaf1, leaf2, type_var, key='main'):
             tmp = '_s' + str(list_of_registr.index(leaf1)+1)
         if leaf2 in list_of_registr:
             tac_dict[key].append([tmp, '=', '_s' + str(list_of_registr.index(leaf2)+1)])
-        elif type(leaf2) == ret_class_type(type_var)  or leaf2[0] == '_':
+        elif type(leaf2) == ret_class_type(type_var) or leaf2[0] == '_' or leaf2.startswith("LCall"):
             tac_dict[key].append([tmp, '=', leaf2])
             tac_dict[key].append([leaf1, '=', tmp])
         else:
             print("Неправильные типы!!!!")
 
     elif type_var == 'float':
-        print(leaf2)
         if leaf1 not in list_of_float:
             list_of_float.append(leaf1)
             tmp = '_f' + str(list_of_float.index(leaf1)+1)
@@ -146,6 +149,8 @@ def add_eqstate(leaf1, leaf2, type_var, key='main'):
         elif type(leaf2) == ret_class_type(type_var) or str(leaf2)[0] == '_':
             tac_dict[key].append([tmp, '=', leaf2])
             tac_dict[key].append([leaf1, '=', tmp])
+        elif leaf2.startswith("LCall"):
+            tac_dict[key].append([tmp, '=', leaf2])
         else:
             print("Неправильные типы!!!!")
 
@@ -226,6 +231,7 @@ def add_two_leaf(node, type_var, key='main'):
         tac_dict[key].append([tmp_2, '=', tmp, node.parts[1], tmp_1])
         return tmp_2
 
+
 def add_exp_node(key_while, part1, oper, part2):
     global tac_dict, goto_key_global
     if part1 and part2 in list_of_registr:
@@ -253,7 +259,7 @@ def add_func_call(key_after, part):
 
 def add_func_node(key):
     tac_dict[key] = []
-    tac_dict[key].append(["BeginFunc"])
+    # tac_dict[key].append(["BeginFunc"])
 
 
 def add_ret_func(key, part):
@@ -277,7 +283,7 @@ def recurs(tree, key_rec=key):
     for part in tree.parts:
         if type(part) != str and type(part) != int and type(part) != float:
             if part.type == "simple_expression":
-                simpl_expr(part, key_rec)
+                simpl_expr(part, key=key_rec)
                 continue
             if part.type == "While":
                 tmp_key = while_stmt(part, key_after=key_rec)
@@ -329,9 +335,8 @@ def simpl_expr(node, type_var='', key='main'):
                     add_ret_func(key, ret_fact(part.parts[1].parts[0]))
 
             elif part.type == "eqstate":
-
                 type_var = ret_type(part.parts[0])
-
+                # print(type_var, '- ', part.parts[0])
                 if sad(part.parts[2]):
                     add_eqstate(ret_fact(part.parts[0]), simpl_expr(part, type_var, key), type_var, key)
                 else:
@@ -459,7 +464,8 @@ def func_stmt(node, key):
             key_func = part.parts[1]
             add_func_node(key_func)
         elif part.type == "compound_statement":
-            recurs(part, key_rec=key_func)
+            recurs(part, key_func)
+    key = key_func
 
 
 def ret_stmt(node, key):
