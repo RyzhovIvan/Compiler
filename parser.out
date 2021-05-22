@@ -3,6 +3,7 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 Unused terminals:
 
     COMMENT
+    ELSE
 
 Grammar
 
@@ -19,7 +20,7 @@ Rule 9     optional_statements -> statement_list
 Rule 10    optional_statements -> empty
 Rule 11    statement_list -> statement
 Rule 12    statement_list -> statement_list statement
-Rule 13    statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement
+Rule 13    statement -> IF OPEN expression CLOSE THEN compound_statement
 Rule 14    statement -> WHILE OPEN expression CLOSE compound_statement
 Rule 15    statement -> subprogram_declarations
 Rule 16    statement -> expression
@@ -74,7 +75,7 @@ COMA                 : 3 27
 COMMENT              : 
 CONTINUE             : 47
 DIVMUL               : 41
-ELSE                 : 13
+ELSE                 : 
 EQUAL                : 36
 FLOAT                : 7
 FLOAT_NUM            : 49
@@ -103,7 +104,7 @@ error                :
 Nonterminals, with rules where they appear
 
 arguments            : 21
-compound_statement   : 13 13 14 20
+compound_statement   : 13 14 20
 declarations         : 1 4 20
 dvml                 : 38 39 41
 empty                : 5 10
@@ -174,7 +175,7 @@ state 2
     (11) statement_list -> . statement
     (12) statement_list -> . statement_list statement
     (55) empty -> .
-    (13) statement -> . IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement
+    (13) statement -> . IF OPEN expression CLOSE THEN compound_statement
     (14) statement -> . WHILE OPEN expression CLOSE compound_statement
     (15) statement -> . subprogram_declarations
     (16) statement -> . expression
@@ -330,7 +331,7 @@ state 7
 
     (9) optional_statements -> statement_list .
     (12) statement_list -> statement_list . statement
-    (13) statement -> . IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement
+    (13) statement -> . IF OPEN expression CLOSE THEN compound_statement
     (14) statement -> . WHILE OPEN expression CLOSE compound_statement
     (15) statement -> . subprogram_declarations
     (16) statement -> . expression
@@ -435,7 +436,7 @@ state 9
 
 state 10
 
-    (13) statement -> IF . OPEN expression CLOSE THEN compound_statement ELSE compound_statement
+    (13) statement -> IF . OPEN expression CLOSE THEN compound_statement
 
     OPEN            shift and go to state 40
 
@@ -1264,7 +1265,7 @@ state 39
 
 state 40
 
-    (13) statement -> IF OPEN . expression CLOSE THEN compound_statement ELSE compound_statement
+    (13) statement -> IF OPEN . expression CLOSE THEN compound_statement
     (28) expression -> . NOT simple_expression
     (29) expression -> . RETURN simple_expression
     (30) expression -> . expression AND simple_expression
@@ -2039,7 +2040,7 @@ state 61
 
 state 62
 
-    (13) statement -> IF OPEN expression . CLOSE THEN compound_statement ELSE compound_statement
+    (13) statement -> IF OPEN expression . CLOSE THEN compound_statement
     (30) expression -> expression . AND simple_expression
     (31) expression -> expression . OR simple_expression
 
@@ -2281,7 +2282,7 @@ state 72
     (11) statement_list -> . statement
     (12) statement_list -> . statement_list statement
     (55) empty -> .
-    (13) statement -> . IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement
+    (13) statement -> . IF OPEN expression CLOSE THEN compound_statement
     (14) statement -> . WHILE OPEN expression CLOSE compound_statement
     (15) statement -> . subprogram_declarations
     (16) statement -> . expression
@@ -2531,7 +2532,7 @@ state 81
 
 state 82
 
-    (13) statement -> IF OPEN expression CLOSE . THEN compound_statement ELSE compound_statement
+    (13) statement -> IF OPEN expression CLOSE . THEN compound_statement
 
     THEN            shift and go to state 91
 
@@ -2675,7 +2676,7 @@ state 90
 
 state 91
 
-    (13) statement -> IF OPEN expression CLOSE THEN . compound_statement ELSE compound_statement
+    (13) statement -> IF OPEN expression CLOSE THEN . compound_statement
     (25) compound_statement -> . OPEN_CONSTR optional_statements CLOSE_CONSTR
 
     OPEN_CONSTR     shift and go to state 72
@@ -2752,7 +2753,6 @@ state 94
     STR             reduce using rule 25 (compound_statement -> OPEN_CONSTR optional_statements CLOSE_CONSTR .)
     $end            reduce using rule 25 (compound_statement -> OPEN_CONSTR optional_statements CLOSE_CONSTR .)
     CLOSE_CONSTR    reduce using rule 25 (compound_statement -> OPEN_CONSTR optional_statements CLOSE_CONSTR .)
-    ELSE            reduce using rule 25 (compound_statement -> OPEN_CONSTR optional_statements CLOSE_CONSTR .)
 
 
 state 95
@@ -2800,9 +2800,26 @@ state 98
 
 state 99
 
-    (13) statement -> IF OPEN expression CLOSE THEN compound_statement . ELSE compound_statement
+    (13) statement -> IF OPEN expression CLOSE THEN compound_statement .
 
-    ELSE            shift and go to state 101
+    IF              reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement .)
+    WHILE           reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement .)
+    NOT             reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement .)
+    RETURN          reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement .)
+    PRINT           reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement .)
+    FUNK            reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement .)
+    ID              reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement .)
+    NUM             reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement .)
+    CONTINUE        reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement .)
+    BREAK           reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement .)
+    FLOAT_NUM       reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement .)
+    OPEN            reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement .)
+    MARK            reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement .)
+    INT             reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement .)
+    FLOAT           reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement .)
+    STR             reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement .)
+    $end            reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement .)
+    CLOSE_CONSTR    reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement .)
 
 
 state 100
@@ -2813,18 +2830,9 @@ state 100
 
     ID              shift and go to state 60
 
-    identifier_list                shift and go to state 102
+    identifier_list                shift and go to state 101
 
 state 101
-
-    (13) statement -> IF OPEN expression CLOSE THEN compound_statement ELSE . compound_statement
-    (25) compound_statement -> . OPEN_CONSTR optional_statements CLOSE_CONSTR
-
-    OPEN_CONSTR     shift and go to state 72
-
-    compound_statement             shift and go to state 103
-
-state 102
 
     (24) parameter_list -> parameter_list COLON type identifier_list .
     (3) identifier_list -> identifier_list . COMA ID
@@ -2832,30 +2840,6 @@ state 102
     CLOSE           reduce using rule 24 (parameter_list -> parameter_list COLON type identifier_list .)
     COLON           reduce using rule 24 (parameter_list -> parameter_list COLON type identifier_list .)
     COMA            shift and go to state 81
-
-
-state 103
-
-    (13) statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .
-
-    IF              reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
-    WHILE           reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
-    NOT             reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
-    RETURN          reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
-    PRINT           reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
-    FUNK            reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
-    ID              reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
-    NUM             reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
-    CONTINUE        reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
-    BREAK           reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
-    FLOAT_NUM       reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
-    OPEN            reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
-    MARK            reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
-    INT             reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
-    FLOAT           reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
-    STR             reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
-    $end            reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
-    CLOSE_CONSTR    reduce using rule 13 (statement -> IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement .)
 
 WARNING: 
 WARNING: Conflicts:

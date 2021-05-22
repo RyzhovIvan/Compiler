@@ -31,8 +31,7 @@ def ret_type(part):
                 type_var = i
                 return type_var
 
-    print("Переменная не объявлена!!!!")
-
+    print("Переменная не объявлена!!!!", ret_fact(part))
 
 
 def ret_class_type(type_var):
@@ -51,6 +50,10 @@ def ret_fact(leaf):
 
 def ret_s(part):
     return '_s'+str(list_of_registr.index(part)+1)
+
+
+def ret_f(part):
+    return '_f' + str(list_of_float.index(part) + 1)
 
 
 def ret_func_args(part):
@@ -109,7 +112,7 @@ def init_main():
 
 def add_new_key(type):
     global tac_dict
-    if type == 'Main':
+    if type == 'main':
         temp_key = init_main()
     elif type == 'If':
         temp_key = init_if()
@@ -204,7 +207,7 @@ def add_two_leaf(node, type_var, key='main'):
             tac_dict[key].append([tmp_1, '=', tmp, node.parts[1], node.parts[2].parts[0]])
             return tmp_1
         elif node.parts[2].parts[0] in list_of_registr:
-            tac_dict[key].append([tmp_1, '=', '_s'+str(list_of_registr.index(node.parts[0].parts[0])+1)])
+            tac_dict[key].append([tmp_1, '=', '_s'+str(list_of_registr.index(node.parts[2].parts[0])+1)])
             tmp_2 = init_var()
             goto_key_global = tmp_2
             tac_dict[key].append([tmp_2, '=', tmp, node.parts[1], tmp_1])
@@ -236,10 +239,12 @@ def add_exp_node(key_while, part1, oper, part2):
     global tac_dict, goto_key_global
     if part1 and part2 in list_of_registr:
         return [ret_s(part1), oper, ret_s(part2)]
+    elif part1 and part2 in list_of_float:
+        return [ret_f(part1), oper, ret_f(part2)]
     elif part1 in list_of_registr:
         return [ret_s(part1), oper, part2]
     else:
-        print("Error\n Низя. Только 1 чосло. Число справа онли!")
+        print("Error\n Низя. Только 1 число. Число справа онли!")
 
 
 def add_while_or_if_goto(key_after, key_before, goto_key='global', condition=None):
@@ -262,6 +267,18 @@ def add_func_node(key):
     # tac_dict[key].append(["BeginFunc"])
 
 
+def add_func_vars(part):
+    type_var = ret_type(part.parts[1])
+    if type_var == 'int':
+        for i in part.parts[1].parts:
+            if i not in list_of_registr:
+                list_of_registr.append(i)
+    elif type_var == 'float':
+        for i in part.parts[1].parts:
+            if i not in list_of_float:
+                list_of_float.append(i)
+
+
 def add_ret_func(key, part):
     tac_dict[key].append(["return", part])
 
@@ -278,7 +295,7 @@ def add_continue(key_rec):
     tac_dict[key_rec].append(['Goto', key_rec])
 
 
-def recurs(tree, key_rec=key):
+def recurs(tree, key_rec=key, key_after=''):
     global tac_dict, key
     for part in tree.parts:
         if type(part) != str and type(part) != int and type(part) != float:
@@ -286,11 +303,11 @@ def recurs(tree, key_rec=key):
                 simpl_expr(part, key=key_rec)
                 continue
             if part.type == "While":
-                tmp_key = while_stmt(part, key_after=key_rec)
+                tmp_key = while_stmt(part, key_after=key_rec, key_after_1=key_after)
                 key_rec = tmp_key
                 continue
             if part.type == "If\Else":
-                tmp_key = if_else_stmt(part, key_rec)
+                tmp_key = if_else_stmt(part, key_into=key_rec, key_after=key_after)
                 key_rec = tmp_key
                 continue
             if part.type == "Function":
@@ -302,7 +319,7 @@ def recurs(tree, key_rec=key):
             if part.type == "return":
                 ret_stmt(part, key_rec)
                 continue
-            recurs(part, key_rec)
+            recurs(part, key_rec, key_after)
 
 
 def simpl_expr(node, type_var='', key='main'):
@@ -374,12 +391,11 @@ def simpl_expr(node, type_var='', key='main'):
                     return variable
 
 
-def while_stmt(node, key_after='main'):
+def while_stmt(node, key_after='main', key_after_1=''):
     global key
     key_while = add_new_key("L")
-    key_main = add_new_key("main")
-    key = key_main
     add_while_or_if_goto(key_while, key_after)
+    key_after_2 = add_new_key("L")
     for part in node.parts:
         if part.type == 'expression':
             if sad(part.parts[0]) and sad(part.parts[2]):
@@ -403,22 +419,28 @@ def while_stmt(node, key_after='main'):
                                          part.parts[1],
                                          ret_fact(part.parts[2].parts[0]))
 
-            add_while_or_if_goto(key_while, key, goto_key='while', condition=condition)
+            if key_after_1 != '':
+                add_while_or_if_goto(key_while, key_after_1, goto_key='while', condition=condition)
+            else:
+                key_main = add_new_key("main")
+                key = key_main
+                add_while_or_if_goto(key_while, key, goto_key='while', condition=condition)
 
         elif part.type == "compound_statement":
-            recurs(part, key_rec=key_while)
+            recurs(part, key_rec=key_while, key_after=key_after_2)
 
-    add_while_or_if_goto(key_while, key_while)
-    return key_main
+    add_while_or_if_goto(key_after_2, key_while)
+    add_while_or_if_goto(key_while, key_after_2)
+    if key_after_1 != '':
+        return key_after_1
+    else:
+        return key_main
 
 
-def if_else_stmt(node, key_into='main'):
+def if_else_stmt(node, key_into='main', key_after=''):
     global key
     second = False
     key_if = add_new_key('If')
-    key_else = add_new_key('Else')
-    key_main = add_new_key('Main')
-    key = key_main
     for part in node.parts:
         if part.type == 'expression':
             if sad(part.parts[0]) and sad(part.parts[2]):
@@ -441,19 +463,18 @@ def if_else_stmt(node, key_into='main'):
                                          ret_fact(part.parts[0].parts[0]),
                                          part.parts[1],
                                          ret_fact(part.parts[2].parts[0]))
-
-            add_while_or_if_goto(key_into, key_if, condition=condition)
-            add_while_or_if_goto(key_else, key_into)
+            add_while_or_if_goto(key_into, key_if, goto_key='if', condition=condition)
 
         elif part.type == "compound_statement" and not second:
-            recurs(part, key_rec=key_if)
-            second = True
+            recurs(part, key_rec=key_if, key_after=key_after)
 
-        elif part.type == "compound_statement" and second:
-            recurs(part, key_rec=key_else)
+    if key_after != '':
+        add_while_or_if_goto(key_after, key_if)
+    else:
+        key_main = add_new_key('main')
+        key = key_main
+        add_while_or_if_goto(key, key_if)
 
-    add_while_or_if_goto(key, key_if)
-    add_while_or_if_goto(key, key_else)
     return key
 
 
@@ -463,6 +484,7 @@ def func_stmt(node, key):
         if part.type == "Function_head":
             key_func = part.parts[1]
             add_func_node(key_func)
+            add_func_vars(part.parts[2])
         elif part.type == "compound_statement":
             recurs(part, key_func)
     key = key_func

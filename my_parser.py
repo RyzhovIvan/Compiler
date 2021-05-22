@@ -78,7 +78,7 @@ def p_statement_list(p):  # Различные состояния - вспомо
 
 
 def p_statement(p):  # сами выражения которые могут быть
-    '''statement : IF OPEN expression CLOSE THEN compound_statement ELSE compound_statement
+    '''statement : IF OPEN expression CLOSE THEN compound_statement
                  | WHILE OPEN expression CLOSE compound_statement
                  | subprogram_declarations
                  | expression
@@ -90,7 +90,7 @@ def p_statement(p):  # сами выражения которые могут б�
     elif len(p) == 6:
         p[0] = Node("While", [p[3], p[5]])
     else:
-        p[0] = Node('If\Else', [p[3], p[6], p[8]])
+        p[0] = Node('If\Else', [p[3], p[6]])
 
 
 def p_subprogram_declarations(

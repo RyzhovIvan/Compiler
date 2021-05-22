@@ -1,19 +1,24 @@
 var float x, c;
-var int y, z;
+var int y, z, p;
 
-
-funk lol (int v){
-    v = 10;
-    return v
-}
-
-funk kek(int b){
-    b = 30;
+funk lol(int b){
+    while (b < 10){
+        b = b + 10;
+    }
     return b
 }
-y = 2;
-z = lol(y);
-print(z);
-z = kek(y);
-print(z);
 
+y = 2;
+p = 3;
+z = lol(p);
+while(y < 20){
+    y = y + p;
+    if(p == 3) then {
+        while(p<10){
+            p = p+2;
+        }
+    }
+}
+print(z);
+print(p);
+print(y);
