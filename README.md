@@ -30,11 +30,7 @@ if ( t < 10 ) then {
     kek = 148;
     print(kek);
 }
-else{
-    kek = 69;
-    while (t > 0){
-        t = (t - 1) * 2;
-        print(t);
-    }
+while(x < 5){
+   print(x);
 }
 ~~~~
