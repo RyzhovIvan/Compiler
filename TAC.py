@@ -24,6 +24,14 @@ def sad(part, tmp=0):
     else: return True
 
 
+def add_to_list_of_f():
+    for key in simbol_table:
+        for i in simbol_table[key]:
+            if i == 'float':
+                for j in simbol_table[key][i]:
+                    list_of_float.append(j)
+
+
 def ret_type(part):
     for key in simbol_table:
         for i in simbol_table[key]:
@@ -75,7 +83,8 @@ def init_var_f():
     counter_f += 1
     try:
         a = list_of_float[counter_f]
-        init_var_f()
+        tmp = init_var_f()
+        return tmp
     except:
         return '_f' + str(counter_f)
 
@@ -264,7 +273,6 @@ def add_func_call(key_after, part):
 
 def add_func_node(key):
     tac_dict[key] = []
-    # tac_dict[key].append(["BeginFunc"])
 
 
 def add_func_vars(part):
@@ -291,8 +299,8 @@ def add_break(key_rec):
     tac_dict[key_rec].append(['Goto', key])
 
 
-def add_continue(key_rec):
-    tac_dict[key_rec].append(['Goto', key_rec])
+def add_continue(key_rec, key_after):
+    tac_dict[key_rec].append(['Goto', key_after])
 
 
 def recurs(tree, key_rec=key, key_after=''):
@@ -300,7 +308,7 @@ def recurs(tree, key_rec=key, key_after=''):
     for part in tree.parts:
         if type(part) != str and type(part) != int and type(part) != float:
             if part.type == "simple_expression":
-                simpl_expr(part, key=key_rec)
+                simpl_expr(part, key=key_rec,  key_after_1=key_after)
                 continue
             if part.type == "While":
                 tmp_key = while_stmt(part, key_after=key_rec, key_after_1=key_after)
@@ -322,7 +330,7 @@ def recurs(tree, key_rec=key, key_after=''):
             recurs(part, key_rec, key_after)
 
 
-def simpl_expr(node, type_var='', key='main'):
+def simpl_expr(node, type_var='', key='main',  key_after_1=''):
     global counter_str
     # type_var = "Error"
     for part in node.parts:
@@ -339,7 +347,7 @@ def simpl_expr(node, type_var='', key='main'):
                 add_break(key)
 
             elif part.type == "Factor" and part.parts[0] == "continue":
-                add_continue(key)
+                add_continue(key, key_after_1)
 
             elif part.type == "Func_call":
                 variable = add_func_call(key, part)
@@ -398,33 +406,62 @@ def while_stmt(node, key_after='main', key_after_1=''):
     key_after_2 = add_new_key("L")
     for part in node.parts:
         if part.type == 'expression':
-            if sad(part.parts[0]) and sad(part.parts[2]):
-                condition = add_exp_node(key_while,
-                                         simpl_expr(part.parts[0], key=key_while),
-                                         part.parts[1],
-                                         simpl_expr(part.parts[2], key=key_while))
-            elif sad(part.parts[0]):
-                condition = add_exp_node(key_while,
-                                         simpl_expr(part.parts[0], key=key_while),
-                                         part.parts[1],
-                                         ret_fact(part.parts[2].parts[0]))
-            elif sad(part.parts[2]):
-                condition = add_exp_node(key_while,
-                                         ret_fact(part.parts[0].parts[0]),
-                                         part.parts[1],
-                                         simpl_expr(part.parts[2], key=key_while))
-            else:
-                condition = add_exp_node(key_while,
-                                         ret_fact(part.parts[0].parts[0]),
-                                         part.parts[1],
-                                         ret_fact(part.parts[2].parts[0]))
+            if part.parts[1] != ('and' or 'or'):
+                if sad(part.parts[0]) and sad(part.parts[2]):
+                    condition = add_exp_node(key_while,
+                                             simpl_expr(part.parts[0], key=key_while),
+                                             part.parts[1],
+                                             simpl_expr(part.parts[2], key=key_while))
+                elif sad(part.parts[0]):
+                    condition = add_exp_node(key_while,
+                                             simpl_expr(part.parts[0], key=key_while),
+                                             part.parts[1],
+                                             ret_fact(part.parts[2].parts[0]))
+                elif sad(part.parts[2]):
+                    condition = add_exp_node(key_while,
+                                             ret_fact(part.parts[0].parts[0]),
+                                             part.parts[1],
+                                             simpl_expr(part.parts[2], key=key_while))
+                else:
+                    condition = add_exp_node(key_while,
+                                             ret_fact(part.parts[0].parts[0]),
+                                             part.parts[1],
+                                             ret_fact(part.parts[2].parts[0]))
 
-            if key_after_1 != '':
-                add_while_or_if_goto(key_while, key_after_1, goto_key='while', condition=condition)
+                if key_after_1 != '':
+                    add_while_or_if_goto(key_while, key_after_1, goto_key='while', condition=condition)
+                else:
+                    key_main = add_new_key("main")
+                    key = key_main
+                    add_while_or_if_goto(key_while, key, goto_key='while', condition=condition)
             else:
-                key_main = add_new_key("main")
-                key = key_main
-                add_while_or_if_goto(key_while, key, goto_key='while', condition=condition)
+                if sad(part.parts[0].parts[0]) and sad(part.parts[2].parts[0]):
+                    condition = add_exp_node(key_while,
+                                             simpl_expr(part.parts[0], key=key_while),
+                                             part.parts[1],
+                                             simpl_expr(part.parts[2], key=key_while))
+                elif sad(part.parts[0].parts[0]):
+                    condition = add_exp_node(key_while,
+                                             simpl_expr(part.parts[0], key=key_while),
+                                             part.parts[1],
+                                             ret_fact(part.parts[2].parts[0]))
+                elif sad(part.parts[2].parts[0]):
+                    condition = add_exp_node(key_while,
+                                             ret_fact(part.parts[0].parts[0]),
+                                             part.parts[1],
+                                             simpl_expr(part.parts[2], key=key_while))
+                else:
+                    condition = add_exp_node(key_while,
+                                             ret_fact(part.parts[0].parts[0]),
+                                             part.parts[1],
+                                             ret_fact(part.parts[2].parts[0]))
+
+                if key_after_1 != '':
+                    add_while_or_if_goto(key_while, key_after_1, goto_key='while', condition=condition)
+                else:
+                    key_main = add_new_key("main")
+                    key = key_main
+                    add_while_or_if_goto(key_while, key, goto_key='while', condition=condition)
 
         elif part.type == "compound_statement":
             recurs(part, key_rec=key_while, key_after=key_after_2)
@@ -512,6 +549,7 @@ def gen_tac(init_prog):
     tac_dict = {'main': []}
 
     tree = parsing().parse(s)
+    add_to_list_of_f()
     recurs(tree)
 
     return tac_dict
@@ -527,7 +565,8 @@ if __name__ == '__main__':
 
     tree = parsing().parse(s)
     print(tree)
-
+    add_to_list_of_f()
+    print(list_of_float)
     recurs(tree)
 
     for key in tac_dict:

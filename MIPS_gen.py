@@ -56,7 +56,7 @@ def find_var(func):
 
 
 def init_text_main(tac_dict):
-    global type_var, counter_a
+    global type_var, counter_a, tmp_list
     for key in tac_dict:
         MIPS_CODE['.text'][key] = []
         # print(key)
@@ -84,11 +84,11 @@ def init_text_main(tac_dict):
             elif len(part) > 3 and part[3] == '-':
                 if type(part[2]) != (int or float) and type(part[4]) == (int or float):
                     MIPS_CODE['.text'][key]. \
-                        append('subi $' + str(part[0][1:]) + ', $' + str(part[2][1:]) + ', ' + str(part[4]))
+                        append('sub $' + str(part[0][1:]) + ', $' + str(part[2][1:]) + ', ' + str(part[4]))
 
                 elif type(part[2]) == (int or float) and type(part[4]) != (int or float):
                     MIPS_CODE['.text'][key]. \
-                        append('subi $' + str(part[0][1:]) + ', $' + str(part[4][1:]) + ', ' + str(part[2]))
+                        append('sub $' + str(part[0][1:]) + ', $' + str(part[4][1:]) + ', ' + str(part[2]))
 
                 elif part[0][0:2] == '_f' and part[2][0:2] == '_f' and part[4][0:2] == '_f':
                     MIPS_CODE['.text'][key]. \
@@ -333,6 +333,7 @@ def init_text_main(tac_dict):
 
                 MIPS_CODE['.text'][key]. \
                     append('jal ' + str(part[1][1:]))
+                tmp_list = []
 
             elif part[0] == 'return':
                 MIPS_CODE['.text'][key]\

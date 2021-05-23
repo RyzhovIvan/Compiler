@@ -60,8 +60,7 @@ def p_type(p):  # Типы
     p[0] = Node("Type", [p[1]])
 
 
-def p_optional_statements(
-        p):  # Продукция для всего, может быть как пусто, так и все, циклы, функции, условия, выражения
+def p_optional_statements(p):  # Продукция для всего, может быть как пусто, так и все, циклы, функции, условия, выражения
     '''optional_statements : statement_list
                            | empty'''
     p[0] = Node("optional_statements", [p[1]])
@@ -136,33 +135,6 @@ def p_parameter_list(p):  # Сам вид аргументов, как их пе
 def p_compound_statement(p):  # фигурные скобки и продукция - для всего, та самая сверху
     '''compound_statement : OPEN_CONSTR optional_statements CLOSE_CONSTR'''
     p[0] = Node("compound_statement", [p[2]])
-
-
-"""
-def p_w_compound(p): # фигурные скобки для while, так как там должны быть break и continue
-    '''w_compound : OPEN_CONSTR w_optional_statements CLOSE_CONSTR'''
-    p[0] = Node("w_compound", [p[2]])
-
-
-def p_w_optional_statements(p): # Вспомогательная продукция для while, список
-    '''w_optional_statements : statement_limb_operators
-                             | w_optional_statements statement_limb_operators'''
-    if len(p) == 2:
-        p[0] = p[1]
-    else:
-        p[0] = Node("w_optional_statements", [p[1], p[2]])
-
-
-def p_statement_limb_operators(p): # Что конкретно пишем внутри и что выбираем из операторов
-    ''' statement_limb_operators : optional_statements BREAK
-                                 | optional_statements CONTINUE
-                                 | optional_statements '''
-    if len(p) == 2:
-        p[0] = p[1]
-    else:
-        p[0] = Node("statement_limb_operators", [p[1], p[2]])
-
-"""
 
 
 def p_expression_list(p):  # Список выражений
@@ -251,7 +223,6 @@ def p_factor(p):
               | MARK STRING MARK
               | factor COLON
               '''
-    # | RETURN expression_list
     if len(p) == 2:
         p[0] = Node("Factor", [p[1]])
     elif len(p) == 3:
